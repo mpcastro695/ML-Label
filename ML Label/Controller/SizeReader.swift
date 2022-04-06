@@ -11,19 +11,18 @@ struct SizeReader: ViewModifier {
     
     @Binding var size: CGSize
     
-    private var sizeOverlay: some View {
+    private var sizeReaderOverlay: some View {
         GeometryReader{ geometry in
             Color.clear.preference(key: SizePreferenceKey.self, value: geometry.size)
         }
     }
     
     func body(content: Content) -> some View{
-        content.overlay(sizeOverlay)
+        content.overlay(sizeReaderOverlay)
             .onPreferenceChange(SizePreferenceKey.self) { sizeValue in
                 self.size = sizeValue
             }
     }
-    
     
 }
 
