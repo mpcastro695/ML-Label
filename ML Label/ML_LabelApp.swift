@@ -35,7 +35,7 @@ struct ML_LabelApp: App {
                 // Our second view, will not be seen.
                 EmptyView()
                 
-                PlaceholderDetail(
+                DetailPlaceholder(
                     imagesSelected: $imagesSelected,
                     classesSelected: $classesSelected,
                     outputSelected: $outputSelected)

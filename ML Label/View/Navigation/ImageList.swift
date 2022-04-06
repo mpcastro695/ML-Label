@@ -12,7 +12,7 @@ struct ImageList: View {
     @EnvironmentObject var imageStore: ImageStore
     @EnvironmentObject var classStore: ClassStore
     
-    @State var selectedClassLabel = LabelData(label: "No Class Labels", color: Color.blue)
+    @State var selectedClassLabel = ClassData(label: "No Class Labels", color: Color.blue)
     
     var body: some View {
         

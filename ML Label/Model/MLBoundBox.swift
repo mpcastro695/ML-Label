@@ -15,7 +15,7 @@ struct MLBoundBox: Identifiable {
     
     let imageName: String
     
-    let label: LabelData
+    let label: ClassData
     
     let x: Int
     let y: Int

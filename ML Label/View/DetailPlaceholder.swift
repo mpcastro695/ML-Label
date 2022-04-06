@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct PlaceholderDetail: View {
+struct DetailPlaceholder: View {
     
     @Binding var imagesSelected: Bool
     @Binding var classesSelected: Bool
     @Binding var outputSelected: Bool
     
-    @State var demoLabel = LabelData(label: "", color: Color.blue)
+    @State var demoLabel = ClassData(label: "", color: Color.blue)
     
     
     var body: some View {

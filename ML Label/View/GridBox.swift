@@ -23,7 +23,7 @@ struct GridBox: View {
         
         image.image
             .resizable()
-            .size(size: $cgSize)
+            .sizeReader(size: $cgSize)
             .clipShape(
                 Rectangle()
                     .path(in: CGRect(x: x, y: y, width: width, height: height))

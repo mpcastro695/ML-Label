@@ -2,49 +2,47 @@
 //  SizeReader.swift
 //  ML Label
 //
-//  Created by Martin Castro on 10/15/21.
+//  Created by Martin Castro on 4/5/22.
 //
 
 import SwiftUI
 
-// Wraps View in ViewSizeReader
-struct SizeReader<Content: View>: View {
+struct SizeReader: ViewModifier {
     
     @Binding var size: CGSize
-
-    let content: () -> Content
     
-    // Attaches a Geometry Reader to our View's background.
-    var body: some View {
-      content().background(
-        GeometryReader { proxy in
-          Color.clear.preference(
-            key: SizePreferenceKey.self,
-            value: proxy.size
-          )
+    private var sizeOverlay: some View {
+        GeometryReader{ geometry in
+            Color.clear.preference(key: SizePreferenceKey.self, value: geometry.size)
         }
-      )
-      .onPreferenceChange(SizePreferenceKey.self) { preferences in
-        self.size = preferences
-      }
     }
+    
+    func body(content: Content) -> some View{
+        content.overlay(sizeOverlay)
+            .onPreferenceChange(SizePreferenceKey.self) { sizeValue in
+                self.size = sizeValue
+            }
+    }
+    
+    
 }
 
-// Size Preference Key which holds current value
-struct SizePreferenceKey: PreferenceKey {
-  typealias Value = CGSize
-  static var defaultValue: Value = .zero
+//MARK: - Preference Key
 
-  static func reduce(value _: inout Value, nextValue: () -> Value) {
+// PreferenceKey's allow us to report information back up the view hierarchy
+struct SizePreferenceKey: PreferenceKey {
+  
+  static var defaultValue: CGSize = .zero
+
+  static func reduce(value _: inout CGSize, nextValue: () -> CGSize) {
     _ = nextValue()
   }
 }
 
-// Convenience View Modifier
+//MARK: - Convenience View Modifier
+
 extension View {
-  func size(size: Binding<CGSize>) -> some View {
-    SizeReader(size: size) {
-      self
-    }
+  func sizeReader(size: Binding<CGSize>) -> some View {
+      modifier(SizeReader(size: size))
   }
 }

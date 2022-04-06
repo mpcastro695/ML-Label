@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClassDetail: View {
     
-    @ObservedObject var classLabel: LabelData
+    @ObservedObject var classLabel: ClassData
     @EnvironmentObject var imageStore: ImageStore
     
     var gridItemLayout = GridItem(.adaptive(minimum: 105, maximum: 105))

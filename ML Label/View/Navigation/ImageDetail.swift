@@ -13,8 +13,8 @@ struct ImageDetail: View {
     @ObservedObject var image: ImageData
     @EnvironmentObject var classStore: ClassStore
     
-    // Used for calculating bounding box from drage gesture
-    @Binding var selectedClassLabel: LabelData
+    // Used for calculating bounding box from drag gesture
+    @Binding var selectedClassLabel: ClassData
     @State private var cgSize = CGSize()
     
     // Used for drawing a preview bound box during gesture
@@ -33,7 +33,7 @@ struct ImageDetail: View {
                 .scaledToFit()
                 
                 // Reports current size via SizeReader class
-                .size(size: $cgSize)
+                .sizeReader(size: $cgSize)
                 
                 // MARK: - Drag Gesture
                 

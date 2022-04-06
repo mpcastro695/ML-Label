@@ -10,7 +10,7 @@ import SwiftUI
 struct LabelPicker: View {
     
     @EnvironmentObject var classStore: ClassStore
-    @Binding var selectedClassLabel: LabelData
+    @Binding var selectedClassLabel: ClassData
     
     var body: some View {
         

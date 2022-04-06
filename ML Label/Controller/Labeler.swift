@@ -10,9 +10,15 @@ import SwiftUI
 /// Class responsible for adding annotations to an image from a draggesture.
 struct Labeler {
     
+    // MARK:  Annotation Functions
+    
+    // Annotations are created in CreateML Format: X and Y are the center of the bounding boxes, with a width and height, all measured from the top left corner.
+    
+    // Add removeAnnotation() func
+    
     public func addAnnotation(from gesture: DragGesture.Value,
                               at currentSize: CGSize,
-                              with label: LabelData,
+                              with label: ClassData,
                               on image: ImageData) {
         
         var widthRatio: CGFloat

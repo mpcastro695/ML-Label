@@ -11,7 +11,7 @@ import SwiftUI
 
 class ClassStore: ObservableObject {
     
-    @Published var classes: [LabelData]
+    @Published var classes: [ClassData]
     
     init() {
         self.classes = []
@@ -19,7 +19,7 @@ class ClassStore: ObservableObject {
     
     
     func addClass(label: String, color: Color) {
-        let newClassLabel = LabelData(label: label, color: color)
+        let newClassLabel = ClassData(label: label, color: color)
         classes.append(newClassLabel)
     }
 }

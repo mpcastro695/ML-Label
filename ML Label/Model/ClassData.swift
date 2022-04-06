@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK:  Class Data Structure
 
-class LabelData: Identifiable, ObservableObject, Hashable {
+class ClassData: Identifiable, ObservableObject, Hashable {
     
     
     var id = UUID()
@@ -30,7 +30,7 @@ class LabelData: Identifiable, ObservableObject, Hashable {
         self.annotations = []
     }
     
-    static func == (lhs: LabelData, rhs: LabelData) -> Bool {
+    static func == (lhs: ClassData, rhs: ClassData) -> Bool {
         return lhs.id == rhs.id
     }
     

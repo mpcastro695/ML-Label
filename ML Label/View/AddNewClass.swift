@@ -19,38 +19,42 @@ struct AddNewClass: View {
     
     var body: some View {
         
-        VStack{
+        VStack(alignment: .center){
             // Directions
             Text("Add a new class label:")
                 .padding(.bottom, 20)
                 .font(.headline)
             
             // Textfield and textfield label
-            VStack(alignment: .leading){
-                Text("Name:")
-                TextField("Enter a Class Name", text: $textFieldEntry)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 330, height: 20)
-            }.padding(.bottom,10)
+            TextField("Enter a Class Name", text: $textFieldEntry)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 330, height: 20)
+                .padding(.bottom,10)
             
- // MARK: Colors
-            // Presents 12 Color options
-            VStack(alignment:.leading) {
+            Text("Label Color:")
                 
-                Text("Label Color:")
-                
-                HStack{
-                    ForEach(colorPalette.colors, id: \.self) { color in
-                        
+            HStack{
+                ForEach(colorPalette.colors, id: \.self) { color in
+                    if color == selectedColor{
+                        Circle()
+                            .fill(color)
+                            .frame(width:30, height: 30)
+                            .onTapGesture {
+                                selectedColor = color
+                            }
+                    }else{
                         Circle()
                             .fill(color)
                             .frame(width:20, height: 20)
                             .onTapGesture {
                                 selectedColor = color
                             }
+                        }
+                        
                     }
-                }
-            }.padding(.bottom, 20)
+            }
+            .frame(height: 40)
+            .padding(.bottom, 20)
 
             
 //MARK: - Buttons

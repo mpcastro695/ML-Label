@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClassRow: View {
     
-    var classLabel: LabelData
+    var classLabel: ClassData
     
     var body: some View {
         
