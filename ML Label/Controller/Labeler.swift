@@ -58,44 +58,46 @@ struct Labeler {
         print(boundingBox)
     }
     
-    public func moveBox(_ box: inout MLBoundBox, by gesture: DragGesture.Value,
-                        on image: ImageData, at currentSize: CGSize){
-        
-        var gestureEndLocation = gesture.location
-        
-        var widthRatio: CGFloat
-        var heightRatio: CGFloat
-        
-        
-        // Adjusts gesture bounds if they fall out of frame
-        if gestureEndLocation.x > currentSize.width {
-            gestureEndLocation = CGPoint(x: currentSize.width, y: gestureEndLocation.y)
-        }
-        if gestureEndLocation.x < 0 {
-            gestureEndLocation = CGPoint(x: 0, y: gestureEndLocation.y)
-        }
-        if gestureEndLocation.y > currentSize.height {
-            gestureEndLocation = CGPoint(x: gestureEndLocation.x, y: currentSize.height)
-        }
-        if gestureEndLocation.y < 0 {
-            gestureEndLocation = CGPoint(x: gestureEndLocation.x, y: 0)
-        }
-        
-        // Find ratios of gesture to total image dimensions
-        widthRatio = (gestureEndLocation.x - gesture.startLocation.x) / currentSize.width
-        heightRatio = (gestureEndLocation.y - gesture.startLocation.y) / currentSize.height
-        
-        //Transfom MLBoundBox coordinates
-        box.x += Int(widthRatio * CGFloat(image.width))
-        box.y += Int(heightRatio * CGFloat(image.height))
-        
-    }
-    
+
     public func removeBox(_ box: MLBoundBox, from image: inout ImageData) {
         image.annotations.removeAll { mlBox in
             mlBox.id == box.id
         }
     }
+    
+    
+//    public func moveBox(_ box: MLBoundBox, by gesture: DragGesture.Value,
+//                        on image: inout ImageData, at currentSize: CGSize){
+//
+//        var gestureEndLocation = gesture.location
+//
+//        var widthRatio: CGFloat
+//        var heightRatio: CGFloat
+//
+//
+//        // Adjusts gesture bounds if they fall out of frame
+//        if gestureEndLocation.x > currentSize.width {
+//            gestureEndLocation = CGPoint(x: currentSize.width, y: gestureEndLocation.y)
+//        }
+//        if gestureEndLocation.x < 0 {
+//            gestureEndLocation = CGPoint(x: 0, y: gestureEndLocation.y)
+//        }
+//        if gestureEndLocation.y > currentSize.height {
+//            gestureEndLocation = CGPoint(x: gestureEndLocation.x, y: currentSize.height)
+//        }
+//        if gestureEndLocation.y < 0 {
+//            gestureEndLocation = CGPoint(x: gestureEndLocation.x, y: 0)
+//        }
+//
+//        // Find ratios of gesture to total image dimensions
+//        widthRatio = (gestureEndLocation.x - gesture.startLocation.x) / currentSize.width
+//        heightRatio = (gestureEndLocation.y - gesture.startLocation.y) / currentSize.height
+//
+//        //Transfom MLBoundBox coordinates
+//        box.x += Int(widthRatio * CGFloat(image.width))
+//        box.y += Int(heightRatio * CGFloat(image.height))
+//
+//    }
     
     
 }

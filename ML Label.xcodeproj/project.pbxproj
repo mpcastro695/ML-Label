@@ -23,12 +23,12 @@
 		E812354E271ABC90001E8CDE /* ClassRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812354D271ABC90001E8CDE /* ClassRow.swift */; };
 		E8123550271ABDEC001E8CDE /* ClassList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812354F271ABDEC001E8CDE /* ClassList.swift */; };
 		E8123552271AC03A001E8CDE /* ClassData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123551271AC03A001E8CDE /* ClassData.swift */; };
-		E8123554271AC205001E8CDE /* BoxLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123553271AC205001E8CDE /* BoxLabel.swift */; };
+		E8123554271AC205001E8CDE /* PreviewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123553271AC205001E8CDE /* PreviewLabel.swift */; };
 		E8123558271BCDC5001E8CDE /* GridBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123557271BCDC5001E8CDE /* GridBox.swift */; };
 		E812355A271BD078001E8CDE /* ClassDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123559271BD078001E8CDE /* ClassDetail.swift */; };
 		E812355C271BF346001E8CDE /* DetailPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355B271BF346001E8CDE /* DetailPlaceholder.swift */; };
 		E812355E271CFD0E001E8CDE /* LabelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355D271CFD0E001E8CDE /* LabelPicker.swift */; };
-		E8123560271D1498001E8CDE /* AddNewClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355F271D1498001E8CDE /* AddNewClass.swift */; };
+		E8123560271D1498001E8CDE /* NewClassDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355F271D1498001E8CDE /* NewClassDialog.swift */; };
 		E8E9D5BC27DACA18006DAE8E /* Labeler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5BB27DACA18006DAE8E /* Labeler.swift */; };
 		E8E9D5F727FD08BF006DAE8E /* SizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */; };
 		E8E9D5F928021C83006DAE8E /* MLBoxPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5F828021C83006DAE8E /* MLBoxPreviews.swift */; };
@@ -75,12 +75,12 @@
 		E812354D271ABC90001E8CDE /* ClassRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRow.swift; sourceTree = "<group>"; };
 		E812354F271ABDEC001E8CDE /* ClassList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassList.swift; sourceTree = "<group>"; };
 		E8123551271AC03A001E8CDE /* ClassData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassData.swift; sourceTree = "<group>"; };
-		E8123553271AC205001E8CDE /* BoxLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxLabel.swift; sourceTree = "<group>"; };
+		E8123553271AC205001E8CDE /* PreviewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewLabel.swift; sourceTree = "<group>"; };
 		E8123557271BCDC5001E8CDE /* GridBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridBox.swift; sourceTree = "<group>"; };
 		E8123559271BD078001E8CDE /* ClassDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDetail.swift; sourceTree = "<group>"; };
 		E812355B271BF346001E8CDE /* DetailPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPlaceholder.swift; sourceTree = "<group>"; };
 		E812355D271CFD0E001E8CDE /* LabelPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPicker.swift; sourceTree = "<group>"; };
-		E812355F271D1498001E8CDE /* AddNewClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewClass.swift; sourceTree = "<group>"; };
+		E812355F271D1498001E8CDE /* NewClassDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClassDialog.swift; sourceTree = "<group>"; };
 		E8E9D5BB27DACA18006DAE8E /* Labeler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labeler.swift; sourceTree = "<group>"; };
 		E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeReader.swift; sourceTree = "<group>"; };
 		E8E9D5F828021C83006DAE8E /* MLBoxPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLBoxPreviews.swift; sourceTree = "<group>"; };
@@ -189,12 +189,12 @@
 			children = (
 				E85001952726A0B400EB7B01 /* Navigation */,
 				E8E9D5F828021C83006DAE8E /* MLBoxPreviews.swift */,
+				E8123553271AC205001E8CDE /* PreviewLabel.swift */,
+				E812355F271D1498001E8CDE /* NewClassDialog.swift */,
 				E812355D271CFD0E001E8CDE /* LabelPicker.swift */,
 				E812355B271BF346001E8CDE /* DetailPlaceholder.swift */,
 				E8123545271A9C5D001E8CDE /* ImageRow.swift */,
-				E8123553271AC205001E8CDE /* BoxLabel.swift */,
 				E812354D271ABC90001E8CDE /* ClassRow.swift */,
-				E812355F271D1498001E8CDE /* AddNewClass.swift */,
 				E8123557271BCDC5001E8CDE /* GridBox.swift */,
 			);
 			path = View;
@@ -364,9 +364,9 @@
 				E812354E271ABC90001E8CDE /* ClassRow.swift in Sources */,
 				E8123533271A810A001E8CDE /* ImageHandler.swift in Sources */,
 				E8123550271ABDEC001E8CDE /* ClassList.swift in Sources */,
-				E8123554271AC205001E8CDE /* BoxLabel.swift in Sources */,
+				E8123554271AC205001E8CDE /* PreviewLabel.swift in Sources */,
 				E812355E271CFD0E001E8CDE /* LabelPicker.swift in Sources */,
-				E8123560271D1498001E8CDE /* AddNewClass.swift in Sources */,
+				E8123560271D1498001E8CDE /* NewClassDialog.swift in Sources */,
 				E812354A271A9F08001E8CDE /* ImageDetail.swift in Sources */,
 				E812353E271A8C3D001E8CDE /* Sidebar.swift in Sources */,
 				E8E9D5BC27DACA18006DAE8E /* Labeler.swift in Sources */,

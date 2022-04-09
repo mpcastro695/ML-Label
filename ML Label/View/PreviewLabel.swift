@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BoxLabel: View {
+struct PreviewLabel: View {
     
     var annotation: MLBoundBox
     

@@ -11,22 +11,26 @@ struct MLBoxPreviews: View {
     
     @ObservedObject var image: ImageData
     
-    @Binding var boxPreview: CGRect
-    @Binding var showBoxPreview: Bool
-    
     // Make selectedClassLabel an ObservedObject?
     @Binding var selectedClassLabel: ClassData
+    @Binding var showDrawingPreview: Bool
+    @Binding var boxPreview: CGRect
+    
+    let labeler: Labeler
+
     
     var body: some View {
+        
         GeometryReader{ imgGeometry in
             
             // Shows box preview during drag gesture
-            if showBoxPreview {
+            if showDrawingPreview {
                 RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                     .path(in: boxPreview)
                     .stroke(selectedClassLabel.color, style: StrokeStyle(lineWidth: 3,
                                                                          lineCap: .round, dash: [5,10]))
             }
+            
             // Overlays for each bounding box
             ZStack{
                 ForEach(image.annotations, id: \.id) { boundBox in
@@ -50,8 +54,20 @@ struct MLBoxPreviews: View {
                     }
                     
                     // Adds a label to the box overlay showing label name, height, width, etc.
-                    BoxLabel(annotation: boundBox)
+                    PreviewLabel(annotation: boundBox)
                         .position(x: x, y: y)
+                        .onTapGesture {
+                            // Remove box on tap
+                            image.annotations.removeAll { annotation in
+                                annotation.id == boundBox.id
+                            }
+                        }
+//                        // Move box on drag
+//                        .gesture(DragGesture(minimumDistance: 5, coordinateSpace: .local).onChanged({ gestureValue in
+//                            // Issue compiling, maybe DONT use an inout parameter
+//                            // labeler.moveBox(&boundBox, by: gestureValue, on: image, at: imgGeometry.size)
+//                            print("Moved by \(gestureValue)")
+//                        }))
                 }
                 
             }

@@ -24,7 +24,7 @@ struct ImageDetail: View {
     @State var scale: CGFloat = 0.96
     
     // Labeler class contains functions for creating annotations
-    var labeler = Labeler()
+    let labeler = Labeler()
     
     var body: some View {
         
@@ -66,7 +66,7 @@ struct ImageDetail: View {
                 
                 // Adds overlay displaying bounding boxes
                 .overlay(
-                    MLBoxPreviews(image: image, boxPreview: $boxPreview, showBoxPreview: $showBoxPreview, selectedClassLabel: $selectedClassLabel)
+                    MLBoxPreviews(image: image, selectedClassLabel: $selectedClassLabel, showDrawingPreview: $showBoxPreview, boxPreview: $boxPreview, labeler: labeler)
                 )
                 .scaleEffect(scale)
                 .shadow(radius: 10)

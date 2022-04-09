@@ -52,7 +52,7 @@ struct ClassList: View {
         }
         
         .sheet(isPresented: $showAddNewClass, content: {
-            AddNewClass()
+            NewClassDialog()
         })
         
         

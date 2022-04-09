@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddNewClass: View {
+struct NewClassDialog: View {
     
     @Environment(\.presentationMode) var presentationMode
     
