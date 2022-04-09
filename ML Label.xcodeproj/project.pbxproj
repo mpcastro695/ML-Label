@@ -31,6 +31,7 @@
 		E8123560271D1498001E8CDE /* AddNewClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355F271D1498001E8CDE /* AddNewClass.swift */; };
 		E8E9D5BC27DACA18006DAE8E /* Labeler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5BB27DACA18006DAE8E /* Labeler.swift */; };
 		E8E9D5F727FD08BF006DAE8E /* SizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */; };
+		E8E9D5F928021C83006DAE8E /* MLBoxPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5F828021C83006DAE8E /* MLBoxPreviews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		E812355F271D1498001E8CDE /* AddNewClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewClass.swift; sourceTree = "<group>"; };
 		E8E9D5BB27DACA18006DAE8E /* Labeler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labeler.swift; sourceTree = "<group>"; };
 		E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeReader.swift; sourceTree = "<group>"; };
+		E8E9D5F828021C83006DAE8E /* MLBoxPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLBoxPreviews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,9 +188,10 @@
 			isa = PBXGroup;
 			children = (
 				E85001952726A0B400EB7B01 /* Navigation */,
+				E8E9D5F828021C83006DAE8E /* MLBoxPreviews.swift */,
+				E812355D271CFD0E001E8CDE /* LabelPicker.swift */,
 				E812355B271BF346001E8CDE /* DetailPlaceholder.swift */,
 				E8123545271A9C5D001E8CDE /* ImageRow.swift */,
-				E812355D271CFD0E001E8CDE /* LabelPicker.swift */,
 				E8123553271AC205001E8CDE /* BoxLabel.swift */,
 				E812354D271ABC90001E8CDE /* ClassRow.swift */,
 				E812355F271D1498001E8CDE /* AddNewClass.swift */,
@@ -350,6 +353,7 @@
 				E8123546271A9C5D001E8CDE /* ImageRow.swift in Sources */,
 				E812354C271AB8E8001E8CDE /* ImageData.swift in Sources */,
 				E8123552271AC03A001E8CDE /* ClassData.swift in Sources */,
+				E8E9D5F928021C83006DAE8E /* MLBoxPreviews.swift in Sources */,
 				E8123548271A9D33001E8CDE /* ImageList.swift in Sources */,
 				E812353A271A82DE001E8CDE /* ClassHandler.swift in Sources */,
 				E812355A271BD078001E8CDE /* ClassDetail.swift in Sources */,
