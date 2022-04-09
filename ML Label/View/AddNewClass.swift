@@ -11,7 +11,7 @@ struct AddNewClass: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject var classStore: ClassStore
+    @EnvironmentObject var classStore: ClassHandler
     let colorPalette = ColorPalette()
     
     @State var textFieldEntry: String = ""

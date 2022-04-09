@@ -20,7 +20,6 @@ class ClassData: Identifiable, ObservableObject, Hashable {
         hasher.combine(self.id)
     }
     
-    
     @Published var annotations: [MLBoundBox]
     
     init(label: String, color: Color){

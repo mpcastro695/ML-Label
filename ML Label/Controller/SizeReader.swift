@@ -23,25 +23,22 @@ struct SizeReader: ViewModifier {
                 self.size = sizeValue
             }
     }
-    
 }
 
-//MARK: - Preference Key
+// Convenience view modifier
+extension View {
+  func sizeReader(size: Binding<CGSize>) -> some View {
+      modifier(SizeReader(size: size))
+  }
+}
 
-// PreferenceKey's allow us to report information back up the view hierarchy
+// PreferenceKey
+// Allows us to report information back up the view hierarchy
 struct SizePreferenceKey: PreferenceKey {
   
   static var defaultValue: CGSize = .zero
 
   static func reduce(value _: inout CGSize, nextValue: () -> CGSize) {
     _ = nextValue()
-  }
-}
-
-//MARK: - Convenience View Modifier
-
-extension View {
-  func sizeReader(size: Binding<CGSize>) -> some View {
-      modifier(SizeReader(size: size))
   }
 }

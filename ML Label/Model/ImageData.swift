@@ -7,11 +7,10 @@
 
 import SwiftUI
 
-//MARK: ImageInfo Data Structure
-
 class ImageData: Identifiable, ObservableObject {
     
     var id = UUID()
+    
     var name: String
     var width: Int
     var height: Int

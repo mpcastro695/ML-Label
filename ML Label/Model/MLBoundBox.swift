@@ -17,8 +17,10 @@ struct MLBoundBox: Identifiable {
     
     let label: ClassData
     
-    let x: Int
-    let y: Int
-    let width: Int
-    let height: Int
+    // Coordinates use CreateML format
+    // X & Y in the center, with a width and height, measured from top left corner
+    var x: Int
+    var y: Int
+    var width: Int
+    var height: Int
 }

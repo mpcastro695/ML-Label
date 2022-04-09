@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClassList: View {
     
-    @EnvironmentObject var classStore: ClassStore
+    @EnvironmentObject var classStore: ClassHandler
     @State var showAddNewClass = false
     
     var body: some View {

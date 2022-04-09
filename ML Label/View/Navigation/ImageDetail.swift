@@ -11,7 +11,7 @@ struct ImageDetail: View {
     
     
     @ObservedObject var image: ImageData
-    @EnvironmentObject var classStore: ClassStore
+    @EnvironmentObject var classStore: ClassHandler
     
     // Used for calculating bounding box from drag gesture
     @Binding var selectedClassLabel: ClassData
@@ -23,7 +23,7 @@ struct ImageDetail: View {
     
     @State var scale: CGFloat = 0.96
     
-    // Labeler class contains functions for annotations
+    // Labeler class contains functions for creating annotations
     var labeler = Labeler()
     
     var body: some View {
@@ -54,7 +54,7 @@ struct ImageDetail: View {
                             // Creates annotation and disables the preview box on gesture end
                             .onEnded({ gesture in
                                 showBoxPreview = false
-                                labeler.addAnnotation(from: gesture,
+                                labeler.addBox(from: gesture,
                                                       at: cgSize,
                                                       with: selectedClassLabel,
                                                       on: image)

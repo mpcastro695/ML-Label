@@ -1,5 +1,5 @@
 //
-//  ImageStore.swift
+//  ImageHandler.swift
 //  ML Label
 //
 //  Created by Martin Castro on 10/15/21.
@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-// MARK: Image Data Model
+class ImageHandler: ObservableObject, DropDelegate {
 
-class ImageStore: ObservableObject, DropDelegate {
-
+    //Consider making Dictionary
     @Published var images: [ImageData]
     
     init() {
@@ -36,9 +35,9 @@ class ImageStore: ObservableObject, DropDelegate {
                         if let imagePath = NSString(data: imageData, encoding: 4){
                             if let imageURL = URL(string: imagePath as String){
                                 if let nsImage = NSImage(contentsOf: imageURL){
-                                    let image = Image(nsImage: nsImage)
+                                    let finalImage = Image(nsImage: nsImage)
                                     // Our final ImageInfo Object
-                                    let imageInfo = ImageData(name: imageURL.lastPathComponent, width: Int(nsImage.size.width), height: Int(nsImage.size.height), image: image)
+                                    let imageInfo = ImageData(name: imageURL.lastPathComponent, width: Int(nsImage.size.width), height: Int(nsImage.size.height), image: finalImage)
                                     if !self.images.contains(where: {$0.name == imageInfo.name}){
                                         self.images.append(imageInfo)
                                     }
@@ -53,6 +52,13 @@ class ImageStore: ObservableObject, DropDelegate {
         }
         
         return true
+    }
+    
+    //Consider replacing with Dictionary lookup
+    func removeImage(name: String) {
+        images.removeAll { imgData in
+            imgData.name == name
+        }
     }
     
 }

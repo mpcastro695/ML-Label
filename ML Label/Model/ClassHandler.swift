@@ -1,5 +1,5 @@
 //
-//  ClassStore.swift
+//  ClassHandler.swift
 //  ML Label
 //
 //  Created by Martin Castro on 10/15/21.
@@ -9,8 +9,9 @@ import SwiftUI
 
 //MARK: Class Label Data Model
 
-class ClassStore: ObservableObject {
+class ClassHandler: ObservableObject {
     
+    // Consider making a Dictionary
     @Published var classes: [ClassData]
     
     init() {

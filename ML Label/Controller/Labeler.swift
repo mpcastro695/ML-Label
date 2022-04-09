@@ -7,30 +7,21 @@
 
 import SwiftUI
 
-/// Class responsible for adding annotations to an image from a draggesture.
 struct Labeler {
-    
-    // MARK:  Annotation Functions
     
     // Annotations are created in CreateML Format: X and Y are the center of the bounding boxes, with a width and height, all measured from the top left corner.
     
-    // Add removeAnnotation() func
-    
-    public func addAnnotation(from gesture: DragGesture.Value,
-                              at currentSize: CGSize,
-                              with label: ClassData,
-                              on image: ImageData) {
+    public func addBox(from gesture: DragGesture.Value, at currentSize: CGSize,
+                       with label: ClassData, on image: ImageData) {
         
         var widthRatio: CGFloat
         var heightRatio: CGFloat
         var xRatio: CGFloat
         var yRatio: CGFloat
         
-        // Calculate the width and height of our gesture as a ratio of the image dimesnsions.
         var gestureEndLocation = gesture.location
         
-        
-        // Adjusts gesture bounds if needed
+        // Adjusts gesture bounds if they fall out of frame
         if gestureEndLocation.x > currentSize.width {
             gestureEndLocation = CGPoint(x: currentSize.width, y: gestureEndLocation.y)
         }
@@ -44,7 +35,7 @@ struct Labeler {
             gestureEndLocation = CGPoint(x: gestureEndLocation.x, y: 0)
         }
         
-        // Finds ratio of bounding box
+        // Finds ratio of gesture to total image dimensions
         widthRatio = abs(gestureEndLocation.x - gesture.startLocation.x) / currentSize.width
         heightRatio = abs(gestureEndLocation.y - gesture.startLocation.y) / currentSize.height
         
@@ -53,7 +44,7 @@ struct Labeler {
         xRatio = ((gestureEndLocation.x + gesture.startLocation.x) / 2) / currentSize.width
         yRatio = ((gestureEndLocation.y + gesture.startLocation.y) / 2) / currentSize.height
         
-        // Multiplies our ratios by pixel dimensions for our bounding box
+        // Multiplies our ratios by pixel dimensions to calculate bounding box
         let boundingBox = MLBoundBox(imageName: image.name,
                                      label: label,
                                      x: Int(xRatio * CGFloat(image.width)),
@@ -66,5 +57,45 @@ struct Labeler {
         label.annotations.append(boundingBox)
         print(boundingBox)
     }
+    
+    public func moveBox(_ box: inout MLBoundBox, by gesture: DragGesture.Value,
+                        on image: ImageData, at currentSize: CGSize){
+        
+        var gestureEndLocation = gesture.location
+        
+        var widthRatio: CGFloat
+        var heightRatio: CGFloat
+        
+        
+        // Adjusts gesture bounds if they fall out of frame
+        if gestureEndLocation.x > currentSize.width {
+            gestureEndLocation = CGPoint(x: currentSize.width, y: gestureEndLocation.y)
+        }
+        if gestureEndLocation.x < 0 {
+            gestureEndLocation = CGPoint(x: 0, y: gestureEndLocation.y)
+        }
+        if gestureEndLocation.y > currentSize.height {
+            gestureEndLocation = CGPoint(x: gestureEndLocation.x, y: currentSize.height)
+        }
+        if gestureEndLocation.y < 0 {
+            gestureEndLocation = CGPoint(x: gestureEndLocation.x, y: 0)
+        }
+        
+        // Find ratios of gesture to total image dimensions
+        widthRatio = (gestureEndLocation.x - gesture.startLocation.x) / currentSize.width
+        heightRatio = (gestureEndLocation.y - gesture.startLocation.y) / currentSize.height
+        
+        //Transfom MLBoundBox coordinates
+        box.x += Int(widthRatio * CGFloat(image.width))
+        box.y += Int(heightRatio * CGFloat(image.height))
+        
+    }
+    
+    public func removeBox(_ box: MLBoundBox, from image: inout ImageData) {
+        image.annotations.removeAll { mlBox in
+            mlBox.id == box.id
+        }
+    }
+    
     
 }

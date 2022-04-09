@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ImageList: View {
     
-    @EnvironmentObject var imageStore: ImageStore
-    @EnvironmentObject var classStore: ClassStore
+    @EnvironmentObject var imageStore: ImageHandler
+    @EnvironmentObject var classStore: ClassHandler
     
     @State var selectedClassLabel = ClassData(label: "No Class Labels", color: Color.blue)
     

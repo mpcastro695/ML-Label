@@ -11,11 +11,12 @@ import SwiftUI
 
 struct ML_LabelApp: App {
     
-    @StateObject var imageData = ImageStore()
-    @StateObject var classData = ClassStore()
+    @StateObject var imageHandler = ImageHandler()
+    @StateObject var classHandler = ClassHandler()
     
     @State var projectName: String = "Demo Image Set"
     
+    // Navigation sidebar starts with "Images" selected
     @State var imagesSelected = true
     @State var classesSelected = false
     @State var outputSelected = false
@@ -41,8 +42,8 @@ struct ML_LabelApp: App {
                     outputSelected: $outputSelected)
             }
             .navigationTitle("ML Label - \(projectName)")
-            .environmentObject(imageData)
-            .environmentObject(classData)
+            .environmentObject(imageHandler)
+            .environmentObject(classHandler)
             
         }
         .windowStyle(DefaultWindowStyle())
