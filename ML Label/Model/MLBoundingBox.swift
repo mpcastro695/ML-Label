@@ -1,21 +1,21 @@
 //
-//  MLBoundBox.swift
+//  MLBoundingBox.swift
 //  ML Label
 //
 //  Created by Martin Castro on 10/15/21.
 //
 
-import SwiftUI
+import Foundation
 
 // MARK: Bounding Box Struct
 
-struct MLBoundBox: Identifiable {
+struct MLBoundingBox: Identifiable, Codable {
     
-    let id = UUID()
+    var id = UUID()
     
     let imageName: String
     
-    let label: ClassData
+    let label: String
     
     // Coordinates use CreateML format
     // X & Y in the center, with a width and height, measured from top left corner

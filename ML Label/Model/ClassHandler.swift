@@ -7,20 +7,18 @@
 
 import SwiftUI
 
-//MARK: Class Label Data Model
-
 class ClassHandler: ObservableObject {
     
     // Consider making a Dictionary
-    @Published var classes: [ClassData]
+    @Published var classes: [MLClass]
     
     init() {
         self.classes = []
     }
     
     
-    func addClass(label: String, color: Color) {
-        let newClassLabel = ClassData(label: label, color: color)
+    func addClass(label: String, color: MLColor) {
+        let newClassLabel = MLClass(label: label, color: color)
         classes.append(newClassLabel)
     }
 }

@@ -12,7 +12,7 @@ struct ImageList: View {
     @EnvironmentObject var imageStore: ImageHandler
     @EnvironmentObject var classStore: ClassHandler
     
-    @State var selectedClassLabel = ClassData(label: "No Class Labels", color: Color.blue)
+    @State var selectedClassLabel = MLClass(label: "No Class Labels", color: MLColor(red: 50/255, green: 50/255, blue: 50/255))
     
     var body: some View {
         

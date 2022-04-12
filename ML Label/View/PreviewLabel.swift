@@ -9,13 +9,13 @@ import SwiftUI
 
 struct PreviewLabel: View {
     
-    var annotation: MLBoundBox
+    var annotation: MLBoundingBox
     
     var body: some View {
         
         VStack(alignment: .leading){
             
-            Text("\(annotation.label.label)")
+            Text("\(annotation.label)")
                 .font(.subheadline)
                 .bold()
                 .foregroundColor(.white)
@@ -30,7 +30,7 @@ struct PreviewLabel: View {
             .foregroundColor(.white)
         }
         .padding(5)
-        .background(annotation.label.color)
+        .background(Color.pink)
         .clipShape(RoundedRectangle(cornerRadius: 5))
         .frame(width: 200, height: 50)
         

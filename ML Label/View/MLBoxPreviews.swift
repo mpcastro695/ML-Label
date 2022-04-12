@@ -9,10 +9,10 @@ import SwiftUI
 
 struct MLBoxPreviews: View {
     
-    @ObservedObject var image: ImageData
+    @ObservedObject var image: MLImage
     
     // Make selectedClassLabel an ObservedObject?
-    @Binding var selectedClassLabel: ClassData
+    @Binding var selectedClassLabel: MLClass
     @Binding var showDrawingPreview: Bool
     @Binding var boxPreview: CGRect
     
@@ -27,7 +27,7 @@ struct MLBoxPreviews: View {
             if showDrawingPreview {
                 RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                     .path(in: boxPreview)
-                    .stroke(selectedClassLabel.color, style: StrokeStyle(lineWidth: 3,
+                    .stroke(Color.pink, style: StrokeStyle(lineWidth: 3,
                                                                          lineCap: .round, dash: [5,10]))
             }
             
@@ -46,10 +46,11 @@ struct MLBoxPreviews: View {
                     ZStack{
                         RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                             .path(in: CGRect(x: x, y: y, width: width, height: height))
-                            .fill(boundBox.label.color.opacity(0.3))
+                            .fill(Color.pink)
+                            .opacity(0.3)
                         RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                             .path(in: CGRect(x: x, y: y, width: width, height: height))
-                            .stroke(boundBox.label.color, style: StrokeStyle(lineWidth: 3,
+                            .stroke(Color.pink, style: StrokeStyle(lineWidth: 3,
                                                                              lineCap: .round, dash: [5,10]))
                     }
                     

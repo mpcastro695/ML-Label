@@ -10,11 +10,11 @@ import SwiftUI
 struct ImageDetail: View {
     
     
-    @ObservedObject var image: ImageData
+    @ObservedObject var image: MLImage
     @EnvironmentObject var classStore: ClassHandler
     
     // Used for calculating bounding box from drag gesture
-    @Binding var selectedClassLabel: ClassData
+    @Binding var selectedClassLabel: MLClass
     @State private var cgSize = CGSize()
     
     // Used for drawing a preview bound box during gesture
@@ -28,7 +28,7 @@ struct ImageDetail: View {
     
     var body: some View {
         
-            image.image
+        Image(nsImage: NSImage(contentsOf: image.filePath)!)
                 .resizable()
                 .scaledToFit()
                 
@@ -56,7 +56,7 @@ struct ImageDetail: View {
                                 showBoxPreview = false
                                 labeler.addBox(from: gesture,
                                                       at: cgSize,
-                                                      with: selectedClassLabel,
+                                               with: selectedClassLabel.label,
                                                       on: image)
 //                                image.createAnnotation(from: gesture, in: cgSize, with: selectedClassLabel)
                             })

@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ClassRow: View {
     
-    var classLabel: ClassData
+    var classLabel: MLClass
     
     var body: some View {
         
         HStack{
             Image(systemName: "tag.fill")
-                .foregroundColor(classLabel.color)
+                .foregroundColor(Color(red: classLabel.color.red, green: classLabel.color.green, blue: classLabel.color.blue))
                 .font(.system(size: 18))
                 .frame(width: 30, height: 30)
                 .background(Color.secondary.opacity(0.1))

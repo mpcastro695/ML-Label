@@ -10,7 +10,7 @@ import SwiftUI
 class ImageHandler: ObservableObject, DropDelegate {
 
     //Consider making Dictionary
-    @Published var images: [ImageData]
+    @Published var images: [MLImage]
     
     init() {
         self.images = []
@@ -32,14 +32,13 @@ class ImageHandler: ObservableObject, DropDelegate {
             image.loadDataRepresentation(forTypeIdentifier: "public.file-url") { data, error in
                 DispatchQueue.main.async {
                     if let imageData = data {
-                        if let imagePath = NSString(data: imageData, encoding: 4){
-                            if let imageURL = URL(string: imagePath as String){
+                        if let imagePathString = NSString(data: imageData, encoding: 4){
+                            if let imageURL = URL(string: imagePathString as String){
                                 if let nsImage = NSImage(contentsOf: imageURL){
-                                    let finalImage = Image(nsImage: nsImage)
-                                    // Our final ImageInfo Object
-                                    let imageInfo = ImageData(name: imageURL.lastPathComponent, width: Int(nsImage.size.width), height: Int(nsImage.size.height), image: finalImage)
-                                    if !self.images.contains(where: {$0.name == imageInfo.name}){
-                                        self.images.append(imageInfo)
+                                    // Our final MLImage Object
+                                    let mlImage = MLImage(name: imageURL.lastPathComponent, width: Int(nsImage.size.width), height: Int(nsImage.size.height), filePath: imageURL)
+                                    if !self.images.contains(where: {$0.name == mlImage.name}){
+                                        self.images.append(mlImage)
                                     }
                                 }
                             }

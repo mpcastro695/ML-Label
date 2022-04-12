@@ -15,7 +15,7 @@ struct NewClassDialog: View {
     let colorPalette = ColorPalette()
     
     @State var textFieldEntry: String = ""
-    @State var selectedColor = Color(.lightGray)
+    @State var selectedColor = MLColor(red: 50/255, green: 50/255, blue: 50/255)
     
     var body: some View {
         
@@ -37,14 +37,14 @@ struct NewClassDialog: View {
                 ForEach(colorPalette.colors, id: \.self) { color in
                     if color == selectedColor{
                         Circle()
-                            .fill(color)
+                            .fill(Color(red: color.red, green: color.green, blue: color.blue))
                             .frame(width:30, height: 30)
                             .onTapGesture {
                                 selectedColor = color
                             }
                     }else{
                         Circle()
-                            .fill(color)
+                            .fill(Color(red: color.red, green: color.green, blue: color.blue))
                             .frame(width:20, height: 20)
                             .onTapGesture {
                                 selectedColor = color
@@ -86,20 +86,20 @@ struct NewClassDialog: View {
 //MARK: - Color Palette
 
 class ColorPalette {
-    let red = Color(red: 213/255, green: 49/255, blue: 48/255)
-    let orange = Color(red: 223/255, green: 125/255, blue: 0/255)
-    let yellow = Color(red: 236/255, green: 204/255, blue: 0/255)
-    let green = Color(red: 56/255, green: 116/255, blue: 61/255)
-    let blue = Color(red: 62/255, green: 84/255, blue: 155/255)
-    let purple = Color(red: 149/255, green: 66/255, blue: 159/255)
-    let pink = Color(red: 220/255, green: 94/255, blue: 130/255)
-    let gray = Color(red: 64/255, green: 61/255, blue: 61/255)
-    let brown = Color(red: 106/255, green: 60/255, blue: 37/255)
-    let indigo = Color(red: 50/255, green: 50/255, blue: 124/255)
-    let black = Color(red: 0/255, green: 0/255, blue: 0/255)
-    let white = Color(red: 255/255, green: 255/255, blue: 255/255)
+    let red = MLColor(red: 213/255, green: 49/255, blue: 48/255)
+    let orange = MLColor(red: 223/255, green: 125/255, blue: 0/255)
+    let yellow = MLColor(red: 236/255, green: 204/255, blue: 0/255)
+    let green = MLColor(red: 56/255, green: 116/255, blue: 61/255)
+    let blue = MLColor(red: 62/255, green: 84/255, blue: 155/255)
+    let purple = MLColor(red: 149/255, green: 66/255, blue: 159/255)
+    let pink = MLColor(red: 220/255, green: 94/255, blue: 130/255)
+    let gray = MLColor(red: 64/255, green: 61/255, blue: 61/255)
+    let brown = MLColor(red: 106/255, green: 60/255, blue: 37/255)
+    let indigo = MLColor(red: 50/255, green: 50/255, blue: 124/255)
+    let black = MLColor(red: 0/255, green: 0/255, blue: 0/255)
+    let white = MLColor(red: 255/255, green: 255/255, blue: 255/255)
     
-    var colors: [Color]
+    var colors: [MLColor]
     
     init() {
         self.colors = []

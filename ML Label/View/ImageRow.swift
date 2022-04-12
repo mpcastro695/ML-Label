@@ -9,14 +9,14 @@ import SwiftUI
 
 struct ImageRow: View {
     
-    @ObservedObject var image: ImageData
+    @ObservedObject var image: MLImage
     
     var body: some View {
         
         HStack{
             
             // Image in a 30x30 rounded frame
-            image.image
+            Image(nsImage: NSImage(contentsOf: image.filePath)!)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 30, height: 30, alignment: .center)

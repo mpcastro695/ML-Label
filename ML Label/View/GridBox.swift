@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GridBox: View {
     
-    let image: ImageData
-    let boundBox: MLBoundBox
+    let image: MLImage
+    let boundBox: MLBoundingBox
     
     @State private var  cgSize = CGSize()
     
@@ -21,7 +21,7 @@ struct GridBox: View {
         let width = cgSize.width * CGFloat(boundBox.width)/CGFloat(image.width)
         let height = cgSize.height * CGFloat(boundBox.height)/CGFloat(image.height)
         
-        image.image
+        Image(nsImage: NSImage(contentsOf: image.filePath)!)
             .resizable()
             .sizeReader(size: $cgSize)
             .clipShape(

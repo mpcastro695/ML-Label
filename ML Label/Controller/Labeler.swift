@@ -12,7 +12,7 @@ struct Labeler {
     // Annotations are created in CreateML Format: X and Y are the center of the bounding boxes, with a width and height, all measured from the top left corner.
     
     public func addBox(from gesture: DragGesture.Value, at currentSize: CGSize,
-                       with label: ClassData, on image: ImageData) {
+                       with label: String, on image: MLImage) {
         
         var widthRatio: CGFloat
         var heightRatio: CGFloat
@@ -45,8 +45,8 @@ struct Labeler {
         yRatio = ((gestureEndLocation.y + gesture.startLocation.y) / 2) / currentSize.height
         
         // Multiplies our ratios by pixel dimensions to calculate bounding box
-        let boundingBox = MLBoundBox(imageName: image.name,
-                                     label: label,
+        let boundingBox = MLBoundingBox(imageName: image.name,
+                                        label: label,
                                      x: Int(xRatio * CGFloat(image.width)),
                                      y: Int(yRatio * CGFloat(image.height)),
                                      width: Int(widthRatio * CGFloat(image.width)),
@@ -54,12 +54,12 @@ struct Labeler {
         
         image.annotations.append(boundingBox)
         // Also appends box to the ClassData's annotation array
-        label.annotations.append(boundingBox)
+//        label.annotations.append(boundingBox)
         print(boundingBox)
     }
     
 
-    public func removeBox(_ box: MLBoundBox, from image: inout ImageData) {
+    public func removeBox(_ box: MLBoundingBox, from image: inout MLImage) {
         image.annotations.removeAll { mlBox in
             mlBox.id == box.id
         }

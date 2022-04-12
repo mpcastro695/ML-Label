@@ -13,7 +13,7 @@ struct DetailPlaceholder: View {
     @Binding var classesSelected: Bool
     @Binding var outputSelected: Bool
     
-    @State var demoLabel = ClassData(label: "", color: Color.blue)
+    @State var demoLabel = MLClass(label: "", color: MLColor(red: 50/255, green: 50/255, blue: 50/255))
     
     
     var body: some View {
