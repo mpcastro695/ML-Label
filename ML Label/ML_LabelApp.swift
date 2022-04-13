@@ -11,8 +11,8 @@ import SwiftUI
 
 struct ML_LabelApp: App {
     
-    @StateObject var imageHandler = ImageHandler()
-    @StateObject var classHandler = ClassHandler()
+    @StateObject var imageHandler = MLImageSet()
+    @StateObject var classHandler = MLClassSet()
     
     @State var projectName: String = "Demo Image Set"
     

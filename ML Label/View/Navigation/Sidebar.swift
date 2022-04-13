@@ -9,8 +9,8 @@ import SwiftUI
 
 struct Sidebar: View {
     
-    @EnvironmentObject var imageStore: ImageHandler
-    @EnvironmentObject var classStore: ClassHandler
+    @EnvironmentObject var imageStore: MLImageSet
+    @EnvironmentObject var classStore: MLClassSet
     
     @Binding var imagesSelected: Bool
     @Binding var classesSelected: Bool

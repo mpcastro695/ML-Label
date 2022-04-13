@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class ImageHandler: ObservableObject, DropDelegate {
+class MLImageSet: ObservableObject, DropDelegate {
 
     //Consider making Dictionary
     @Published var images: [MLImage]
@@ -55,9 +55,7 @@ class ImageHandler: ObservableObject, DropDelegate {
     
     //Consider replacing with Dictionary lookup
     func removeImage(name: String) {
-        images.removeAll { imgData in
-            imgData.name == name
-        }
+        images.removeAll(where: {$0.name == name})
     }
     
 }

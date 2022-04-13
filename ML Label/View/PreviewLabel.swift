@@ -10,6 +10,7 @@ import SwiftUI
 struct PreviewLabel: View {
     
     var annotation: MLBoundingBox
+    var color: Color
     
     var body: some View {
         
@@ -30,7 +31,7 @@ struct PreviewLabel: View {
             .foregroundColor(.white)
         }
         .padding(5)
-        .background(Color.pink)
+        .background(color)
         .clipShape(RoundedRectangle(cornerRadius: 5))
         .frame(width: 200, height: 50)
         

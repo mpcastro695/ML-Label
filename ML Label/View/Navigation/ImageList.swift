@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ImageList: View {
     
-    @EnvironmentObject var imageStore: ImageHandler
-    @EnvironmentObject var classStore: ClassHandler
+    @EnvironmentObject var imageStore: MLImageSet
+    @EnvironmentObject var classStore: MLClassSet
     
     @State var selectedClassLabel = MLClass(label: "No Class Labels", color: MLColor(red: 50/255, green: 50/255, blue: 50/255))
     

@@ -11,7 +11,7 @@ struct ImageDetail: View {
     
     
     @ObservedObject var image: MLImage
-    @EnvironmentObject var classStore: ClassHandler
+    @EnvironmentObject var classStore: MLClassSet
     
     // Used for calculating bounding box from drag gesture
     @Binding var selectedClassLabel: MLClass
@@ -66,7 +66,7 @@ struct ImageDetail: View {
                 
                 // Adds overlay displaying bounding boxes
                 .overlay(
-                    MLBoxPreviews(image: image, selectedClassLabel: $selectedClassLabel, showDrawingPreview: $showBoxPreview, boxPreview: $boxPreview, labeler: labeler)
+                    BoxPreviews(image: image, selectedClassLabel: $selectedClassLabel, showDrawingPreview: $showBoxPreview, boxPreview: $boxPreview, labeler: labeler)
                 )
                 .scaleEffect(scale)
                 .shadow(radius: 10)

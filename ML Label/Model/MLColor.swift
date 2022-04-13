@@ -5,7 +5,7 @@
 //  Created by Martin Castro on 4/11/22.
 //
 
-import Foundation
+import SwiftUI
 
 //MARK: - MLColor
 struct MLColor: Identifiable, Codable, Hashable {
@@ -14,6 +14,10 @@ struct MLColor: Identifiable, Codable, Hashable {
     var red: Double
     var green: Double
     var blue: Double
+    
+    func toColor() -> Color {
+        return Color(red: self.red, green: self.green, blue: self.blue)
+    }
     
     static func == (lhs: MLColor, rhs: MLColor) -> Bool {
         return lhs.id == rhs.id

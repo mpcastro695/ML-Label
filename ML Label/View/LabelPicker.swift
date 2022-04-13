@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LabelPicker: View {
     
-    @EnvironmentObject var classStore: ClassHandler
+    @EnvironmentObject var classStore: MLClassSet
     @Binding var selectedClassLabel: MLClass
     
     var body: some View {

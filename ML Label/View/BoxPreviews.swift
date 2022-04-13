@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct MLBoxPreviews: View {
+struct BoxPreviews: View {
     
     @ObservedObject var image: MLImage
+    @EnvironmentObject var classes: MLClassSet
     
     // Make selectedClassLabel an ObservedObject?
     @Binding var selectedClassLabel: MLClass
@@ -27,13 +28,16 @@ struct MLBoxPreviews: View {
             if showDrawingPreview {
                 RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                     .path(in: boxPreview)
-                    .stroke(Color.pink, style: StrokeStyle(lineWidth: 3,
+                    .stroke(selectedClassLabel.color.toColor(), style: StrokeStyle(lineWidth: 3,
                                                                          lineCap: .round, dash: [5,10]))
             }
             
             // Overlays for each bounding box
             ZStack{
                 ForEach(image.annotations, id: \.id) { boundBox in
+                    
+                    let mlClass = classes.classes.first(where: {$0.label == boundBox.label})!
+                    let classColor = mlClass.color.toColor()
                     
                     // Caclculate Bounding box placement using ratios.
                     // CGRect Paths are drawn from TOP LEFT corner
@@ -46,16 +50,16 @@ struct MLBoxPreviews: View {
                     ZStack{
                         RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                             .path(in: CGRect(x: x, y: y, width: width, height: height))
-                            .fill(Color.pink)
+                            .fill(classColor)
                             .opacity(0.3)
                         RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                             .path(in: CGRect(x: x, y: y, width: width, height: height))
-                            .stroke(Color.pink, style: StrokeStyle(lineWidth: 3,
+                            .stroke(classColor, style: StrokeStyle(lineWidth: 3,
                                                                              lineCap: .round, dash: [5,10]))
                     }
                     
                     // Adds a label to the box overlay showing label name, height, width, etc.
-                    PreviewLabel(annotation: boundBox)
+                    PreviewLabel(annotation: boundBox, color: classColor)
                         .position(x: x, y: y)
                         .onTapGesture {
                             // Remove box on tap

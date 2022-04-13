@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class ClassHandler: ObservableObject {
+class MLClassSet: ObservableObject {
     
     // Consider making a Dictionary
     @Published var classes: [MLClass]
@@ -20,5 +20,9 @@ class ClassHandler: ObservableObject {
     func addClass(label: String, color: MLColor) {
         let newClassLabel = MLClass(label: label, color: color)
         classes.append(newClassLabel)
+    }
+    
+    func removeClass(label: String) {
+        classes.removeAll(where: {$0.label == label})
     }
 }

@@ -11,7 +11,7 @@ struct NewClassDialog: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject var classStore: ClassHandler
+    @EnvironmentObject var classStore: MLClassSet
     let colorPalette = ColorPalette()
     
     @State var textFieldEntry: String = ""
