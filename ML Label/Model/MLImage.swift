@@ -11,11 +11,11 @@ class MLImage: Identifiable, Codable, ObservableObject {
     
     var id = UUID()
     
-    var name: String
-    var width: Int
-    var height: Int
+    let name: String
+    let width: Int
+    let height: Int
     
-    var filePath: URL
+    let filePath: URL
     
     @Published var annotations: [MLBoundingBox]
     

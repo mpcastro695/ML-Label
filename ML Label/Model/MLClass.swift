@@ -10,8 +10,8 @@ import SwiftUI
 class MLClass: Identifiable, Codable, ObservableObject, Hashable {
     
     var id = UUID()
-    var label: String
     
+    let label: String
     var color: MLColor
     
     @Published var annotations: [MLBoundingBox]

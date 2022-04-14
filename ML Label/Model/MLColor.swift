@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-//MARK: - MLColor
 struct MLColor: Identifiable, Codable, Hashable {
     
     var id = UUID()
-    var red: Double
-    var green: Double
-    var blue: Double
+    
+    let red: Double
+    let green: Double
+    let blue: Double
     
     func toColor() -> Color {
         return Color(red: self.red, green: self.green, blue: self.blue)
