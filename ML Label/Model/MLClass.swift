@@ -14,7 +14,7 @@ class MLClass: Identifiable, Codable, ObservableObject, Hashable {
     let label: String
     var color: MLColor
     
-    @Published var annotations: [MLBoundingBox]
+    @Published var annotations: [MLAnnotation]
     
     
     init(label: String, color: MLColor){
@@ -46,7 +46,7 @@ class MLClass: Identifiable, Codable, ObservableObject, Hashable {
         id = try container.decode(UUID.self, forKey: .id)
         label = try container.decode(String.self, forKey: .label)
         color = try container.decode(MLColor.self, forKey: .color)
-        annotations = try container.decode([MLBoundingBox].self, forKey: .annotations)
+        annotations = try container.decode([MLAnnotation].self, forKey: .annotations)
         
     }
     

@@ -41,10 +41,10 @@ struct BoxPreviews: View {
                     
                     // Caclculate Bounding box placement using ratios.
                     // CGRect Paths are drawn from TOP LEFT corner
-                    let x = (imgGeometry.size.width/CGFloat(image.width)) * CGFloat(boundBox.x - boundBox.width/2)
-                    let y = (imgGeometry.size.height/CGFloat(image.height)) * CGFloat(boundBox.y-boundBox.height/2)
-                    let width = (imgGeometry.size.width/CGFloat(image.width)) * CGFloat(boundBox.width)
-                    let height = (imgGeometry.size.height/CGFloat(image.height)) * CGFloat(boundBox.height)
+                    let x = (imgGeometry.size.width/CGFloat(image.width)) * CGFloat(boundBox.coordinates.x - boundBox.coordinates.width/2)
+                    let y = (imgGeometry.size.height/CGFloat(image.height)) * CGFloat(boundBox.coordinates.y-boundBox.coordinates.height/2)
+                    let width = (imgGeometry.size.width/CGFloat(image.width)) * CGFloat(boundBox.coordinates.width)
+                    let height = (imgGeometry.size.height/CGFloat(image.height)) * CGFloat(boundBox.coordinates.height)
                     
                     // Displays an opacity overlay with a dashed stroke
                     ZStack{
@@ -56,17 +56,17 @@ struct BoxPreviews: View {
                             .path(in: CGRect(x: x, y: y, width: width, height: height))
                             .stroke(classColor, style: StrokeStyle(lineWidth: 3,
                                                                              lineCap: .round, dash: [5,10]))
+                        // Adds a label to the box overlay showing label name, height, width, etc.
+                        PreviewLabel(annotation: boundBox, color: classColor)
+                            .position(x: x, y: y)
+                            .onTapGesture {
+                                // Remove box on tap
+                                image.annotations.removeAll { annotation in
+                                    annotation.id == boundBox.id
+                                }
+                            }
                     }
                     
-                    // Adds a label to the box overlay showing label name, height, width, etc.
-                    PreviewLabel(annotation: boundBox, color: classColor)
-                        .position(x: x, y: y)
-                        .onTapGesture {
-                            // Remove box on tap
-                            image.annotations.removeAll { annotation in
-                                annotation.id == boundBox.id
-                            }
-                        }
 //                        // Move box on drag
 //                        .gesture(DragGesture(minimumDistance: 5, coordinateSpace: .local).onChanged({ gestureValue in
 //                            // Issue compiling, maybe DONT use an inout parameter

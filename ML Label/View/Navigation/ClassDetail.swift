@@ -32,18 +32,19 @@ struct ClassDetail: View {
                     Text("No annotations yet.")
                     
                 }else{
-                    ScrollView{
-                        LazyVGrid(columns: [gridItemLayout], spacing: 10) {
-                            ForEach(classLabel.annotations) { annotation in
-                                if let image = imageStore.images.first(where: {$0.name == annotation.imageName}) {
-                                    GridBox(image: image, boundBox: annotation)
-                                        .frame(width: 100, height: 100)
-                                        .background(Color.white)
-                                }
-                                
-                            }
-                        }
-                    }.padding(.top, 10)
+                    Image(systemName: "ladybug")
+//                    ScrollView{
+//                        LazyVGrid(columns: [gridItemLayout], spacing: 10) {
+//                            ForEach(classLabel.annotations) { annotation in
+//                                if let image = imageStore.images.first(where: {$0.name == annotation.imageName}) {
+//                                    GridBox(image: image, boundBox: annotation)
+//                                        .frame(width: 100, height: 100)
+//                                        .background(Color.white)
+//                                }
+//
+//                            }
+//                        }
+//                    }.padding(.top, 10)
                 }
             }
             

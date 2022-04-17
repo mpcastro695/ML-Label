@@ -34,10 +34,10 @@ class MLImageSet: ObservableObject, DropDelegate {
                     if let imageData = data {
                         if let imagePathString = NSString(data: imageData, encoding: 4){
                             if let imageURL = URL(string: imagePathString as String){
-                                if let nsImage = NSImage(contentsOf: imageURL){
+                                if NSImage(contentsOf: imageURL) != nil{
                                     // Our final MLImage Object
-                                    let mlImage = MLImage(name: imageURL.lastPathComponent, width: Int(nsImage.size.width), height: Int(nsImage.size.height), filePath: imageURL)
-                                    if !self.images.contains(where: {$0.name == mlImage.name}){
+                                    let mlImage = MLImage(filePath: imageURL)
+                                    if !self.images.contains(where: {$0.image == mlImage.image}){
                                         self.images.append(mlImage)
                                     }
                                 }
@@ -55,7 +55,7 @@ class MLImageSet: ObservableObject, DropDelegate {
     
     //Consider replacing with Dictionary lookup
     func removeImage(name: String) {
-        images.removeAll(where: {$0.name == name})
+        images.removeAll(where: {$0.image == name})
     }
     
 }

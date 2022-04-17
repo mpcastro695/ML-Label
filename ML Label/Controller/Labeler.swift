@@ -45,13 +45,13 @@ struct Labeler {
         yRatio = ((gestureEndLocation.y + gesture.startLocation.y) / 2) / currentSize.height
         
         // Multiplies our ratios by pixel dimensions to calculate bounding box
-        let boundingBox = MLBoundingBox(imageName: image.name,
-                                        label: label,
-                                     x: Int(xRatio * CGFloat(image.width)),
-                                     y: Int(yRatio * CGFloat(image.height)),
-                                     width: Int(widthRatio * CGFloat(image.width)),
-                                     height: Int(heightRatio * CGFloat(image.height)))
         
+        let boundingBox = MLAnnotation(label: label,
+                                       coordinates: MLCoordinates(x: Int(xRatio * CGFloat(image.width)),
+                                                                  y: Int(yRatio * CGFloat(image.height)),
+                                                                  width: Int(widthRatio * CGFloat(image.width)),
+                                                                  height: Int(heightRatio * CGFloat(image.height))))
+
         image.annotations.append(boundingBox)
         // Also appends box to the ClassData's annotation array
 //        label.annotations.append(boundingBox)
@@ -59,7 +59,7 @@ struct Labeler {
     }
     
 
-    public func removeBox(_ box: MLBoundingBox, from image: inout MLImage) {
+    public func removeBox(_ box: MLAnnotation, from image: inout MLImage) {
         image.annotations.removeAll { mlBox in
             mlBox.id == box.id
         }

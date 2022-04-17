@@ -13,7 +13,7 @@
 		E812351A271A8073001E8CDE /* ML_LabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123519271A8073001E8CDE /* ML_LabelTests.swift */; };
 		E8123525271A8073001E8CDE /* ML_LabelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123524271A8073001E8CDE /* ML_LabelUITests.swift */; };
 		E8123533271A810A001E8CDE /* MLImageSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123532271A810A001E8CDE /* MLImageSet.swift */; };
-		E8123536271A8200001E8CDE /* MLBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123535271A8200001E8CDE /* MLBoundingBox.swift */; };
+		E8123536271A8200001E8CDE /* MLAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123535271A8200001E8CDE /* MLAnnotation.swift */; };
 		E812353A271A82DE001E8CDE /* MLClassSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123539271A82DE001E8CDE /* MLClassSet.swift */; };
 		E812353E271A8C3D001E8CDE /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812353D271A8C3D001E8CDE /* Sidebar.swift */; };
 		E8123546271A9C5D001E8CDE /* ImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8123545271A9C5D001E8CDE /* ImageRow.swift */; };
@@ -30,6 +30,7 @@
 		E812355E271CFD0E001E8CDE /* LabelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355D271CFD0E001E8CDE /* LabelPicker.swift */; };
 		E8123560271D1498001E8CDE /* NewClassDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355F271D1498001E8CDE /* NewClassDialog.swift */; };
 		E8438FD92805588B000F2B28 /* MLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8438FD82805588B000F2B28 /* MLColor.swift */; };
+		E84AAE16280CAA9900DF6ED8 /* MLCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84AAE15280CAA9900DF6ED8 /* MLCoordinates.swift */; };
 		E8E9D5BC27DACA18006DAE8E /* Labeler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5BB27DACA18006DAE8E /* Labeler.swift */; };
 		E8E9D5F727FD08BF006DAE8E /* SizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */; };
 		E8E9D5F928021C83006DAE8E /* BoxPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5F828021C83006DAE8E /* BoxPreviews.swift */; };
@@ -66,7 +67,7 @@
 		E8123524271A8073001E8CDE /* ML_LabelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ML_LabelUITests.swift; sourceTree = "<group>"; };
 		E8123526271A8073001E8CDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E8123532271A810A001E8CDE /* MLImageSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLImageSet.swift; sourceTree = "<group>"; };
-		E8123535271A8200001E8CDE /* MLBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLBoundingBox.swift; sourceTree = "<group>"; };
+		E8123535271A8200001E8CDE /* MLAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLAnnotation.swift; sourceTree = "<group>"; };
 		E8123539271A82DE001E8CDE /* MLClassSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLClassSet.swift; sourceTree = "<group>"; };
 		E812353D271A8C3D001E8CDE /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		E8123545271A9C5D001E8CDE /* ImageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRow.swift; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 		E812355D271CFD0E001E8CDE /* LabelPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPicker.swift; sourceTree = "<group>"; };
 		E812355F271D1498001E8CDE /* NewClassDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClassDialog.swift; sourceTree = "<group>"; };
 		E8438FD82805588B000F2B28 /* MLColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLColor.swift; sourceTree = "<group>"; };
+		E84AAE15280CAA9900DF6ED8 /* MLCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLCoordinates.swift; sourceTree = "<group>"; };
 		E8E9D5BB27DACA18006DAE8E /* Labeler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labeler.swift; sourceTree = "<group>"; };
 		E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeReader.swift; sourceTree = "<group>"; };
 		E8E9D5F828021C83006DAE8E /* BoxPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxPreviews.swift; sourceTree = "<group>"; };
@@ -182,7 +184,8 @@
 				E812354B271AB8E8001E8CDE /* MLImage.swift */,
 				E8123551271AC03A001E8CDE /* MLClass.swift */,
 				E8438FD82805588B000F2B28 /* MLColor.swift */,
-				E8123535271A8200001E8CDE /* MLBoundingBox.swift */,
+				E8123535271A8200001E8CDE /* MLAnnotation.swift */,
+				E84AAE15280CAA9900DF6ED8 /* MLCoordinates.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -361,12 +364,13 @@
 				E812353A271A82DE001E8CDE /* MLClassSet.swift in Sources */,
 				E812355A271BD078001E8CDE /* ClassDetail.swift in Sources */,
 				E812355C271BF346001E8CDE /* DetailPlaceholder.swift in Sources */,
-				E8123536271A8200001E8CDE /* MLBoundingBox.swift in Sources */,
+				E8123536271A8200001E8CDE /* MLAnnotation.swift in Sources */,
 				E8123507271A8072001E8CDE /* ML_LabelApp.swift in Sources */,
 				E8438FD92805588B000F2B28 /* MLColor.swift in Sources */,
 				E8123558271BCDC5001E8CDE /* GridBox.swift in Sources */,
 				E812354E271ABC90001E8CDE /* ClassRow.swift in Sources */,
 				E8123533271A810A001E8CDE /* MLImageSet.swift in Sources */,
+				E84AAE16280CAA9900DF6ED8 /* MLCoordinates.swift in Sources */,
 				E8123550271ABDEC001E8CDE /* ClassList.swift in Sources */,
 				E8123554271AC205001E8CDE /* PreviewLabel.swift in Sources */,
 				E812355E271CFD0E001E8CDE /* LabelPicker.swift in Sources */,

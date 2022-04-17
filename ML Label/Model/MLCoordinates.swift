@@ -1,18 +1,13 @@
 //
-//  MLBoundingBox.swift
+//  MLCoordinates.swift
 //  ML Label
 //
-//  Created by Martin Castro on 10/15/21.
+//  Created by Martin Castro on 4/17/22.
 //
 
 import Foundation
 
-struct MLBoundingBox: Identifiable, Codable {
-    
-    var id = UUID()
-    
-    let imageName: String
-    let label: String
+struct MLCoordinates: Codable {
     
     // Coordinates use CreateML format
     // X & Y in the center, with a width and height, measured from top left corner

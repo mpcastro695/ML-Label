@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PreviewLabel: View {
     
-    var annotation: MLBoundingBox
+    var annotation: MLAnnotation
     var color: Color
     
     var body: some View {
@@ -22,10 +22,10 @@ struct PreviewLabel: View {
                 .foregroundColor(.white)
             
             HStack{
-                Text("X: \(annotation.x)")
-                Text("Y: \(annotation.y)")
-                Text("W: \(annotation.width)")
-                Text("H: \(annotation.height)")
+                Text("X: \(annotation.coordinates.x)")
+                Text("Y: \(annotation.coordinates.y)")
+                Text("W: \(annotation.coordinates.width)")
+                Text("H: \(annotation.coordinates.height)")
             }
             .font(.caption)
             .foregroundColor(.white)

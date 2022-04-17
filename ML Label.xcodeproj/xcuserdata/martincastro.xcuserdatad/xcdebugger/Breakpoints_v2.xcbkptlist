@@ -32,7 +32,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "24"
             endingLineNumber = "24"
-            landmarkName = "init(name:width:height:filePath:)"
+            landmarkName = "init(filePath:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
