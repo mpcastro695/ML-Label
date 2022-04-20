@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LabelPicker: View {
     
-    @EnvironmentObject var classStore: MLClassSet
+    @EnvironmentObject var mlSet: MLSet
     @Binding var selectedClassLabel: MLClass
     
     var body: some View {
@@ -17,14 +17,14 @@ struct LabelPicker: View {
         Picker(selection: $selectedClassLabel, label: EmptyView()) {
             
             // If no labels, defaults to "No Class Labels" ClassData instance from ImageList
-            if classStore.classes.count == 0 {
+            if mlSet.classes.count == 0 {
                 Text("\(selectedClassLabel.label)")
                     .foregroundColor(.secondary)
                     .tag(selectedClassLabel)
                 
             }else{
                 
-                ForEach(classStore.classes, id: \.id) { label in
+                ForEach(mlSet.classes, id: \.id) { label in
                     Text("\(label.label)")
                         .foregroundColor(.primary)
                         .tag(label)
@@ -34,7 +34,7 @@ struct LabelPicker: View {
         }
         .pickerStyle(MenuPickerStyle())
         .frame(width: 250)
-        .disabled(classStore.classes.count == 0)
+        .disabled(mlSet.classes.count == 0)
         
     }
 }

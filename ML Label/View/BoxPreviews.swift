@@ -10,7 +10,7 @@ import SwiftUI
 struct BoxPreviews: View {
     
     @ObservedObject var image: MLImage
-    @EnvironmentObject var classes: MLClassSet
+    @EnvironmentObject var mlSet: MLSet
     
     // Make selectedClassLabel an ObservedObject?
     @Binding var selectedClassLabel: MLClass
@@ -36,7 +36,7 @@ struct BoxPreviews: View {
             ZStack{
                 ForEach(image.annotations, id: \.id) { boundBox in
                     
-                    let mlClass = classes.classes.first(where: {$0.label == boundBox.label})!
+                    let mlClass = mlSet.classes.first(where: {$0.label == boundBox.label})!
                     let classColor = mlClass.color.toColor()
                     
                     // Caclculate Bounding box placement using ratios.

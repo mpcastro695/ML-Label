@@ -11,7 +11,7 @@ struct NewClassDialog: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject var classStore: MLClassSet
+    @EnvironmentObject var mlSet: MLSet
     let colorPalette = ColorPalette()
     
     @State var textFieldEntry: String = ""
@@ -69,7 +69,7 @@ struct NewClassDialog: View {
                 // Button for adding the class
                 Button {
                     if textFieldEntry != "" {
-                        classStore.addClass(label: textFieldEntry, color: selectedColor)
+                        mlSet.addClass(label: textFieldEntry, color: selectedColor)
                         presentationMode.wrappedValue.dismiss()
                     }
                 } label: {

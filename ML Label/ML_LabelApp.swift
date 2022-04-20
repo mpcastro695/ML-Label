@@ -11,8 +11,7 @@ import SwiftUI
 
 struct ML_LabelApp: App {
     
-    @StateObject var imageHandler = MLImageSet()
-    @StateObject var classHandler = MLClassSet()
+    @StateObject var mlSet = MLSet()
     
     @State var projectName: String = "Demo Image Set"
     
@@ -42,8 +41,7 @@ struct ML_LabelApp: App {
                     outputSelected: $outputSelected)
             }
             .navigationTitle("ML Label - \(projectName)")
-            .environmentObject(imageHandler)
-            .environmentObject(classHandler)
+            .environmentObject(mlSet)
             
         }
         .windowStyle(DefaultWindowStyle())

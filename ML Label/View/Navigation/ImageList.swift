@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ImageList: View {
     
-    @EnvironmentObject var imageStore: MLImageSet
-    @EnvironmentObject var classStore: MLClassSet
+    @EnvironmentObject var mlSet: MLSet
     
     @State var selectedClassLabel = MLClass(label: "No Class Labels", color: MLColor(red: 50/255, green: 50/255, blue: 50/255))
     
@@ -18,7 +17,7 @@ struct ImageList: View {
         
         ZStack{
             // If images have not been added, prompts user to add images
-            if imageStore.images.count == 0 {
+            if mlSet.images.count == 0 {
                 VStack{
                     Image(systemName: "plus.app")
                         .font(.system(size: 20))
@@ -30,7 +29,7 @@ struct ImageList: View {
             // If images have been added, displays list.
             }else{
                 List{
-                    ForEach(imageStore.images) { image in
+                    ForEach(mlSet.images) { image in
                         NavigationLink(
                             destination: ImageDetail(image: image, selectedClassLabel: $selectedClassLabel),
                             label: {
@@ -40,14 +39,14 @@ struct ImageList: View {
                 }
             }
         }
-        .onDrop(of: [.fileURL], delegate: imageStore)
+        .onDrop(of: [.fileURL], delegate: mlSet)
         
 // MARK: - Toolbar Items
         .toolbar{
         
             Button(action: {print("Sort")}, label: {
                 Image(systemName: "arrow.up.arrow.down").font(.body.weight(.heavy))
-            }).disabled(imageStore.images.count == 0)
+            }).disabled(mlSet.images.count == 0)
             
         }
         
@@ -55,8 +54,8 @@ struct ImageList: View {
         
         // When the list appears, the first class label from classStore is set as selectedClassLabel
         .onAppear(perform: {
-            if classStore.classes.count != 0 {
-                selectedClassLabel = classStore.classes[0]
+            if mlSet.classes.count != 0 {
+                selectedClassLabel = mlSet.classes[0]
             }
         })
         

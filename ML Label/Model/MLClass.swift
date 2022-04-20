@@ -24,23 +24,6 @@ class MLClass: Identifiable, Codable, ObservableObject, Hashable {
         self.annotations = []
     }
     
-    static func == (lhs: MLClass, rhs: MLClass) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
-    
-//MARK: - Codable Conformance
-    
-    enum CodingKeys: CodingKey {
-        case id
-        case label
-        case color
-        case annotations
-    }
-    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
@@ -48,6 +31,18 @@ class MLClass: Identifiable, Codable, ObservableObject, Hashable {
         color = try container.decode(MLColor.self, forKey: .color)
         annotations = try container.decode([MLAnnotation].self, forKey: .annotations)
         
+    }
+    
+}
+
+//MARK: - Codable Conformance
+extension MLClass {
+
+    enum CodingKeys: CodingKey {
+        case id
+        case label
+        case color
+        case annotations
     }
     
     func encode(to encoder: Encoder) throws {
@@ -58,5 +53,14 @@ class MLClass: Identifiable, Codable, ObservableObject, Hashable {
         try container.encode(annotations, forKey: .annotations)
     }
     
-    
+}
+
+//MARK: - Hashable Conformance
+extension MLClass {
+    static func == (lhs: MLClass, rhs: MLClass) -> Bool {
+        return lhs.id == rhs.id
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
 }

@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ClassList: View {
     
-    @EnvironmentObject var classStore: MLClassSet
+    @EnvironmentObject var mlSet: MLSet
     @State var showAddNewClass = false
     
     var body: some View {
         
         ZStack{
-            if classStore.classes.count == 0 {
+            if mlSet.classes.count == 0 {
                 
                 VStack{
                     Image(systemName: "plus.app")
@@ -27,7 +27,7 @@ struct ClassList: View {
                 
             }else{
                 List{
-                    ForEach(classStore.classes) { classLabel in
+                    ForEach(mlSet.classes) { classLabel in
                         NavigationLink(
                             destination: ClassDetail(classLabel: classLabel),
                             label: {
@@ -43,7 +43,7 @@ struct ClassList: View {
         .toolbar{
             Button(action: {print("Delete class")}, label: {
                 Image(systemName: "trash").font(.body.weight(.heavy))
-            }).disabled(classStore.classes.count == 0)
+            }).disabled(mlSet.classes.count == 0)
             
             Button(action: {showAddNewClass = true}, label: {
                 Image(systemName: "plus.rectangle").font(.body.weight(.heavy))

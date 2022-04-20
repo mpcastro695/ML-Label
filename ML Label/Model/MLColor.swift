@@ -19,10 +19,14 @@ struct MLColor: Identifiable, Codable, Hashable {
         return Color(red: self.red, green: self.green, blue: self.blue)
     }
     
+}
+
+//MARK: - Hashable Conformance
+extension MLColor{
+    
     static func == (lhs: MLColor, rhs: MLColor) -> Bool {
         return lhs.id == rhs.id
     }
-    
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
     }

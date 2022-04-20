@@ -9,8 +9,7 @@ import SwiftUI
 
 struct Sidebar: View {
     
-    @EnvironmentObject var imageStore: MLImageSet
-    @EnvironmentObject var classStore: MLClassSet
+    @EnvironmentObject var mlSet: MLSet
     
     @Binding var imagesSelected: Bool
     @Binding var classesSelected: Bool
@@ -37,8 +36,8 @@ struct Sidebar: View {
                         )
                         Spacer()
                         // If images have been added, an image count
-                        if imageStore.images.count > 0 {
-                            Text("\(imageStore.images.count)")
+                        if mlSet.images.count > 0 {
+                            Text("\(mlSet.images.count)")
                                 .font(.caption)
                                 .bold()
                                 .padding(.horizontal, 10)
@@ -63,8 +62,8 @@ struct Sidebar: View {
                         
                         Spacer()
                         // If classes have been added, add a class count
-                        if classStore.classes.count > 0 {
-                            Text("\(classStore.classes.count)")
+                        if mlSet.classes.count > 0 {
+                            Text("\(mlSet.classes.count)")
                                 .font(.caption)
                                 .bold()
                                 .padding(.horizontal, 10)
