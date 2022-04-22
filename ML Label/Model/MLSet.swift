@@ -33,7 +33,7 @@ class MLSet: ObservableObject, DropDelegate {
                                     if NSImage(contentsOf: imageURL) != nil{
                                         // Our final MLImage Object
                                         let mlImage = MLImage(filePath: imageURL)
-                                        if !self.images.contains(where: {$0.image == mlImage.image}){
+                                        if !self.images.contains(where: {$0.name == mlImage.name}){
                                             self.images.append(mlImage)
                                         }
                                     }
@@ -51,7 +51,7 @@ class MLSet: ObservableObject, DropDelegate {
     
     //Consider replacing with Dictionary lookup
     func removeImage(name: String) {
-        images.removeAll(where: {$0.image == name})
+        images.removeAll(where: {$0.name == name})
     }
     
     
@@ -69,10 +69,10 @@ class MLSet: ObservableObject, DropDelegate {
 // MARK: - Export Functions
     
     func exportJSON(images: [MLImage]) throws -> Data {
-        var jsonObjects = [JSONObject]()
+        var jsonObjects = [JSONAnnotation]()
         let encoder = JSONEncoder()
         for image in images {
-            let jsonObject = JSONObject(image: image.image, annotations: image.annotations)
+            let jsonObject = JSONAnnotation(image: image.name, annotations: image.annotations)
             jsonObjects.append(jsonObject)
         }
         return try encoder.encode(jsonObjects)

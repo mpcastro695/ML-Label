@@ -24,7 +24,7 @@ struct ImageRow: View {
             
             // Vstack of image name and dimensions
             VStack(alignment: .leading){
-                Text(image.image)
+                Text(image.name)
                 Text("\(image.width) x \(image.height)")
                     .font(.caption)
             }

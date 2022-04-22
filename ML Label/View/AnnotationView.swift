@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AnnotationView: View {
     
-    var image: MLImage
+    var mlImage: MLImage
     
     @State private var cgSize = CGSize()
     @Binding var selectedClassLabel: MLClass
@@ -21,7 +21,7 @@ struct AnnotationView: View {
     
     
     var body: some View {
-        Image(nsImage: NSImage(contentsOf: image.filePath)!)
+        Image(nsImage: mlImage.image!)
             .resizable()
             .scaledToFit()
             
@@ -50,7 +50,7 @@ struct AnnotationView: View {
                             labeler.addBox(from: gesture,
                                                   at: cgSize,
                                            with: selectedClassLabel.label,
-                                                  on: image)
+                                                  on: mlImage)
 //                                image.createAnnotation(from: gesture, in: cgSize, with: selectedClassLabel)
                         })
             ).disabled(selectedClassLabel.label == "No Class Labels")
@@ -59,7 +59,7 @@ struct AnnotationView: View {
 
             // Adds overlay displaying bounding boxes
             .overlay(
-                BoxPreviews(image: image, selectedClassLabel: $selectedClassLabel, showDrawingPreview: $showBoxPreview, boxPreview: $previewRect, labeler: labeler)
+                BoxPreviews(image: mlImage, selectedClassLabel: $selectedClassLabel, showDrawingPreview: $showBoxPreview, boxPreview: $previewRect, labeler: labeler)
             )
             .scaleEffect(0.97)
             .shadow(radius: 10)

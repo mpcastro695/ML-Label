@@ -31,7 +31,7 @@ struct ImageList: View {
                 List{
                     ForEach(mlSet.images) { image in
                         NavigationLink(
-                            destination: ImageDetail(image: image, selectedClassLabel: $selectedClassLabel),
+                            destination: ImageDetail(mlImage: image, selectedClassLabel: $selectedClassLabel),
                             label: {
                                 ImageRow(image: image)
                             })

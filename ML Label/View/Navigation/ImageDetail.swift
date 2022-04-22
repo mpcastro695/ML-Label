@@ -10,7 +10,7 @@ import SwiftUI
 struct ImageDetail: View {
     
     
-    @ObservedObject var image: MLImage
+    @ObservedObject var mlImage: MLImage
     
     // Used for calculating bounding box from drag gesture
     @Binding var selectedClassLabel: MLClass
@@ -19,18 +19,18 @@ struct ImageDetail: View {
     
     var body: some View {
         
-        if NSImage(contentsOf: image.filePath) != nil {
+        if mlImage.image != nil {
             
-            AnnotationView(image: image, selectedClassLabel: $selectedClassLabel)
+            AnnotationView(mlImage: mlImage, selectedClassLabel: $selectedClassLabel)
                         
                 .toolbar{
                             
                     LabelPicker(selectedClassLabel: $selectedClassLabel)
                         .padding(.horizontal, 10)
                             
-                    Button(action: {image.annotations.removeLast()}, label: {
+                    Button(action: {mlImage.annotations.removeLast()}, label: {
                         Image(systemName: "arrow.uturn.backward").font(.body.weight(.heavy))
-                    }).disabled(image.annotations.count == 0)
+                    }).disabled(mlImage.annotations.count == 0)
                     
                     Button(action: {print("Manually add bounding box via window")}, label: {
                         Image(systemName: "plus.rectangle").font(.body.weight(.heavy))

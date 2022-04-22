@@ -29,7 +29,7 @@
 		E812355E271CFD0E001E8CDE /* LabelPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355D271CFD0E001E8CDE /* LabelPicker.swift */; };
 		E8123560271D1498001E8CDE /* NewClassDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355F271D1498001E8CDE /* NewClassDialog.swift */; };
 		E8438FD92805588B000F2B28 /* MLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8438FD82805588B000F2B28 /* MLColor.swift */; };
-		E84AAE18280F45FC00DF6ED8 /* JSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84AAE17280F45FC00DF6ED8 /* JSONObject.swift */; };
+		E84AAE18280F45FC00DF6ED8 /* JSONAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84AAE17280F45FC00DF6ED8 /* JSONAnnotation.swift */; };
 		E84AAE1C280FA53000DF6ED8 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84AAE1B280FA53000DF6ED8 /* AnnotationView.swift */; };
 		E8E9D5BC27DACA18006DAE8E /* Labeler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5BB27DACA18006DAE8E /* Labeler.swift */; };
 		E8E9D5F727FD08BF006DAE8E /* SizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */; };
@@ -83,7 +83,7 @@
 		E812355D271CFD0E001E8CDE /* LabelPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPicker.swift; sourceTree = "<group>"; };
 		E812355F271D1498001E8CDE /* NewClassDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClassDialog.swift; sourceTree = "<group>"; };
 		E8438FD82805588B000F2B28 /* MLColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLColor.swift; sourceTree = "<group>"; };
-		E84AAE17280F45FC00DF6ED8 /* JSONObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObject.swift; sourceTree = "<group>"; };
+		E84AAE17280F45FC00DF6ED8 /* JSONAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONAnnotation.swift; sourceTree = "<group>"; };
 		E84AAE1B280FA53000DF6ED8 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		E8E9D5BB27DACA18006DAE8E /* Labeler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labeler.swift; sourceTree = "<group>"; };
 		E8E9D5F627FD08BF006DAE8E /* SizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeReader.swift; sourceTree = "<group>"; };
@@ -184,7 +184,7 @@
 				E8123551271AC03A001E8CDE /* MLClass.swift */,
 				E8438FD82805588B000F2B28 /* MLColor.swift */,
 				E8123535271A8200001E8CDE /* MLAnnotation.swift */,
-				E84AAE17280F45FC00DF6ED8 /* JSONObject.swift */,
+				E84AAE17280F45FC00DF6ED8 /* JSONAnnotation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -360,7 +360,7 @@
 				E812354C271AB8E8001E8CDE /* MLImage.swift in Sources */,
 				E8123552271AC03A001E8CDE /* MLClass.swift in Sources */,
 				E8E9D5F928021C83006DAE8E /* BoxPreviews.swift in Sources */,
-				E84AAE18280F45FC00DF6ED8 /* JSONObject.swift in Sources */,
+				E84AAE18280F45FC00DF6ED8 /* JSONAnnotation.swift in Sources */,
 				E8123548271A9D33001E8CDE /* ImageList.swift in Sources */,
 				E812355A271BD078001E8CDE /* ClassDetail.swift in Sources */,
 				E812355C271BF346001E8CDE /* DetailPlaceholder.swift in Sources */,

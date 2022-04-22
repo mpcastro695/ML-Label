@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct JSONObject: Encodable {
+struct JSONAnnotation: Encodable {
     
     // Final JSON object for annotation export
     let image: String
