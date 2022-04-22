@@ -16,7 +16,7 @@ struct ImageRow: View {
         HStack{
             
             // Image in a 30x30 rounded frame
-            Image(nsImage: NSImage(contentsOf: image.filePath)!)
+            Image(nsImage: NSImage(contentsOf: image.fileURL)!)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 30, height: 30, alignment: .center)
