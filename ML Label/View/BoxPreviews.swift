@@ -48,6 +48,7 @@ struct BoxPreviews: View {
                     
                     // Displays an opacity overlay with a dashed stroke
                     ZStack{
+  
                         RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                             .path(in: CGRect(x: x, y: y, width: width, height: height))
                             .fill(classColor)
@@ -57,7 +58,7 @@ struct BoxPreviews: View {
                             .stroke(classColor, style: StrokeStyle(lineWidth: 3,
                                                                              lineCap: .round, dash: [5,10]))
                         // Adds a label to the box overlay showing label name, height, width, etc.
-                        PreviewLabel(annotation: boundBox, color: classColor)
+                        PreviewLabel(boundingBox: boundBox, color: classColor)
                             .position(x: x, y: y)
                             .onTapGesture {
                                 // Remove box on tap
@@ -76,7 +77,6 @@ struct BoxPreviews: View {
                 }
                 
             }
-            
             
         }
     }

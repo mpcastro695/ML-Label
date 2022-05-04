@@ -11,6 +11,6 @@ struct JSONAnnotation: Encodable {
     
     // Final JSON object for annotation export
     let image: String
-    let annotations: [MLAnnotation]
+    let annotations: [MLBoundingBox]
 
 }

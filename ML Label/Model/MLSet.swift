@@ -32,7 +32,7 @@ class MLSet: ObservableObject, DropDelegate {
                                 if let imageURL = URL(string: imagePathString as String){
                                     if NSImage(contentsOf: imageURL) != nil{
                                         // Our final MLImage Object
-                                        let mlImage = MLImage(fileURL: imageURL)
+                                        let mlImage = MLImage(url: imageURL)
                                         if !self.images.contains(where: {$0.name == mlImage.name}){
                                             self.images.append(mlImage)
                                         }

@@ -46,7 +46,7 @@ struct Labeler {
         
         // Multiplies our ratios by pixel dimensions to calculate bounding box
         
-        let boundingBox = MLAnnotation(label: label,
+        let boundingBox = MLBoundingBox(label: label,
                                        coordinates: MLCoordinates(x: Int(xRatio * CGFloat(image.width)),
                                                                   y: Int(yRatio * CGFloat(image.height)),
                                                                   width: Int(widthRatio * CGFloat(image.width)),
@@ -59,7 +59,7 @@ struct Labeler {
     }
     
 
-    public func removeBox(_ box: MLAnnotation, from image: inout MLImage) {
+    public func removeBox(_ box: MLBoundingBox, from image: inout MLImage) {
         image.annotations.removeAll { mlBox in
             mlBox.id == box.id
         }

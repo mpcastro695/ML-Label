@@ -9,23 +9,23 @@ import SwiftUI
 
 struct PreviewLabel: View {
     
-    var annotation: MLAnnotation
+    var boundingBox: MLBoundingBox
     var color: Color
     
     var body: some View {
         
         VStack(alignment: .leading){
             
-            Text("\(annotation.label)")
+            Text("\(boundingBox.label)")
                 .font(.subheadline)
                 .bold()
                 .foregroundColor(.white)
             
             HStack{
-                Text("X: \(annotation.coordinates.x)")
-                Text("Y: \(annotation.coordinates.y)")
-                Text("W: \(annotation.coordinates.width)")
-                Text("H: \(annotation.coordinates.height)")
+                Text("X: \(boundingBox.coordinates.x)")
+                Text("Y: \(boundingBox.coordinates.y)")
+                Text("W: \(boundingBox.coordinates.width)")
+                Text("H: \(boundingBox.coordinates.height)")
             }
             .font(.caption)
             .foregroundColor(.white)

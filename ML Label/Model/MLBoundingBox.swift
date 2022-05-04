@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MLAnnotation: Identifiable, Codable {
+struct MLBoundingBox: Identifiable, Codable {
     
     var id = UUID()
     
@@ -28,7 +28,7 @@ struct MLCoordinates: Codable {
 
 
 //MARK: - Codable Conformance
-extension MLAnnotation {
+extension MLBoundingBox {
     
     enum CodingKeys: CodingKey {
         case label
