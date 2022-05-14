@@ -10,14 +10,17 @@ import SwiftUI
 
 struct AnnotationView: View {
     
-    @ObservedObject var mlImage: MLImage
-    
-    @Binding var selectedClassLabel: MLClass
     @EnvironmentObject var mlSet: MLSet
     
-    @State private var showBoxPreview: Bool = false
-    @State private var previewRect: CGRect = CGRect()
+    @ObservedObject var mlImage: MLImage
+    var classSelection: MLClass?
+    
+    var addEnabled: Bool = true
+    var removeEnabled: Bool = true
+    
     @State private var cgSize = CGSize()
+    @State private var dragGestureActive: Bool = false
+    @State private var previewRect: CGRect = CGRect()
     
     var body: some View {
         Image(nsImage: mlImage.image!)
@@ -30,46 +33,40 @@ struct AnnotationView: View {
 // MARK: - Drag Gesture
             
             // Used to to create bounding box.
-            // Disabled if no class labels.
             .gesture(
                 DragGesture(minimumDistance: 5, coordinateSpace: .local)
-                        
-                // Sets and enables preview
-                .onChanged({ gesture in
-                    previewRect = CGRect(x: gesture.startLocation.x,
-                                         y: gesture.startLocation.y,
-                                         width: max(0, min(gesture.location.x, cgSize.width)) - gesture.startLocation.x,
-                                         height: max(0, min(gesture.location.y, cgSize.height)) - gesture.startLocation.y)
-                    showBoxPreview = true
-                })
-                
-                // Creates annotation and disables preview
-                .onEnded({ gesture in
-                    mlImage.annotations.append(MLBoundingBoxFromDragGesture(gesture: gesture))
-                    showBoxPreview = false
-                })
-            ).disabled(selectedClassLabel.label == "No Class Labels")
+                    // Enables gesture preview
+                    .onChanged({ gesture in
+                        previewRect = CGRect(x: gesture.startLocation.x,
+                                             y: gesture.startLocation.y,
+                                             width: max(0, min(gesture.location.x, cgSize.width)) - gesture.startLocation.x,
+                                             height: max(0, min(gesture.location.y, cgSize.height)) - gesture.startLocation.y)
+                        dragGestureActive = true
+                    })
+                    // Creates annotation and disables preview
+                    .onEnded({ gesture in
+                        mlImage.annotations.append(MLBoundingBoxFromDragGesture(gesture: gesture))
+                        dragGestureActive = false
+                    })
+            ).disabled(classSelection == nil || !addEnabled)
             
         
 // MARK: - Overlay
 
-            // Overlay displaying bounding boxes
+            // Displays bounding boxes
             .overlay(
                 GeometryReader{ geo in
-                    
-                    // For drag preview
-                    if showBoxPreview {
+                    // Draws box during a drag gesture
+                    if dragGestureActive {
                         RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                             .path(in: previewRect)
-                            .stroke(selectedClassLabel.color.toColor(), style: StrokeStyle(lineWidth: 3,
+                            .stroke(classSelection!.color.toColor(), style: StrokeStyle(lineWidth: 3,
                                                                         lineCap: .round, dash: [5,10]))
                     }
-                    
                     ZStack{
                         ForEach(mlImage.annotations, id: \.id) { boundingBox in
                             let cgRect = CGRectForBoundingBox(boundingBox: boundingBox)
                             let color = mlSet.classes.first(where: {$0.label == boundingBox.label})?.color.toColor() ?? .gray
-                            
                             //Fill
                             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                                 .path(in: cgRect)
@@ -80,13 +77,12 @@ struct AnnotationView: View {
                                 .path(in: cgRect)
                                 .stroke(color,
                                         style: StrokeStyle(lineWidth: 3, lineCap: .round, dash: [5,10]))
-                            
                             // Clicking on the label removes the MLBoundingBox
                             PreviewLabel(boundingBox: boundingBox, color: color)
                                 .position(x: cgRect.minX, y: cgRect.minY)
                                 .onTapGesture {
                                     mlImage.annotations.removeAll(where: {$0.id == boundingBox.id})
-                                }
+                                }.disabled(!removeEnabled)
                             
                         }
                     }
@@ -111,7 +107,7 @@ struct AnnotationView: View {
         let normalizedRect = VNNormalizedRectForImageRect(cgRect, Int(cgSize.width), Int(cgSize.height))
         let projectedPixelRect = VNImageRectForNormalizedRect(normalizedRect, mlImage.width, mlImage.height)
         
-        return MLBoundingBox(label: selectedClassLabel.label,
+        return MLBoundingBox(label: classSelection!.label,
                             coordinates: MLCoordinates(x: Int(projectedPixelRect.midX),
                                                        y: Int(projectedPixelRect.midY),
                                                        width: Int(projectedPixelRect.width),

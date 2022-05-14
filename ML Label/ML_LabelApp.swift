@@ -20,28 +20,12 @@ struct ML_LabelApp: App {
     @State var classesSelected = false
     @State var outputSelected = false
     
-    
     var body: some Scene {
         
         WindowGroup {
             
-            NavigationView{
-                
-                Sidebar(
-                    imagesSelected: $imagesSelected,
-                    classesSelected: $classesSelected,
-                    outputSelected: $outputSelected)
-                
-                // Our second view, will not be seen.
-                EmptyView()
-                
-                DetailPlaceholder(
-                    imagesSelected: $imagesSelected,
-                    classesSelected: $classesSelected,
-                    outputSelected: $outputSelected)
-            }
-            .navigationTitle("ML Label - \(projectName)")
-            .environmentObject(mlSet)
+            ContentView()
+                .environmentObject(mlSet)
             
         }
         .windowStyle(DefaultWindowStyle())

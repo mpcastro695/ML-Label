@@ -21,7 +21,7 @@ struct ImageDetail: View {
         
         if mlImage.image != nil {
             
-            AnnotationView(mlImage: mlImage, selectedClassLabel: $selectedClassLabel)
+            AnnotationView(mlImage: mlImage, classSelection: selectedClassLabel)
                         
                 .toolbar{
                             

@@ -16,7 +16,6 @@ struct ClassList: View {
         
         ZStack{
             if mlSet.classes.count == 0 {
-                
                 VStack{
                     Image(systemName: "plus.app")
                         .font(.system(size: 20))
@@ -24,7 +23,6 @@ struct ClassList: View {
                     Text("Create class labels")
                 }
                 .padding()
-                
             }else{
                 List{
                     ForEach(mlSet.classes) { classLabel in
