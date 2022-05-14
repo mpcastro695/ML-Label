@@ -57,13 +57,13 @@ struct ToolPanelView: View {
                 } //END VSTACK, TOP-HALF CONTROL PANEL
                 .font(.headline)
                 .padding(.vertical)
-                .frame(minHeight: geometry.size.height * 0.35)
+                .frame(minHeight: geometry.size.height * 0.4)
                 
                 
 // MARK: - Image List
                 ZStack{
                     if mlSet.images.count == 0 {
-                        Text("No Images :(")
+                        Text("No images.. yet")
                             .foregroundColor(.secondary)
                             .font(.callout)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -82,7 +82,7 @@ struct ToolPanelView: View {
                     }
                     
                 }//END ZSTACK BOTTOM HALF
-                .frame(minHeight: geometry.size.height * 0.4)
+                .frame(minHeight: geometry.size.height * 0.3)
             
             }// END VSPLITVIEW
             .frame(width: geometry.size.width, height: geometry.size.height)

@@ -25,7 +25,8 @@ struct ClassTools: View {
                         .padding(.bottom, 5)
                     Text("Create class labels")
                 }
-                .padding()
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }else{
                 List{
                     ForEach(mlSet.classes) { classLabel in
@@ -38,7 +39,7 @@ struct ClassTools: View {
                     }
                 }
             }
-            
+            Spacer()
             Button {
                 newClassDialogShowing = true
             } label: {

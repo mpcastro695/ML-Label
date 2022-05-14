@@ -26,8 +26,14 @@ struct ImageTools: View {
                     VStack(alignment: .leading){
                         Text("\(img.name)")
                             .font(.headline)
-                        Text("\(img.width) x \(img.height)")
+                        Text("\(img.width) x \(img.height) px")
                             .font(.callout)
+                            .foregroundColor(.secondary)
+                            .padding(.bottom, 3)
+                        Text("\(img.fileURL.deletingLastPathComponent())")
+                            .font(.callout)
+                            .foregroundColor(.secondary)
+                        
                     }
                     .padding(.horizontal)
                     Spacer()
@@ -43,11 +49,11 @@ struct ImageTools: View {
                     .padding(.horizontal)
                     Spacer()
                 }
-            }
+            }// Image title and metadata (pixel size and file path)
             
             Text("Annotation Tools")
                 .padding(.top)
-                .font(.callout)
+                .font(.subheadline)
             
 // MARK: - Buttons
             HStack(spacing: 15) {
