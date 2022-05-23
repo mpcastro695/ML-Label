@@ -45,8 +45,9 @@ struct ToolPanelView: View {
                         }
                         if selectedToolSet == .Export {
                             VStack{
-                                Text("Expert options")
+                                Text("Export options")
                                     .padding(.bottom)
+                                    .foregroundColor(.secondary)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                         }
@@ -57,7 +58,7 @@ struct ToolPanelView: View {
                 } //END VSTACK, TOP-HALF CONTROL PANEL
                 .font(.headline)
                 .padding(.vertical)
-                .frame(minHeight: geometry.size.height * 0.4)
+                .frame(minHeight: 275)
                 
                 
 // MARK: - Image List
@@ -68,21 +69,15 @@ struct ToolPanelView: View {
                             .font(.callout)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }else{
-                        List() {
-                            ForEach(mlSet.images) { mlImage in
-                                Button {
-                                    imageSelection = mlImage
-                                } label: {
-                                    ImageRow(image: mlImage)
-                                }
-                                .buttonStyle(.plain)
-
-                            }
+                        List(mlSet.images, id: \.self, selection: $imageSelection) { mlImage in
+                            ImageRow(image: mlImage)
                         }
+                        
                     }
                     
                 }//END ZSTACK BOTTOM HALF
-                .frame(minHeight: geometry.size.height * 0.3)
+                .frame(minHeight: geometry.size.height * 0.4)
+                .layoutPriority(1)
             
             }// END VSPLITVIEW
             .frame(width: geometry.size.width, height: geometry.size.height)

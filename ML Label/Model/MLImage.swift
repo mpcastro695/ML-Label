@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class MLImage: Identifiable, Codable, ObservableObject {
+class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     
     var id = UUID()
     let fileURL: URL
@@ -61,4 +61,13 @@ extension MLImage {
             try container.encode(width, forKey: .width)
             try container.encode(height, forKey: .height)
         }
+}
+
+extension MLImage {
+    static func == (lhs: MLImage, rhs: MLImage) -> Bool {
+        return lhs.id == rhs.id
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
 }

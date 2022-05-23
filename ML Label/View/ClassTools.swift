@@ -18,6 +18,11 @@ struct ClassTools: View {
     var body: some View {
         
         VStack{
+            Button {
+                newClassDialogShowing = true
+            } label: {
+                Text("Add New Class")
+            }
             if mlSet.classes.count == 0 {
                 VStack{
                     Image(systemName: "plus.app")
@@ -39,12 +44,7 @@ struct ClassTools: View {
                     }
                 }
             }
-            Spacer()
-            Button {
-                newClassDialogShowing = true
-            } label: {
-                Text("Add New Class")
-            }
+            
         }
         .sheet(isPresented: $newClassDialogShowing, content: {
             NewClassDialog()

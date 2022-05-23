@@ -19,23 +19,18 @@ struct ImageTools: View {
     
     var body: some View {
         
-        VStack(alignment: .center){
+        VStack(alignment: .leading){
             
             if let img = imageSelection {
                 HStack{
                     VStack(alignment: .leading){
                         Text("\(img.name)")
                             .font(.headline)
+                            .foregroundColor(.secondary)
                         Text("\(img.width) x \(img.height) px")
                             .font(.callout)
                             .foregroundColor(.secondary)
-                            .padding(.bottom, 3)
-                        Text("\(img.fileURL.deletingLastPathComponent())")
-                            .font(.callout)
-                            .foregroundColor(.secondary)
-                        
                     }
-                    .padding(.horizontal)
                     Spacer()
                 }
             }else{
@@ -43,61 +38,94 @@ struct ImageTools: View {
                     VStack(alignment: .leading){
                         Text("---")
                             .font(.headline)
+                            .foregroundColor(.secondary)
                         Text("---")
                             .font(.callout)
+                            .foregroundColor(.secondary)
                     }
-                    .padding(.horizontal)
                     Spacer()
                 }
             }// Image title and metadata (pixel size and file path)
             
-            Text("Annotation Tools")
+            Text("Label")
                 .padding(.top)
                 .font(.subheadline)
             
-// MARK: - Buttons
-            HStack(spacing: 15) {
-                Button(action: {
-                    addEnabled = true
-                    removeEnabled = false
-                }) {
-                    Image(systemName: "rectangle.badge.plus")
-                }
-                Button(action: {
-                    removeEnabled = true
-                    addEnabled = false
-                }) {
-                    Image(systemName: "rectangle.badge.minus")
-                }
-                Button(action: {print("Delete this image")}) {
-                    Image(systemName: "trash")
-                }
-            }.padding(.bottom, 20)
-            
-// MARK: - Label Picker
-            Picker("Label", selection: $classSelection) {
-                if mlSet.classes.count == 0 {
-                    Text("No Classes Added")
-                        .foregroundColor(.secondary)
-                }else{
+            // MARK: - Picker + Buttons
+            HStack{
+                Picker("", selection: $classSelection) {
                     ForEach(mlSet.classes, id: \.id) { label in
                         Text("\(label.label)")
                             .foregroundColor(.primary)
                             .tag(label as MLClass?)
                     }
                 }
+                .pickerStyle(MenuPickerStyle())
+                .font(.callout)
+                .disabled(mlSet.classes.count == 0)
+                
+                HStack(spacing: 5) {
+                    Button(action: {
+                        addEnabled = true
+                        removeEnabled = false
+                    }) {
+                        Image(systemName: "rectangle.badge.plus")
+                    }
+                    
+                    Button(action: {
+                        removeEnabled = true
+                        addEnabled = false
+                    }) {
+                        Image(systemName: "rectangle.badge.minus")
+                    }
+                }
                 
             }
-            .pickerStyle(MenuPickerStyle())
-            .font(.callout)
-            .frame(width: 250)
-            .disabled(mlSet.classes.count == 0)
+            .padding(.bottom, 20)
             
-        }
+            Text("Annotations")
+                .font(.subheadline)
+            
+            if imageSelection != nil {
+                AnnotationListView(mlImage: imageSelection!)
+            }else{
+                Text("No Image Selected")
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundColor(.secondary)
+            }
+            
+        }//END VSTACK
+        .padding(.horizontal, 15)
         .onDisappear {
             addEnabled = false
             removeEnabled = false
         }
+    }
+}
+
+struct AnnotationListView: View {
+    
+    @ObservedObject var mlImage: MLImage
+    
+    var body: some View {
+        
+        if mlImage.annotations.count != 0 {
+            List(mlImage.annotations) { annotation in
+                HStack{
+                    Text("\(annotation.label)")
+                    Spacer()
+                    Image(systemName: "eye")
+                    Image(systemName: "trash")
+                }
+            }
+        }else{
+            Text("No Annotations")
+                .font(.caption)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .foregroundColor(.secondary)
+        }
+        
     }
 }
 
