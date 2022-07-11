@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ClassRow: View {
+struct ClassListRow: View {
     
     var classLabel: MLClass
     

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PreviewLabel: View {
+struct LabelTag: View {
     
     var boundingBox: MLBoundingBox
     var color: Color

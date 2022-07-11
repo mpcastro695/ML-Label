@@ -16,7 +16,7 @@ struct AnnotationView: View {
     var classSelection: MLClass?
     
     var addEnabled: Bool = true
-    var removeEnabled: Bool = true
+    var removeEnabled: Bool = false
     
     @State private var cgSize = CGSize()
     @State private var dragGestureActive: Bool = false
@@ -26,13 +26,14 @@ struct AnnotationView: View {
         Image(nsImage: mlImage.image!)
             .resizable()
             .scaledToFit()
-            
+
+// MARK: - Custom Size Reader
+        
             // Reports current size via SizeReader class
             .sizeReader(size: $cgSize)
             
 // MARK: - Drag Gesture
-            
-            // Used to to create bounding box.
+        
             .gesture(
                 DragGesture(minimumDistance: 5, coordinateSpace: .local)
                     // Enables gesture preview
@@ -51,9 +52,9 @@ struct AnnotationView: View {
             ).disabled(classSelection == nil || !addEnabled)
             
         
-// MARK: - Overlay
-
-            // Displays bounding boxes
+// MARK: - Bounding Box Overlay
+            /// Overlay that displays all the images current annotations
+        
             .overlay(
                 GeometryReader{ geo in
                     // Draws box during a drag gesture
@@ -78,7 +79,7 @@ struct AnnotationView: View {
                                 .stroke(color,
                                         style: StrokeStyle(lineWidth: 3, lineCap: .round, dash: [5,10]))
                             // Clicking on the label removes the MLBoundingBox
-                            PreviewLabel(boundingBox: boundingBox, color: color)
+                            LabelTag(boundingBox: boundingBox, color: color)
                                 .position(x: cgRect.minX, y: cgRect.minY)
                                 .onTapGesture {
                                     mlImage.annotations.removeAll(where: {$0.id == boundingBox.id})
@@ -95,7 +96,8 @@ struct AnnotationView: View {
     }
     
 //MARK: - Methods
-    
+    /// Methods for turning gestures into MLBoundingBox's and back into CGRect coordinates
+
     private func MLBoundingBoxFromDragGesture (gesture: DragGesture.Value) -> MLBoundingBox {
         
         let origin = gesture.startLocation
@@ -126,9 +128,3 @@ struct AnnotationView: View {
     }
     
 }
-
-//struct AnnotationView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AnnotationView()
-//    }
-//}

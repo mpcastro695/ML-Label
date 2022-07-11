@@ -40,6 +40,10 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
         width = try container.decode(Int.self, forKey: .width)
         height = try container.decode(Int.self, forKey: .height)
     }
+    
+    func removeAnnotation(id: UUID) {
+        annotations.removeAll(where: {$0.id == id})
+    }
 }
 
 //MARK: - Codable Conformance

@@ -28,7 +28,7 @@ struct ML_LabelApp: App {
                 .environmentObject(mlSet)
             
         }
-        .windowStyle(DefaultWindowStyle())
-        .windowToolbarStyle(ExpandedWindowToolbarStyle())
+        .windowStyle(.automatic)
+        .windowToolbarStyle(.unified)
     }
 }

@@ -1,40 +1,56 @@
 //
-//  AddNewClass.swift
+//  LabelTools.swift
 //  ML Label
 //
-//  Created by Martin Castro on 10/8/21.
+//  Created by Martin Castro on 7/9/22.
 //
 
 import SwiftUI
 
-struct NewClassDialog: View {
-    
-    @Environment(\.presentationMode) var presentationMode
+struct LabelTools: View {
     
     @EnvironmentObject var mlSet: MLSet
-    let colorPalette = ColorPalette()
     
     @State var textFieldEntry: String = ""
     @State var selectedColor = MLColor(red: 50/255, green: 50/255, blue: 50/255)
+    @Binding var classSelection: MLClass?
+    
+    let colorPalette = ColorPalette()
+    let colorSpotRows = [
+        GridItem(.fixed(30)),
+        GridItem(.fixed(30))
+    ]
+    
     
     var body: some View {
         
         VStack(alignment: .center){
-            // Directions
-            Text("Add a new class label:")
-                .padding(.bottom, 20)
-                .font(.headline)
+            
+//MARK: - Labels List
+            
+            if mlSet.classes.isEmpty {
+                MissingLabels()
+                    .padding(20)
+            }else{
+                List(mlSet.classes) { label in
+                    ClassListRow(classLabel: label)
+                }
+                .padding(5)
+            }
+    
+            Text("Add a new class:")
+                .font(.subheadline)
             
             // Textfield and textfield label
-            TextField("Enter a Class Name", text: $textFieldEntry)
+            TextField("Class Name", text: $textFieldEntry)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .frame(width: 330, height: 20)
-                .padding(.bottom,10)
-            
-            Text("Label Color:")
+                .frame(minWidth: 250, maxWidth: 350)
+                .padding()
                 
-            HStack{
+            LazyHGrid(rows: colorSpotRows, alignment: .center) {
+                
                 ForEach(colorPalette.colors, id: \.self) { color in
+                    
                     if color == selectedColor{
                         Circle()
                             .fill(Color(red: color.red, green: color.green, blue: color.blue))
@@ -57,28 +73,23 @@ struct NewClassDialog: View {
             .padding(.bottom, 20)
 
             
-//MARK: - Buttons
+//MARK: - Add Button
             // Confirmation and Cancellation buttons
             HStack{
-                // Button for Cancelling
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: {
-                    Text("Cancel")
-                }
                 // Button for adding the class
                 Button {
                     if textFieldEntry != "" {
                         mlSet.addClass(label: textFieldEntry, color: selectedColor)
-                        presentationMode.wrappedValue.dismiss()
+                        classSelection = mlSet.classes.last!
+                        textFieldEntry = ""
                     }
                 } label: {
                     Text("Add Class")
                 }
             }
+            .padding(.bottom)
 
-        }
-        .frame(width: 400, height: 250)
+        }//END VSTACK
     }
 }
 
@@ -118,3 +129,4 @@ class ColorPalette {
     }
     
 }
+
