@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Vision
 
 class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     
@@ -13,7 +14,6 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     let fileURL: URL
     
     let name: String
-    let image: NSImage?
     
     @Published var annotations: [MLBoundingBox]
     
@@ -24,7 +24,6 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     init(url: URL) {
         fileURL = url
         name = fileURL.lastPathComponent
-        image = NSImage(contentsOf: fileURL)
         width = Int(NSImage(contentsOf: fileURL)?.size.width ?? 0)
         height = Int(NSImage(contentsOf: fileURL)?.size.height ?? 0)
         
@@ -34,16 +33,21 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         fileURL = try container.decode(URL.self, forKey: .fileURL)
-        image = NSImage(contentsOf: fileURL)
         name = try container.decode(String.self, forKey: .name)
         annotations = try container.decode([MLBoundingBox].self, forKey: .annotations)
         width = try container.decode(Int.self, forKey: .width)
         height = try container.decode(Int.self, forKey: .height)
     }
     
+    
     func removeAnnotation(id: UUID) {
         annotations.removeAll(where: {$0.id == id})
     }
+    
+    func update(){
+        objectWillChange.send()
+    }
+    
 }
 
 //MARK: - Codable Conformance
@@ -67,6 +71,7 @@ extension MLImage {
         }
 }
 
+// MARK: - Hashable Conformance
 extension MLImage {
     static func == (lhs: MLImage, rhs: MLImage) -> Bool {
         return lhs.id == rhs.id
