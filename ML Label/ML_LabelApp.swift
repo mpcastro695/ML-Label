@@ -11,24 +11,10 @@ import SwiftUI
 
 struct ML_LabelApp: App {
     
-    @StateObject var mlSet = MLSet()
-    
-    @State var projectName: String = "Demo Image Set"
-    
-    // Navigation sidebar starts with "Images" selected
-    @State var imagesSelected = true
-    @State var classesSelected = false
-    @State var outputSelected = false
-    
     var body: some Scene {
         
-        WindowGroup {
-            
-            ContentView()
-                .environmentObject(mlSet)
-            
+        DocumentGroup(newDocument: MLSetDocument()) { file in
+            ContentView(mlSetDocument: file.document)
         }
-        .windowStyle(.automatic)
-        .windowToolbarStyle(.unified)
     }
 }
