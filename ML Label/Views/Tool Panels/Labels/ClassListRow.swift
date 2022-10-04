@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ClassRowView: View {
+struct ClassListRow: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     @ObservedObject var mlClass: MLClass

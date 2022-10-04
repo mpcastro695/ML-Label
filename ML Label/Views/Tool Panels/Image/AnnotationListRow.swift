@@ -1,5 +1,5 @@
 //
-//  AnnotationRowView.swift
+//  AnnotationRow.swift
 //  ML Label
 //
 //  Created by Martin Castro on 7/17/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AnnotationRowView: View {
+struct AnnotationListRow: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     

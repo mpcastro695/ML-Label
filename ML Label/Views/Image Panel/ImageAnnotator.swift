@@ -1,5 +1,5 @@
 //
-//  AnnotationView.swift
+//  ImageAnnotator.swift
 //  ML Label
 //
 //  Created by Martin Castro on 4/19/22.
@@ -8,20 +8,21 @@
 import Vision
 import SwiftUI
 
-struct ImageAnnotatorView: View {
+struct ImageAnnotator: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     @ObservedObject var mlImage: MLImage
     
     var classSelection: MLClass?
-    var addEnabled: Bool = true
-    var removeEnabled: Bool = false
-    
     @Binding var annotationSelection: MLBoundingBox?
+    var mode: Mode
     
     @State private var cgSize = CGSize()
     @State private var dragGestureActive: Bool = false
     @State private var previewRect: CGRect = CGRect()
+    
+    @State private var cursorIsInside: Bool = false
+    @State private var cursorPosition: CGPoint = CGPoint()
     
     var body: some View {
         
@@ -33,29 +34,37 @@ struct ImageAnnotatorView: View {
                         .resizable()
                         .scaledToFit()
                         .sizeReader(size: $cgSize)
+                        .cursorTracker({ isInside, position in
+                            cursorIsInside = isInside
+                            cursorPosition = position
+                        })
+                        .cursorGuides(cursorIsInside: cursorIsInside, cursorPosition: cursorPosition)
                         .coordinateSpace(name: "cgImageSpace")
                         .gesture(
                             DragGesture(minimumDistance: 5, coordinateSpace: .named("cgImageSpace"))
                                 // Enables gesture preview
                                 .onChanged({ gesture in
+                                    NSApp.windows.forEach { $0.disableCursorRects() }
                                     previewRect = CGRect(x: gesture.startLocation.x,
                                                          y: gesture.startLocation.y,
                                                          width: max(0, min(gesture.location.x, cgSize.width)) - gesture.startLocation.x,
                                                          height: max(0, min(gesture.location.y, cgSize.height)) - gesture.startLocation.y)
                                     dragGestureActive = true
                                 })
-                                // Creates annotation and disables preview
+                                // Creates annotation from gesture value and disables preview
                                 .onEnded({ gesture in
                                     let boundingBox = MLBoundingBoxForDragGesture(gesture: gesture)
                                     mlImage.annotations.append(boundingBox)
                                     classSelection?.annotations.append(boundingBox)
                                     annotationSelection = boundingBox
                                     dragGestureActive = false
+                                    NSApp.windows.forEach { $0.enableCursorRects() }
                                 })
-                        ).disabled(classSelection == nil || !addEnabled)
+                        ).disabled(classSelection == nil || mode != .rectEnabled)
+                    
                         // Bounding Boxes Overlay
                         .overlay(
-                            GeometryReader{ geo in
+                            GeometryReader{ _ in
                                 // Drag gesture bounding box preview
                                 if dragGestureActive {
                                     RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
@@ -64,15 +73,17 @@ struct ImageAnnotatorView: View {
                                                 style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5,10]))
                                 }
                                 // Bounding box for each annotation
-                                ForEach(mlImage.annotations, id: \.id) { boundingBox in
-
-                                    BoundingBoxView(boundingBox: boundingBox,
-                                                    cgRect: CGRectForBoundingBox(boundingBox: boundingBox),
+                                ForEach(mlImage.annotations, id: \.id) { annotation in
+                                    
+                                    // BoundingBoxView has the controls for editing boxes
+                                    BoundingBox(annotation: annotation,
+                                                    cgRect: CGRectForBoundingBox(boundingBox: annotation),
                                                     mlImage: mlImage,
                                                     imageCGSize: cgSize,
-                                                    removeEnabled: removeEnabled,
-                                                    annotationSelection: $annotationSelection)
+                                                    annotationSelection: $annotationSelection,
+                                                    mode: mode)
                                 }
+                        
                             }//END GEOMETRY READER
                         )// END OVERLAY
                         .shadow(radius: 10)
@@ -82,11 +93,14 @@ struct ImageAnnotatorView: View {
                     Image(systemName: "questionmark.square.dashed")
                         .resizable()
                         .scaledToFit()
-                        .scaleEffect(0.95) // Indicates an error.
+                        .scaleEffect(0.95)
                 } else {
-                    ProgressView() // Acts as a placeholder.
+                    // Acts as a placeholder.
+                    ProgressView()
                 }
-            }
+            }//END ASYNC IMAGE
+            
+            
         } else {
             Image(nsImage: NSImage(contentsOf: mlImage.fileURL)!)
                 .resizable()
@@ -117,7 +131,7 @@ struct ImageAnnotatorView: View {
                             annotationSelection = boundingBox
                             dragGestureActive = false
                         })
-                ).disabled(classSelection == nil || !addEnabled)
+                ).disabled(classSelection == nil || mode != .rectEnabled)
                 
     // MARK: - Bounding Boxes Overlay
             
@@ -132,16 +146,14 @@ struct ImageAnnotatorView: View {
                         }
                         
                         ZStack{
-                            ForEach(mlImage.annotations, id: \.id) { boundingBox in
-                                
-                                let cgRect = CGRectForBoundingBox(boundingBox: boundingBox)
+                            ForEach(mlImage.annotations, id: \.id) { annotation in
 
-                                BoundingBoxView(boundingBox: boundingBox,
-                                                cgRect: cgRect,
+                                BoundingBox(annotation: annotation,
+                                                cgRect: CGRectForBoundingBox(boundingBox: annotation),
                                                 mlImage: mlImage,
                                                 imageCGSize: cgSize,
-                                                removeEnabled: removeEnabled,
-                                                annotationSelection: $annotationSelection)
+                                                annotationSelection: $annotationSelection,
+                                                mode: mode)
                             }//END FOREACH
                         }//END ZSTACK
                     }

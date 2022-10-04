@@ -1,5 +1,5 @@
 //
-//  BoundingBoxView.swift
+//  BoundingBox.swift
 //  ML Label
 //
 //  Created by Martin Castro on 7/29/22.
@@ -8,27 +8,26 @@
 import SwiftUI
 import Vision
 
-struct BoundingBoxView: View {
+struct BoundingBox: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
-    @ObservedObject var boundingBox: MLBoundingBox
+    @ObservedObject var annotation: MLBoundingBox
     
     var cgRect: CGRect
     var color: Color{
-        mlSet.classes.first(where: {$0.label == boundingBox.label})?.color.toColor() ?? .gray
+        mlSet.classes.first(where: {$0.label == annotation.label})?.color.toColor() ?? .gray
     }
     var mlImage: MLImage
     var imageCGSize: CGSize
     
-    var removeEnabled: Bool
-    
     @Binding var annotationSelection: MLBoundingBox?
+    var mode: Mode
     
     @State private var isEditing: Bool = false
     @State private var previewRect: CGRect = CGRect()
     
     var body: some View {
-        
+  
         if isEditing {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: previewRect)
@@ -40,27 +39,33 @@ struct BoundingBoxView: View {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .fill(color)
-                .opacity(annotationSelection?.id == boundingBox.id ? 0.25 : 0.10)
+//                .opacity(pointerHovering ? 1.0 : 0.8)
+                .opacity(annotationSelection?.id == annotation.id ? 0.25 : 0.10)
                 .onTapGesture {
-                    annotationSelection = boundingBox
+                    annotationSelection = annotation
                 }
             //Stroke
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .stroke(color,
-                        style: StrokeStyle(lineWidth: 2, lineCap: .round))
-                .opacity(annotationSelection?.id == boundingBox.id ? 1.0 : 0.9)
+                        style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .opacity(annotationSelection?.id == annotation.id ? 1.0 : 0.9)
+            
+            //Stroke
+            RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
+                .path(in: cgRect)
+                .stroke(.white,
+                        style: StrokeStyle(lineWidth: 1, lineCap: .round))
             
 //MARK: - Box Editing Nodes
             
-            if annotationSelection?.id == boundingBox.id {
-                //Editing Nodes
-                let nodeHandle = Rectangle()
+            if annotationSelection?.id == annotation.id {
+
+                let nodeHandle = Circle()
                     .foregroundColor(color)
                     .frame(width: 10, height: 10)
-                    .overlay(Rectangle().foregroundColor(.white).frame(width: 6, height: 6))
+                    .overlay(Circle().foregroundColor(.white).frame(width: 6, height: 6))
                 
-                /// Top, Bottom, Left, Right
                 nodeHandle.position(x: cgRect.origin.x + cgRect.width/2, y: cgRect.origin.y) //TOP
                     .gesture(
                         DragGesture(minimumDistance: 1, coordinateSpace: .named("cgImageSpace"))
@@ -78,7 +83,7 @@ struct BoundingBoxView: View {
                                 let normalizedEndPoint = VNNormalizedPointForImagePoint(gesture.location,
                                                                                 Int(imageCGSize.width),
                                                                                 Int(imageCGSize.height))
-                                boundingBox.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .top, image: mlImage)
+                                annotation.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .top, image: mlImage)
                                 mlImage.update()
                                 isEditing = false
                             }))
@@ -97,7 +102,7 @@ struct BoundingBoxView: View {
                                 let normalizedEndPoint = VNNormalizedPointForImagePoint(gesture.location,
                                                                             Int(imageCGSize.width),
                                                                             Int(imageCGSize.height))
-                                boundingBox.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .bottom, image: mlImage)
+                                annotation.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .bottom, image: mlImage)
                                 mlImage.update()
                                 isEditing = false
                             }))
@@ -118,7 +123,7 @@ struct BoundingBoxView: View {
                                 let normalizedEndPoint = VNNormalizedPointForImagePoint(gesture.location,
                                                                             Int(imageCGSize.width),
                                                                             Int(imageCGSize.height))
-                                boundingBox.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .left, image: mlImage)
+                                annotation.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .left, image: mlImage)
                                 mlImage.update()
                                 isEditing = false
                             }))
@@ -137,7 +142,7 @@ struct BoundingBoxView: View {
                                 let normalizedEndPoint = VNNormalizedPointForImagePoint(gesture.location,
                                                                             Int(imageCGSize.width),
                                                                             Int(imageCGSize.height))
-                                boundingBox.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .right, image: mlImage)
+                                annotation.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: .right, image: mlImage)
                                 mlImage.update()
                                 isEditing = false
                             }))
@@ -146,60 +151,18 @@ struct BoundingBoxView: View {
                     .position(x: cgRect.midX, y: cgRect.midY)
                     .font(.headline)
     
-                BoundingBoxTagView(boundingBox: boundingBox, color: color, removeEnabled: removeEnabled)
-                    .position(x: cgRect.midX, y: cgRect.minY - 35)
-                    .onTapGesture {
-                        mlImage.annotations.removeAll(where: {$0.id == boundingBox.id})
-                    }.disabled(!removeEnabled)
             }
+            
+            BoundingBoxTag(annotation: annotation, color: color, annotationSelection: $annotationSelection, mode: mode)
+                .position(x: cgRect.midX, y: cgRect.minY - 35)
+                .onTapGesture {
+                    mlImage.annotations.removeAll(where: {$0.id == annotation.id})
+                }.disabled(mode != .removeEnabled)
+            
         }//END BOX ZSTACK
-        .zIndex(annotationSelection?.id == boundingBox.id ? 1 : 0)
-        .opacity(isEditing ? 0.1 : 1)
+        .zIndex(annotationSelection?.id == annotation.id ? 1 : 0)
+        .opacity(isEditing ? 0.5 : 1)
     
-    }
-}
-
-//MARK: - Box Tag View
-
-struct BoundingBoxTagView: View {
-    
-    @ObservedObject var boundingBox: MLBoundingBox
-    var color: Color
-    
-    var removeEnabled: Bool
-    
-    var body: some View {
-        
-        VStack(alignment: .leading){
-            
-            HStack{
-                Text("\(boundingBox.label)")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                Spacer()
-                if removeEnabled {
-                    Image(systemName: "xmark")
-                }
-            }//END HSTACK
-            VStack(alignment: .leading){
-                HStack{
-                    Text("X: \(boundingBox.coordinates.x)")
-                    Text("Y: \(boundingBox.coordinates.y)")
-                }
-                HStack{
-                    Text("W: \(boundingBox.coordinates.width)")
-                    Text("H: \(boundingBox.coordinates.height)")
-                }
-            }//END VSTACK
-            .font(.caption)
-            .foregroundColor(.white)
-            
-        }//END VSTACK
-        .padding(5)
-        .background(color)
-        .clipShape(RoundedRectangle(cornerRadius: 5))
-        .frame(width: 100, height: 50)
-        
     }
 }
 
