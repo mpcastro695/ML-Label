@@ -28,7 +28,7 @@ class MLSetDocument: FileDocument, Codable, ObservableObject, DropDelegate {
     // FileDocument Conformance
     required init(configuration: ReadConfiguration) throws {
         let data = configuration.file.regularFileContents!
-        let decodedJSONData = try JSONDecoder().decode(MLSetDocument.self, from: data)
+        let decodedJSONData = try PropertyListDecoder().decode(MLSetDocument.self, from: data)
         self.images = decodedJSONData.images
         self.classes = decodedJSONData.classes
     }
@@ -40,10 +40,9 @@ class MLSetDocument: FileDocument, Codable, ObservableObject, DropDelegate {
         self.classes = try container.decode([MLClass].self, forKey: .classes)
     }
     
-// MARK: - Image Functions
+// MARK: - Image / DropDelegate Conformance
 
         func performDrop(info: DropInfo) -> Bool {
-            
             guard info.hasItemsConforming(to: [.png, .jpeg, .fileURL]) else {
                 return false
             }
@@ -58,13 +57,7 @@ class MLSetDocument: FileDocument, Codable, ObservableObject, DropDelegate {
                         if let imageData = data {
                             if let imagePathString = NSString(data: imageData, encoding: 4){
                                 if let imageURL = URL(string: imagePathString as String){
-                                    if NSImage(contentsOf: imageURL) != nil{
-                                        // Our final MLImage Object
-                                        let mlImage = MLImage(url: imageURL)
-                                        if !self.images.contains(where: {$0.name == mlImage.name}){
-                                            self.images.append(mlImage)
-                                        }
-                                    }
+                                    self.addImageFromURL(url: imageURL)
                                 }
                             }
                         }
@@ -75,6 +68,16 @@ class MLSetDocument: FileDocument, Codable, ObservableObject, DropDelegate {
             }
             return true
         }
+    
+    func addImageFromURL(url: URL) {
+        if NSImage(contentsOf: url) != nil{
+            // Our final MLImage Object
+            let mlImage = MLImage(imageURL: url)
+            if !self.images.contains(where: {$0.name == mlImage.name}){
+                self.images.append(mlImage)
+            }
+        }
+    }
     
     //Consider replacing with Dictionary lookup
     func removeImage(name: String) {
@@ -125,7 +128,14 @@ extension MLSetDocument {
 extension MLSetDocument {
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = try JSONEncoder().encode(self)
+        var data: Data
+        do{
+            data = try PropertyListEncoder().encode(self)
+            print("encoder worked?")
+        }catch{
+            print("encoder failed")
+            data = Data() // Blank
+        }
         return FileWrapper(regularFileWithContents: data)
         
     }

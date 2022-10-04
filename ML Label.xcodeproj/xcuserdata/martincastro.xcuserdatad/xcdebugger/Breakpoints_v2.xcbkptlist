@@ -30,9 +30,9 @@
             filePath = "ML Label/Model/MLImage.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "init(url:)"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "init(imageURL:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

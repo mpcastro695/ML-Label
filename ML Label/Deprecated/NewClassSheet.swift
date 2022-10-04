@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(macOS 12.0, *)
-struct NewClassPopover: View {
+struct NewClassSheet: View {
     
     @Environment(\.dismiss) private var dismiss
     
@@ -83,43 +83,8 @@ struct NewClassPopover: View {
                 }
                 
             }//END HSTACK
-        }
+        }//END VSTACK
+        .padding()
     }
 }
 
-
-//MARK: - Color Palette
-
-class ColorPalette {
-    let red = MLColor(red: 213/255, green: 49/255, blue: 48/255)
-    let orange = MLColor(red: 223/255, green: 125/255, blue: 0/255)
-    let yellow = MLColor(red: 236/255, green: 204/255, blue: 0/255)
-    let green = MLColor(red: 56/255, green: 116/255, blue: 61/255)
-    let blue = MLColor(red: 62/255, green: 84/255, blue: 155/255)
-    let purple = MLColor(red: 149/255, green: 66/255, blue: 159/255)
-    let pink = MLColor(red: 220/255, green: 94/255, blue: 130/255)
-    let gray = MLColor(red: 64/255, green: 61/255, blue: 61/255)
-    let brown = MLColor(red: 106/255, green: 60/255, blue: 37/255)
-    let indigo = MLColor(red: 50/255, green: 50/255, blue: 124/255)
-    let black = MLColor(red: 0/255, green: 0/255, blue: 0/255)
-    let white = MLColor(red: 255/255, green: 255/255, blue: 255/255)
-
-    var colors: [MLColor]
-
-    init() {
-        self.colors = []
-        colors.append(red)
-        colors.append(orange)
-        colors.append(yellow)
-        colors.append(green)
-        colors.append(blue)
-        colors.append(purple)
-        colors.append(pink)
-        colors.append(gray)
-        colors.append(brown)
-        colors.append(indigo)
-        colors.append(black)
-        colors.append(white)
-    }
-
-}

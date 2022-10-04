@@ -1,5 +1,5 @@
 //
-//  ImageTools.swift
+//  ImageInformation.swift
 //  ML Label
 //
 //  Created by Martin Castro on 5/13/22.
@@ -7,12 +7,9 @@
 
 import SwiftUI
 
-struct ImageDetailsView: View {
+struct ImageInformation: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
-    
-    @Binding var addEnabled: Bool
-    @Binding var removeEnabled: Bool
     
     @Binding var imageSelection: MLImage?
     @Binding var classSelection: MLClass?
@@ -40,24 +37,17 @@ struct ImageDetailsView: View {
                     }// END HSTACK
                     .padding(.bottom)
                     
-                    AnnotationListView(mlImage: img, annotationSelection: $annotationSelection)
+                    AnnotationList(mlImage: img, annotationSelection: $annotationSelection)
                     
                 }//END VSTACK
                 .padding()
             }else{
-                VStack(alignment: .leading){
-                    Text("---")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                    Text("---")
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                        .padding(.bottom, 20)
-                    Text("Select an image to view annotations")
-                        .font(.caption)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .foregroundColor(.secondary)
-                }
+                    
+                Text("View an image's details and annotations")
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundColor(.secondary.opacity(0.8))
+                
                 .padding()
                 
             }//END IMAGE DETAILS + ANNOTATIONLIST
