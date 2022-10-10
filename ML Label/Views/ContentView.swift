@@ -39,13 +39,7 @@ struct ContentView: View {
                     .layoutPriority(1)
                     
 //MARK: - Scroll View
-                    ScrollView(.horizontal) {
-                        HStack(spacing: 0){
-                            ForEach(mlSetDocument.images) { mlImage in
-                                ImageThumbnail(mlImage: mlImage, imageSelection: $imageSelection)
-                            }
-                        }
-                    }// END SCROLLVIEW
+                    ImageGallery(imageSelection: $imageSelection)
                     .frame(minHeight: 60, maxHeight: .infinity)
                     
                 }//END VSPLITVIEW 1, LEFT
