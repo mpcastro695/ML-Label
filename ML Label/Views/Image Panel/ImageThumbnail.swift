@@ -16,17 +16,24 @@ struct ImageThumbnail: View {
         
         if #available(macOS 12.0, *) {
             AsyncImage(url: mlImage.fileURL) { phase in
+            
                 if let image = phase.image {
-                    // Displays the loaded image.
+                    //Thumbnail is cropped to a 1:1 square
                     ZStack(alignment: .bottomTrailing){
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .scaleEffect(0.97)
-                            .border(imageSelection == mlImage ? Color.primary : Color.clear, width: 5)
-                            .onTapGesture {
-                                imageSelection = mlImage
+                        Rectangle()
+                            .aspectRatio(1, contentMode: .fit)
+                            .overlay {
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .onTapGesture {
+                                        imageSelection = mlImage
+                                    }
                             }
+                            .clipped()
+                            .border(imageSelection == mlImage ? Color.white : Color.clear, width: 5)
+                            .scaleEffect(0.97)
+                        
                         if mlImage.annotations.count != 0 {
                             Text("\(mlImage.annotations.count)")
                                 .fontWeight(.heavy)
@@ -36,14 +43,19 @@ struct ImageThumbnail: View {
                                 .padding(8)
                         }
                     }
+                    
                 } else if phase.error != nil {
                     // Indicates an error.
                     Image(systemName: "questionmark.square.dashed")
                         .resizable()
                         .scaledToFit()
-                        .scaleEffect(0.95) // Indicates an error.
+                        .scaleEffect(0.8) // Indicates an error.
+                        .onAppear {
+                            print(phase.error.debugDescription)
+                        }
                 } else {
-                    ProgressView() // Acts as a placeholder.
+                    // Acts as a placeholder.
+                    ProgressView()
                 }
             }
         } else {
@@ -74,6 +86,6 @@ struct ImageThumbnail: View {
             }
         }
         //Fallback on earlier versions
-        
     }
+    
 }

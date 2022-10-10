@@ -47,10 +47,11 @@ struct CursorTracker: ViewModifier {
             override func mouseExited(with event: NSEvent) {
                 inside = false
                 cursorIsInside?(false, NSPointToCGPoint(nsPoint: trackingView!.convert(event.locationInWindow, from: nil)))
-                NSCursor.pop()
+                NSCursor.arrow.push()
             }
             override func mouseMoved(with event: NSEvent) {
                 cursorIsInside?(inside, NSPointToCGPoint(nsPoint: trackingView!.convert(event.locationInWindow, from: nil)))
+                NSCursor.crosshair.push()
             }
             
             private func NSPointToCGPoint (nsPoint: NSPoint) -> CGPoint {

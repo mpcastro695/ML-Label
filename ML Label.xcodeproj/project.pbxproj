@@ -21,6 +21,7 @@
 		E8123560271D1498001E8CDE /* NewClassSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E812355F271D1498001E8CDE /* NewClassSheet.swift */; };
 		E82C6AD828E7729200652CF6 /* CursorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82C6AD728E7729200652CF6 /* CursorTracker.swift */; };
 		E82C6ADC28EA59BC00652CF6 /* CursorGuides.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82C6ADB28EA59BC00652CF6 /* CursorGuides.swift */; };
+		E8336B5A28F2544B0060F959 /* ImageGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8336B5928F2544B0060F959 /* ImageGallery.swift */; };
 		E8438FD92805588B000F2B28 /* MLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8438FD82805588B000F2B28 /* MLColor.swift */; };
 		E84AAE18280F45FC00DF6ED8 /* JSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84AAE17280F45FC00DF6ED8 /* JSONObject.swift */; };
 		E84AAE1C280FA53000DF6ED8 /* ImageAnnotator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84AAE1B280FA53000DF6ED8 /* ImageAnnotator.swift */; };
@@ -82,6 +83,7 @@
 		E812355F271D1498001E8CDE /* NewClassSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClassSheet.swift; sourceTree = "<group>"; };
 		E82C6AD728E7729200652CF6 /* CursorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorTracker.swift; sourceTree = "<group>"; };
 		E82C6ADB28EA59BC00652CF6 /* CursorGuides.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorGuides.swift; sourceTree = "<group>"; };
+		E8336B5928F2544B0060F959 /* ImageGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGallery.swift; sourceTree = "<group>"; };
 		E8438FD82805588B000F2B28 /* MLColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLColor.swift; sourceTree = "<group>"; };
 		E84AAE17280F45FC00DF6ED8 /* JSONObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObject.swift; sourceTree = "<group>"; };
 		E84AAE1B280FA53000DF6ED8 /* ImageAnnotator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAnnotator.swift; sourceTree = "<group>"; };
@@ -239,8 +241,9 @@
 			children = (
 				E84AAE1B280FA53000DF6ED8 /* ImageAnnotator.swift */,
 				E8AFEC9D2893C28A0005B533 /* BoundingBox.swift */,
-				E82C6ADB28EA59BC00652CF6 /* CursorGuides.swift */,
 				E8CA857728D58F47000EF49B /* BoundingBoxTag.swift */,
+				E82C6ADB28EA59BC00652CF6 /* CursorGuides.swift */,
+				E8336B5928F2544B0060F959 /* ImageGallery.swift */,
 				E8EFC1A5287F93800045178C /* ImageThumbnail.swift */,
 			);
 			path = "Image Panel";
@@ -419,6 +422,7 @@
 			files = (
 				E8123546271A9C5D001E8CDE /* ImageRow.swift in Sources */,
 				E812354C271AB8E8001E8CDE /* MLImage.swift in Sources */,
+				E8336B5A28F2544B0060F959 /* ImageGallery.swift in Sources */,
 				E8CA857628C59B34000EF49B /* LineBorderStyle.swift in Sources */,
 				E8AFEC9E2893C28A0005B533 /* BoundingBox.swift in Sources */,
 				E8CA9614287A6A3900B36644 /* ClassTools.swift in Sources */,

@@ -20,7 +20,7 @@ struct BoundingBox: View {
     var mlImage: MLImage
     var imageCGSize: CGSize
     
-    @Binding var annotationSelection: MLBoundingBox?
+    var annotationSelection: MLBoundingBox?
     var mode: Mode
     
     @State private var isEditing: Bool = false
@@ -39,27 +39,26 @@ struct BoundingBox: View {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .fill(color)
-//                .opacity(pointerHovering ? 1.0 : 0.8)
                 .opacity(annotationSelection?.id == annotation.id ? 0.25 : 0.10)
-                .onTapGesture {
-                    annotationSelection = annotation
-                }
+                .allowsHitTesting(false)
             //Stroke
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .stroke(color,
                         style: StrokeStyle(lineWidth: 3, lineCap: .round))
                 .opacity(annotationSelection?.id == annotation.id ? 1.0 : 0.9)
-            
-            //Stroke
-            RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
-                .path(in: cgRect)
-                .stroke(.white,
-                        style: StrokeStyle(lineWidth: 1, lineCap: .round))
+                .allowsHitTesting(false)
             
 //MARK: - Box Editing Nodes
             
             if annotationSelection?.id == annotation.id {
+                
+                //Highlight Stroke
+                RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
+                    .path(in: cgRect)
+                    .stroke(.white,
+                            style: StrokeStyle(lineWidth: 1, lineCap: .round))
+                    .allowsHitTesting(false)
 
                 let nodeHandle = Circle()
                     .foregroundColor(color)
@@ -153,14 +152,8 @@ struct BoundingBox: View {
     
             }
             
-            BoundingBoxTag(annotation: annotation, color: color, annotationSelection: $annotationSelection, mode: mode)
-                .position(x: cgRect.midX, y: cgRect.minY - 35)
-                .onTapGesture {
-                    mlImage.annotations.removeAll(where: {$0.id == annotation.id})
-                }.disabled(mode != .removeEnabled)
             
         }//END BOX ZSTACK
-        .zIndex(annotationSelection?.id == annotation.id ? 1 : 0)
         .opacity(isEditing ? 0.5 : 1)
     
     }

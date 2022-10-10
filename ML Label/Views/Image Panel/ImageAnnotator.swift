@@ -53,36 +53,53 @@ struct ImageAnnotator: View {
                                 })
                                 // Creates annotation from gesture value and disables preview
                                 .onEnded({ gesture in
+                                    NSApp.windows.forEach { $0.enableCursorRects() }
                                     let boundingBox = MLBoundingBoxForDragGesture(gesture: gesture)
                                     mlImage.annotations.append(boundingBox)
                                     classSelection?.annotations.append(boundingBox)
                                     annotationSelection = boundingBox
                                     dragGestureActive = false
-                                    NSApp.windows.forEach { $0.enableCursorRects() }
                                 })
                         ).disabled(classSelection == nil || mode != .rectEnabled)
                     
                         // Bounding Boxes Overlay
                         .overlay(
                             GeometryReader{ _ in
-                                // Drag gesture bounding box preview
-                                if dragGestureActive {
+                                if dragGestureActive { //Bounding box preview
                                     RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                                         .path(in: previewRect)
                                         .stroke(classSelection!.color.toColor(),
-                                                style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5,10]))
+                                                style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5,5]))
                                 }
-                                // Bounding box for each annotation
-                                ForEach(mlImage.annotations, id: \.id) { annotation in
-                                    
-                                    // BoundingBoxView has the controls for editing boxes
-                                    BoundingBox(annotation: annotation,
-                                                    cgRect: CGRectForBoundingBox(boundingBox: annotation),
+                                ZStack{ // Bounding boxes
+                                    ForEach(mlImage.annotations, id: \.id) { annotation in
+                                        let cgRect = CGRectForBoundingBox(boundingBox: annotation)
+                                        BoundingBox(annotation: annotation,
+                                                    cgRect: cgRect,
                                                     mlImage: mlImage,
                                                     imageCGSize: cgSize,
-                                                    annotationSelection: $annotationSelection,
+                                                    annotationSelection: annotationSelection,
                                                     mode: mode)
+                                        .zIndex(annotation.id == annotationSelection?.id ? 1 : 0)
+                                        
+                                    }
+                                    
                                 }
+                                ZStack{ //Bounding box tags
+                                    ForEach(mlImage.annotations, id: \.id) { annotation in
+                                        let cgRect = CGRectForBoundingBox(boundingBox: annotation)
+                                        BoundingBoxTag(annotation: annotation, annotationSelection: $annotationSelection, mode: mode)
+                                            .position(x: cgRect.midX - cgRect.width/2 + 35, y: cgRect.minY + 20)
+                                            .onTapGesture {
+                                                if mode == .removeEnabled {
+                                                    mlImage.annotations.removeAll(where: {$0.id == annotation.id})
+                                                }else{
+                                                    annotationSelection = annotation
+                                                }
+                                            }
+                                            .zIndex(2)
+                                    }
+                                }.zIndex(2)
                         
                             }//END GEOMETRY READER
                         )// END OVERLAY
@@ -99,7 +116,6 @@ struct ImageAnnotator: View {
                     ProgressView()
                 }
             }//END ASYNC IMAGE
-            
             
         } else {
             Image(nsImage: NSImage(contentsOf: mlImage.fileURL)!)
@@ -152,7 +168,7 @@ struct ImageAnnotator: View {
                                                 cgRect: CGRectForBoundingBox(boundingBox: annotation),
                                                 mlImage: mlImage,
                                                 imageCGSize: cgSize,
-                                                annotationSelection: $annotationSelection,
+                                                annotationSelection: annotationSelection,
                                                 mode: mode)
                             }//END FOREACH
                         }//END ZSTACK
@@ -200,53 +216,6 @@ struct ImageAnnotator: View {
         let normalizedRect = VNNormalizedRectForImageRect(CGRect(origin: origin, size: size), mlImage.width, mlImage.height)
         
         return VNImageRectForNormalizedRect(normalizedRect, Int(cgSize.width), Int(cgSize.height))
-    }
-    
-    private func changeBoxDimensions(box: inout MLBoundingBox, gesture: DragGesture.Value, node: NodePosition) {
-        
-        // Gesture values
-        let endCGPoint = gesture.location
-        let endNormalizedPoint = VNNormalizedPointForImagePoint(endCGPoint, Int(cgSize.width), Int(cgSize.height))
-        let endPixelPoint = VNImagePointForNormalizedPoint(endNormalizedPoint, mlImage.width, mlImage.height)
-        
-        
-        if node == .top {
-            let initialPixelValue = box.coordinates.y - box.coordinates.height/2
-            let pixelChange = initialPixelValue - Int(endPixelPoint.y)
-            let newCoordinates = MLCoordinates(x: box.coordinates.x,
-                                               y: box.coordinates.y - pixelChange/2,
-                                               width: box.coordinates.width,
-                                               height: box.coordinates.height + pixelChange)
-            
-            box.coordinates = newCoordinates
-        }
-        else if node == .bottom {
-            let initialPixelValue = box.coordinates.y + box.coordinates.height/2
-            let pixelChange = Int(endPixelPoint.y) - initialPixelValue
-            let newCoordinates = MLCoordinates(x: box.coordinates.x,
-                                               y: box.coordinates.y + pixelChange/2,
-                                               width: box.coordinates.width,
-                                               height: box.coordinates.height + pixelChange)
-            box.coordinates = newCoordinates
-        }
-        else if node == .left {
-            let initialPixelValue = box.coordinates.x - box.coordinates.width/2
-            let pixelChange = initialPixelValue - Int(endPixelPoint.x)
-            let newCoordinates = MLCoordinates(x: box.coordinates.x - pixelChange/2,
-                                               y: box.coordinates.y,
-                                               width: box.coordinates.width + pixelChange,
-                                               height: box.coordinates.height)
-            box.coordinates = newCoordinates
-        }
-        else if node == .right {
-            let initialPixelValue = box.coordinates.x + box.coordinates.width/2
-            let pixelChange = Int(endPixelPoint.x) - initialPixelValue
-            let newCoordinates = MLCoordinates(x: box.coordinates.x + pixelChange/2,
-                                               y: box.coordinates.y,
-                                               width: box.coordinates.width + pixelChange,
-                                               height: box.coordinates.height)
-            box.coordinates = newCoordinates
-        }
     }
     
 }
