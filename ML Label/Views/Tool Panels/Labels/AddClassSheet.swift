@@ -12,16 +12,14 @@ struct AddClassSheet: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var mlSet: MLSetDocument
     
-//    @Binding var classSelection: MLClass?
-    
     @Binding var classSelection: MLClass?
     
     @State private var className: String = ""
     @State private var description: String = ""
     @State private var tags: String = ""
-    
     @State private var selectedColor: MLColor = MLColor(red: 50/255, green: 50/255, blue: 50/255)
-    @State var showColorPallete: Bool = false
+    
+    @State private var showColorPallete: Bool = false
     let colorPalette = ColorPalette()
     let colorSpotRows = [
         GridItem(.fixed(30)),
@@ -31,7 +29,7 @@ struct AddClassSheet: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            Text("Add New Class")
+            Text("Add a New Class")
                 .font(.title)
                 .foregroundColor(.secondary)
             HStack{
@@ -116,11 +114,14 @@ struct AddClassSheet: View {
                 
                 Button {
                     if className != "" {
-                        mlSet.addClass(label: className, color: selectedColor)
-                        className = ""
+                        mlSet.addClass(label: className,
+                                       color: selectedColor,
+                                       description: description,
+                                       tags: tags.components(separatedBy: ", "))
                         classSelection = mlSet.classes.last!
                         dismiss()
                     }
+                    
                 } label: {
                     Text("Add Class")
                 }.keyboardShortcut(.defaultAction)

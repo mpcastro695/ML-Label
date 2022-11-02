@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-struct AnnotationList: View {
+struct AnnotationListView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
+    @EnvironmentObject var userSelections: UserSelections
     
     @ObservedObject var mlImage: MLImage
-    @Binding var annotationSelection: MLBoundingBox?
     
     var body: some View {
         
@@ -41,13 +41,13 @@ struct AnnotationList: View {
                 
                 ForEach(mlImage.annotations) { annotation in
                     VStack{
-                        AnnotationListRow(mlImage: mlImage, annotation: annotation)
+                        AnnotationListRowView(mlImage: mlImage, annotation: annotation)
                             .frame(height: 15)
                             .padding(3)
                             .contentShape(Rectangle())
-                            .background(annotationSelection?.id == annotation.id ? highlight : clearView)
+                            .background(userSelections.mlBox?.id == annotation.id ? highlight : clearView)
                             .onTapGesture {
-                                annotationSelection = annotation
+                                userSelections.mlBox = annotation
                             }
                     }
                 }

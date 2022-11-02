@@ -10,7 +10,7 @@ import Vision
 
 class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     
-    var id = UUID()
+    let id: UUID
     let fileURL: URL
     
     let name: String
@@ -23,19 +23,20 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     private var bookmarkData: Data
     
     // URL is checked before initializing MLImage Instances via DropDelegate
-    init(imageURL: URL) {
+    init(fileURL: URL) {
         do {
             //Use NSURL to create bookmark data for access on new app launch
-            let nsURL =  NSURL(fileURLWithPath: imageURL.path)
-            bookmarkData = try nsURL.bookmarkData(options: [.withSecurityScope], includingResourceValuesForKeys: [URLResourceKey.pathKey], relativeTo: imageURL.absoluteURL)
+            let nsURL =  NSURL(fileURLWithPath: fileURL.path)
+            bookmarkData = try nsURL.bookmarkData(options: [.withSecurityScope], includingResourceValuesForKeys: nil, relativeTo: nil)
         }catch{
             print("Error creating bookmark data: \(error)")
             bookmarkData = Data()
         }
-        fileURL = imageURL
-        name = imageURL.lastPathComponent
-        width = Int(NSImage(contentsOf: imageURL)?.size.width ?? 0)
-        height = Int(NSImage(contentsOf: imageURL)?.size.height ?? 0)
+        self.id = UUID()
+        self.fileURL = fileURL
+        self.name = fileURL.lastPathComponent
+        self.width = Int(NSImage(contentsOf: fileURL)?.size.width ?? 0)
+        self.height = Int(NSImage(contentsOf: fileURL)?.size.height ?? 0)
         
         annotations = []
     }
@@ -45,17 +46,28 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
         
         //Use bookmark data to get a security scoped URL
         bookmarkData = try container.decode(Data.self, forKey: .bookmarkData)
-        let diskURL = try container.decode(URL.self, forKey: .fileURL)
-        let securityScopedURL = try NSURL(resolvingBookmarkData: bookmarkData, options: .withSecurityScope, relativeTo: diskURL, bookmarkDataIsStale: nil)
+        let securityScopedURL = try NSURL(resolvingBookmarkData: bookmarkData, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: nil)
         securityScopedURL.startAccessingSecurityScopedResource()
         
-        fileURL = securityScopedURL.filePathURL!
-        name = try container.decode(String.self, forKey: .name)
-        annotations = try container.decode([MLBoundingBox].self, forKey: .annotations)
-        width = try container.decode(Int.self, forKey: .width)
-        height = try container.decode(Int.self, forKey: .height)
+        self.id = try container.decode(UUID.self, forKey: .id)
+        self.fileURL = securityScopedURL.filePathURL!
+        self.name = try container.decode(String.self, forKey: .name)
+        self.annotations = try container.decode([MLBoundingBox].self, forKey: .annotations)
+        self.width = try container.decode(Int.self, forKey: .width)
+        self.height = try container.decode(Int.self, forKey: .height)
     }
     
+    //MARK: - Class Functions
+    func addAnnotation(normalizedRect: CGRect, label: String) {
+        let pixelRect = VNImageRectForNormalizedRect(normalizedRect, width, height)
+        let mlCoordinates = MLCoordinates(x: Int(pixelRect.midX),
+                                          y: Int(pixelRect.midY),
+                                         width: Int(pixelRect.width),
+                                         height: Int(pixelRect.height))
+        let mlBox = MLBoundingBox(label: label,
+                                  coordinates: mlCoordinates)
+        annotations.append(mlBox)
+    }
     
     func removeAnnotation(id: UUID) {
         annotations.removeAll(where: {$0.id == id})
@@ -71,6 +83,7 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
 extension MLImage {
         
         enum CodingKeys: String, CodingKey {
+            case id
             case fileURL
             case bookmarkData
             case name
@@ -81,6 +94,7 @@ extension MLImage {
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(id, forKey: .id)
             try container.encode(fileURL, forKey: .fileURL)
             try container.encode(bookmarkData, forKey: .bookmarkData)
             try container.encode(name, forKey: .name)

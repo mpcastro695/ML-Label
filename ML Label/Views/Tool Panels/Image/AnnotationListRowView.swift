@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AnnotationListRow: View {
+struct AnnotationListRowView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     
@@ -29,12 +29,17 @@ struct AnnotationListRow: View {
 
             Button {
                 mlImage.removeAnnotation(id: annotation.id)
+                if let mlClass = mlSet.classes.first(where: {$0.label == annotation.label}){
+                    mlClass.removeInstance(mlImage: mlImage, boundingBox: annotation)
+                }
             } label: {
                 Image(systemName: "xmark")
-                    .font(.subheadline)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }.buttonStyle(.plain)
             
         }//END HSTACK
+        .padding(.horizontal, 5)
         
     }
 }

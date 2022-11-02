@@ -8,9 +8,11 @@
 import SwiftUI
 import Vision
 
-struct BoundingBox: View {
+struct BoundingBoxView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
+    @EnvironmentObject var userSelections: UserSelections
+    
     @ObservedObject var annotation: MLBoundingBox
     
     var cgRect: CGRect
@@ -20,17 +22,14 @@ struct BoundingBox: View {
     var mlImage: MLImage
     var imageCGSize: CGSize
     
-    var annotationSelection: MLBoundingBox?
-    var mode: Mode
-    
     @State private var isEditing: Bool = false
-    @State private var previewRect: CGRect = CGRect()
+    @State private var editingRect: CGRect = CGRect()
     
     var body: some View {
   
         if isEditing {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
-                .path(in: previewRect)
+                .path(in: editingRect)
                 .stroke(color, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5,10]))
         }
         
@@ -39,19 +38,19 @@ struct BoundingBox: View {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .fill(color)
-                .opacity(annotationSelection?.id == annotation.id ? 0.25 : 0.10)
+                .opacity(userSelections.mlBox?.id == annotation.id ? 0.25 : 0.10)
                 .allowsHitTesting(false)
             //Stroke
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .stroke(color,
                         style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                .opacity(annotationSelection?.id == annotation.id ? 1.0 : 0.9)
+                .opacity(userSelections.mlBox?.id == annotation.id ? 1.0 : 0.9)
                 .allowsHitTesting(false)
             
 //MARK: - Box Editing Nodes
             
-            if annotationSelection?.id == annotation.id {
+            if userSelections.mlBox?.id == annotation.id {
                 
                 //Highlight Stroke
                 RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
@@ -75,7 +74,7 @@ struct BoundingBox: View {
                                                         y: cgRect.origin.y + cgDelta)
                                 let newSize = CGSize(width: cgRect.width,
                                                      height: cgRect.height - cgDelta)
-                                previewRect = CGRect(origin: newOrigin, size: newSize)
+                                editingRect = CGRect(origin: newOrigin, size: newSize)
                                 isEditing = true
                             })
                             .onEnded({ gesture in
@@ -94,7 +93,7 @@ struct BoundingBox: View {
                                 let cgDelta = (gesture.location.y - (cgRect.origin.y + cgRect.height)) // Down, positive
                                 let newSize = CGSize(width: cgRect.width,
                                                      height: cgRect.height + cgDelta)
-                                previewRect = CGRect(origin: cgRect.origin, size: newSize)
+                                editingRect = CGRect(origin: cgRect.origin, size: newSize)
                                 isEditing = true
                             })
                             .onEnded({ gesture in
@@ -115,7 +114,7 @@ struct BoundingBox: View {
                                                         y: cgRect.origin.y)
                                 let newSize = CGSize(width: cgRect.width - cgDelta,
                                                      height: cgRect.height)
-                                previewRect = CGRect(origin: newOrigin, size: newSize)
+                                editingRect = CGRect(origin: newOrigin, size: newSize)
                                 isEditing = true
                             })
                             .onEnded({ gesture in
@@ -134,7 +133,7 @@ struct BoundingBox: View {
                                 let cgDelta = (gesture.location.x - (cgRect.origin.x + cgRect.width)) // Right, positive
                                 let newSize = CGSize(width: cgRect.width + cgDelta,
                                                      height: cgRect.height)
-                                previewRect = CGRect(origin: cgRect.origin, size: newSize)
+                                editingRect = CGRect(origin: cgRect.origin, size: newSize)
                                 isEditing = true
                             })
                             .onEnded({ gesture in
@@ -148,6 +147,7 @@ struct BoundingBox: View {
                 
                 Image(systemName: "scope")
                     .position(x: cgRect.midX, y: cgRect.midY)
+                    .foregroundColor(.white)
                     .font(.headline)
     
             }

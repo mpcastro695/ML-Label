@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct ImageGallery: View {
+struct ImageGalleryView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
-    @Binding var imageSelection: MLImage?
+    @EnvironmentObject var userSelections: UserSelections
     
     let thumbnailHeight: CGFloat = 60
     let thumbnailWidth: CGFloat = 80
@@ -24,7 +24,10 @@ struct ImageGallery: View {
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: [GridItem(.flexible(minimum: thumbnailHeight, maximum: .infinity), spacing: thumbPadding)], spacing: 0){
                         ForEach(mlSet.images) { mlImage in
-                            ImageThumbnail(mlImage: mlImage, imageSelection: $imageSelection)
+                            ImageThumbnailView(mlImage: mlImage)
+                                .onTapGesture {
+                                    userSelections.mlImage = mlImage
+                                }
                         }
                     }
                 }
@@ -34,7 +37,10 @@ struct ImageGallery: View {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: thumbnailWidth), spacing: thumbPadding)], spacing: 0) {
                         ForEach(mlSet.images) { mlImage in
-                            ImageThumbnail(mlImage: mlImage, imageSelection: $imageSelection)
+                            ImageThumbnailView(mlImage: mlImage)
+                                .onTapGesture {
+                                    userSelections.mlImage = mlImage
+                                }
                         }
                     }
                 }

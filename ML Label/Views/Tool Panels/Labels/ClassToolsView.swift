@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-struct ClassTools: View {
+struct ClassToolsView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     @Binding var classSelection: MLClass?
     
     @State private var newClassSheetVisible: Bool = false
-    @State private var textFieldEntry: String = ""
     @State private var selectedColor = MLColor(red: 50/255, green: 50/255, blue: 50/255)
     
     
@@ -22,10 +21,10 @@ struct ClassTools: View {
         VStack(alignment: .center){
             
             if mlSet.classes.isEmpty {
-                MissingLabels(classSelection: $classSelection)
+                MissingLabelsView(classSelection: $classSelection)
             }else{
                 HStack{
-                    Text("\(Image(systemName: "tag")) Tags")
+                    Text("Class Labels")
                         .font(.headline)
                         .foregroundColor(.secondary)
                     Spacer()
@@ -33,7 +32,7 @@ struct ClassTools: View {
                     Button {
                         newClassSheetVisible.toggle()
                     } label: {
-                        Image(systemName: "plus.rectangle")
+                        Image(systemName: "plus")
                             .font(.headline)
                     }.buttonStyle(.plain)
 
@@ -43,7 +42,7 @@ struct ClassTools: View {
                     AddClassSheet(classSelection: $classSelection)
                 })
         
-                ClassList(classSelection: $classSelection)
+                ClassListView(classSelection: $classSelection)
             }
             
             

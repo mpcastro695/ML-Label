@@ -7,37 +7,34 @@
 
 import SwiftUI
 
-struct ImageInformation: View {
+struct ImageDetailView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
-    
-    @Binding var imageSelection: MLImage?
-    @Binding var classSelection: MLClass?
-    @Binding var annotationSelection: MLBoundingBox?
+    @EnvironmentObject var userSelections: UserSelections
     
     var body: some View {
         
         VStack(alignment: .leading){
             
-            if let img = imageSelection {
+            if let mlImage = userSelections.mlImage {
                 VStack(alignment: .leading){
                     // Image Details
                     HStack {
                         VStack(alignment: .leading){
-                            Text("\(img.name)")
+                            Text("\(mlImage.name)")
                                 .font(.headline)
-                            Text("\(img.width) x \(img.height) px")
+                            Text("\(mlImage.width) x \(mlImage.height) px")
                                 .font(.callout)
                                 .foregroundColor(.secondary)
                         }// END VSTACK
                         Spacer()
                         // Image Number
-                        Text("\(mlSet.images.firstIndex(of: img)! + 1) / \(mlSet.images.count)")
+                        Text("\(mlSet.images.firstIndex(of: mlImage)! + 1) / \(mlSet.images.count)")
                             .foregroundColor(.secondary)
                     }// END HSTACK
                     .padding(.bottom)
                     
-                    AnnotationList(mlImage: img, annotationSelection: $annotationSelection)
+                    AnnotationListView(mlImage: mlImage)
                     
                 }//END VSTACK
                 .padding()
