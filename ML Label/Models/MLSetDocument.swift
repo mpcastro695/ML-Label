@@ -40,53 +40,47 @@ class MLSetDocument: FileDocument, Codable, ObservableObject, DropDelegate {
         self.classes = try container.decode([MLClass].self, forKey: .classes)
     }
     
-// MARK: - Image / DropDelegate Conformance
+    // MARK: - Image / DropDelegate Conformance
 
-        func performDrop(info: DropInfo) -> Bool {
-            guard info.hasItemsConforming(to: [.png, .jpeg, .fileURL]) else {
-                return false
-            }
-            
-            let imageDropData = info.itemProviders(for: [.png, .jpeg, .fileURL])
-            
-            for image in imageDropData {
-                    
-                // Loads data from fileURL drop and creates an instance of imageData for each image.
-                image.loadDataRepresentation(forTypeIdentifier: "public.file-url") { data, error in
-                    DispatchQueue.main.async {
-                        if let imageData = data {
-                            if let imagePathString = NSString(data: imageData, encoding: 4){
-                                if let imageURL = URL(string: imagePathString as String){
-                                    self.addImageFromURL(url: imageURL)
-                                }
+    func performDrop(info: DropInfo) -> Bool {
+        
+        guard info.hasItemsConforming(to: [.png, .jpeg, .fileURL]) else {
+            return false
+        }
+        let imageDropData = info.itemProviders(for: [.png, .jpeg, .fileURL])
+        
+        for image in imageDropData {
+                
+            // Loads data from fileURL drop and creates an instance of imageData for each image.
+            image.loadDataRepresentation(forTypeIdentifier: "public.file-url") { data, error in
+                DispatchQueue.main.async {
+                    if let imageData = data {
+                        if let imagePathString = NSString(data: imageData, encoding: 4){
+                            if let imageURL = URL(string: imagePathString as String){
+                                self.addImageFromURL(url: imageURL)
                             }
                         }
                     }
                 }
-                
-                
             }
-            return true
         }
+        return true
+    }
     
     func addImageFromURL(url: URL) {
         if NSImage(contentsOf: url) != nil{
             // Our final MLImage Object
-            let mlImage = MLImage(imageURL: url)
+            let mlImage = MLImage(fileURL: url)
             if !self.images.contains(where: {$0.name == mlImage.name}){
                 self.images.append(mlImage)
             }
         }
     }
+
+    //MARK: - Class Functions
     
-    //Consider replacing with Dictionary lookup
-    func removeImage(name: String) {
-        images.removeAll(where: {$0.name == name})
-    }
-    
-//MARK: - Class Functions
-    func addClass(label: String, color: MLColor) {
-        let newClassLabel = MLClass(label: label, color: color)
+    func addClass(label: String, color: MLColor, description: String = "", tags: [String] = []) {
+        let newClassLabel = MLClass(label: label, color: color, description: description, tags: tags)
         classes.append(newClassLabel)
     }
     
@@ -94,7 +88,13 @@ class MLSetDocument: FileDocument, Codable, ObservableObject, DropDelegate {
         classes.removeAll(where: {$0.label == label})
     }
     
-// MARK: - Export Functions
+    //Consider replacing with Dictionary lookup
+    func removeImage(name: String) {
+        images.removeAll(where: {$0.name == name})
+    }
+    
+    
+    // MARK: - Export Functions
     
     func exportCoreMLAnnotations(images: [MLImage]) throws -> Data {
         var jsonObjects = [JSONObject]()

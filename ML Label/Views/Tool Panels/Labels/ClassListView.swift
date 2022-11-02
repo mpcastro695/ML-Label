@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ClassList: View {
+struct ClassListView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     @Binding var classSelection: MLClass?
@@ -25,7 +25,7 @@ struct ClassList: View {
             
             VStack{
                 ForEach(mlSet.classes) { mlClass in
-                    ClassListRow(mlClass: mlClass)
+                    ClassListRowView(mlClass: mlClass)
                         .frame(height: 25)
                         .padding(3)
                         .contentShape(Rectangle())

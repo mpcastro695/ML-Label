@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct MissingImages: View {
+struct MissingImagesView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     
     var body: some View {
+        
         VStack{
             ZStack{
                 Image(systemName: "photo.on.rectangle.angled")
@@ -38,18 +39,19 @@ struct MissingImages: View {
             } label: {
                 Text("Select From File...")
             }.buttonStyle(LineBorderStyle())
-
-        }
+            
+        }//END VSTACK
         .padding(50)
         .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 8]))
-                    .foregroundColor(.secondary.opacity(0.3))
-                    .frame(width: 400)
+            .stroke(style: StrokeStyle(lineWidth: 1))
+            .foregroundColor(.secondary.opacity(0.3))
+            .frame(width: 400)
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        
     }
 
-//MARK: NSOpenPanel
+//MARK: - NSOpenPanel
     func showImageSelectPanel() -> [URL]? {
         let openPanel = NSOpenPanel()
         openPanel.allowedContentTypes = [.fileURL, .image]

@@ -14,7 +14,7 @@ struct ML_LabelApp: App {
     var body: some Scene {
         
         DocumentGroup(newDocument: MLSetDocument()) { file in
-            ContentView(mlSetDocument: file.document)
+            DocumentView(mlSetDocument: file.$document)
         }
     }
 }

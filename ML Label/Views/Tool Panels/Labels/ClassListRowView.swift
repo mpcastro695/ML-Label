@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct ClassListRow: View {
+struct ClassListRowView: View {
     
     @EnvironmentObject var mlSet: MLSetDocument
     @ObservedObject var mlClass: MLClass
+    
+    @State private var classDetailSheetVisible: Bool = false
     
     var body: some View {
         
@@ -23,20 +25,25 @@ struct ClassListRow: View {
             
             VStack(alignment: .leading) {
                 Text(mlClass.label)
-                Text("\(mlClass.annotations.count) tags")
+                Text("\(mlClass.tagCount()) instances")
                     .font(.caption)
+                    .foregroundColor(.secondary)
             }
             
             Spacer()
             
             Button {
-                mlSet.removeClass(label: mlClass.label)
+                classDetailSheetVisible.toggle()
             } label: {
-                Image(systemName: "xmark.circle")
+                Image(systemName: "info.circle")
+                    .foregroundColor(.secondary)
             }.buttonStyle(.plain)
 
-            
-        }
+        }//END HSTACK
+        .sheet(isPresented: $classDetailSheetVisible, content: {
+            ClassDetailSheet(mlClass: mlClass)
+        })
+        .padding(.horizontal, 5)
     }
 }
 

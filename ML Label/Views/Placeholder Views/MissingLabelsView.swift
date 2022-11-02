@@ -9,7 +9,7 @@ import Foundation
 
 import SwiftUI
 
-struct MissingLabels: View {
+struct MissingLabelsView: View {
     
     @Binding var classSelection: MLClass?
     @State var newClassSheetVisible: Bool = false
@@ -41,7 +41,7 @@ struct MissingLabels: View {
         }
         .padding(40)
         .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5, 8]))
+                    .stroke(style: StrokeStyle(lineWidth: 1))
                         .foregroundColor(.secondary.opacity(0.3))
                         .frame(height: 250)
         )

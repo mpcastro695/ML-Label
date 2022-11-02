@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MissingImageSelection: View {
+struct MissingImageSelectionView: View {
     var body: some View {
         VStack{
             Image(systemName: "cursorarrow.and.square.on.square.dashed")
