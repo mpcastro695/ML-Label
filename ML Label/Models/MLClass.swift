@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Information about a class label
 class MLClass: Identifiable, Codable, ObservableObject, Hashable {
     
     let id: UUID

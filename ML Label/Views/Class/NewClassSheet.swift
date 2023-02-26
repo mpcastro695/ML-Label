@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct AddClassSheet: View {
+struct NewClassSheet: View {
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var mlSet: MLSetDocument
+    @EnvironmentObject var mlSet: MLSet
     
     @Binding var classSelection: MLClass?
     

@@ -5,13 +5,22 @@
 //  Created by Martin Castro on 9/30/22.
 //
 
+/// An overlay that generates cursor location update events.
+///
+
 import AppKit
 import SwiftUI
 
+/// An overlay that generates cursor position update events.
+///
+/// Use the `cursorIsInside` closure to get a `CGPoint` containing the current cursor position within the overlay, and a `Bool` representing whether the cursor is within frame.
+///
+
 struct CursorTracker: ViewModifier {
     
-    // Callback used to return cursorInside and currentLocation
-    let showGuides: Bool
+    /// Returns updates on the cursor position within a View
+    ///
+    /// NSPoint (lower left origin) are converted to SwiftUI coordinates (upper left origin)
     let cursorIsInside: (Bool, CGPoint) -> Void
     
     func body(content: Content) -> some View{
@@ -71,8 +80,7 @@ struct CursorTracker: ViewModifier {
             override func mouseMoved(with event: NSEvent) {
                 cursorIsInside?(inside, NSPointToCGPoint(nsPoint: trackingView!.convert(event.locationInWindow, from: nil)))
             }
-            
-            // Helper Functions
+//MARK: - Helper Functions
             private func NSPointToCGPoint (nsPoint: NSPoint) -> CGPoint {
                 return CGPoint(x: nsPoint.x, y: trackingView!.frame.height - nsPoint.y)
             }
@@ -98,8 +106,8 @@ struct CursorTracker: ViewModifier {
 
 // MARK: -  Convenience View Modifier
 extension View {
-    func cursorTracker(showGuides: Bool, _ cursorIsInside: @escaping (Bool, CGPoint) -> Void) -> some View {
-        modifier(CursorTracker(showGuides:showGuides, cursorIsInside: cursorIsInside))
+    func cursorTracker(_ cursorIsInside: @escaping (Bool, CGPoint) -> Void) -> some View {
+        modifier(CursorTracker(cursorIsInside: cursorIsInside))
     }
 }
 

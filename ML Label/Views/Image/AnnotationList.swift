@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-struct AnnotationListView: View {
+struct AnnotationList: View {
     
-    @EnvironmentObject var mlSet: MLSetDocument
+    @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections
     
     @ObservedObject var mlImage: MLImage
@@ -41,7 +41,7 @@ struct AnnotationListView: View {
                 
                 ForEach(mlImage.annotations) { annotation in
                     VStack{
-                        AnnotationListRowView(mlImage: mlImage, annotation: annotation)
+                        AnnotationListRow(mlImage: mlImage, annotation: annotation)
                             .frame(height: 15)
                             .padding(3)
                             .contentShape(Rectangle())

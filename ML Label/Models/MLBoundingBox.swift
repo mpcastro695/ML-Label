@@ -8,20 +8,25 @@
 import Foundation
 import Vision
 
+/// A bounding box style annotation
+///
+/// Coordinates are in CreateML format with the origin in the center, measured from top left corner, and a width and height
 class MLBoundingBox: Identifiable, Codable, ObservableObject {
     
-    var id = UUID()
+    let id: UUID
     
     @Published var label: String
     @Published var coordinates: MLCoordinates
     
     init(label: String, coordinates: MLCoordinates) {
+        self.id = UUID()
         self.label = label
         self.coordinates = coordinates
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
         label = try container.decode(String.self, forKey: .label)
         coordinates = try container.decode(MLCoordinates.self, forKey: .coordinates)
     }
@@ -73,11 +78,7 @@ class MLBoundingBox: Identifiable, Codable, ObservableObject {
     
 }
 
-
 struct MLCoordinates: Codable {
-    
-    // Coordinates use CreateML format
-    // X & Y in the center, with a width and height, measured from top left corner
     let x: Int
     let y: Int
     let width: Int
@@ -89,12 +90,14 @@ struct MLCoordinates: Codable {
 extension MLBoundingBox {
     
     enum CodingKeys: CodingKey {
+        case id
         case label
         case coordinates
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
         try container.encode(label, forKey: .label)
         try container.encode(coordinates, forKey: .coordinates)
     }

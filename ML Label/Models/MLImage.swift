@@ -8,6 +8,7 @@
 import SwiftUI
 import Vision
 
+/// A  reference to an image on disk and its annotation data
 class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     
     let id: UUID
@@ -25,7 +26,7 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     // URL is checked before initializing MLImage Instances via DropDelegate
     init(fileURL: URL) {
         do {
-            //Use NSURL to create bookmark data for access on new app launch
+            //Create bookmark data for access on new app launch
             let nsURL =  NSURL(fileURLWithPath: fileURL.path)
             bookmarkData = try nsURL.bookmarkData(options: [.withSecurityScope], includingResourceValuesForKeys: nil, relativeTo: nil)
         }catch{
@@ -39,6 +40,7 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
         self.height = Int(NSImage(contentsOf: fileURL)?.size.height ?? 0)
         
         annotations = []
+        print("MLImage Created successfully for: \(self.name)")
     }
     
     required init(from decoder: Decoder) throws {
@@ -67,6 +69,7 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
         let mlBox = MLBoundingBox(label: label,
                                   coordinates: mlCoordinates)
         annotations.append(mlBox)
+        update()
     }
     
     func removeAnnotation(id: UUID) {

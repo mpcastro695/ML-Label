@@ -10,10 +10,17 @@ import AppKit
 import SwiftUI
 
 
+/// An overlay that generates bounding box update events for drag gestures.
+///
+/// Use the `normalizedRect` closure to get a `CGRect`, drawn between the gesture’s current and start location in a `Vision` normalized coordinate space, and a `Bool` representing the status of the gesture.
+///
+
 struct VNRectGesture: ViewModifier {
     
-    //Closure that returns isEditing and a normalizedRect as parameters
-    let normalizedRect: (Bool, CGRect) -> Void
+    ///- Parameter rect: Returns a CGRect, drawn between the gesture’s current and start location in a Vision normalized coordinate space
+    ///- Parameter isEditing: A bool that returns true while the drag gesture is active and false when completed
+    ///
+    let normalizedRect: (_ rect: CGRect, _ isEditing: Bool) -> Void
     
     func body(content: Content) -> some View {
         content.overlay {
@@ -26,10 +33,10 @@ struct VNRectGesture: ViewModifier {
 //MARK: - NSViewRepresentable
     private struct NSGestureView: NSViewRepresentable {
         
-        let normalizedRect: (Bool, CGRect) -> Void
+        let normalizedRect: (CGRect, Bool) -> Void
         let trackingView: NSView
         
-        init(normalizedRect: @escaping (Bool, CGRect) -> Void, _ frame: NSRect) {
+        init(normalizedRect: @escaping (CGRect, Bool) -> Void, _ frame: NSRect) {
             self.normalizedRect = normalizedRect
             self.trackingView = NSView(frame: frame)
         }
@@ -46,13 +53,13 @@ struct VNRectGesture: ViewModifier {
         class NormalizedRectForDragGesture: NSGestureRecognizer {
             
             let trackingView: NSView
-            let normalizedRect: (Bool, CGRect) -> Void
+            let normalizedRect: (CGRect, Bool) -> Void
             
             private var dragDetected = false
             private var startLocation = CGPoint()
             private var endLocation = CGPoint()
             
-            init(in view: NSView, normalizedRect: @escaping (Bool, CGRect) -> Void) {
+            init(in view: NSView, normalizedRect: @escaping (CGRect, Bool) -> Void) {
                 self.trackingView = view
                 self.normalizedRect = normalizedRect
                 super.init(target: nil, action: nil)
@@ -69,13 +76,13 @@ struct VNRectGesture: ViewModifier {
             override func mouseDragged(with event: NSEvent) {
                 dragDetected = true
                 endLocation = NSPointToCGPoint(nsPoint: trackingView.convert(event.locationInWindow, from: nil))
-                normalizedRect(true, NormalizedRectForDragGesture())
+                normalizedRect(NormalizedRectForDragGesture(), true)
             }
             // Returns normalized rect with isEditing = false
             override func mouseUp(with event: NSEvent) {
                 if dragDetected{
                     endLocation = NSPointToCGPoint(nsPoint: trackingView.convert(event.locationInWindow, from: nil))
-                    normalizedRect(false, NormalizedRectForDragGesture())
+                    normalizedRect(NormalizedRectForDragGesture(), false)
                 }
                 reset()
             }
@@ -115,7 +122,7 @@ struct VNRectGesture: ViewModifier {
 
 //MARK: - Convenience View Modifier
 extension View {
-    func vnRectGesture(normalizedRect: @escaping (_ isEditing: Bool, _ rect: CGRect) -> Void) -> some View {
+    func vnRectGesture(normalizedRect: @escaping (_ normalizedrect: CGRect, _ isEditing: Bool) -> Void) -> some View {
         modifier(VNRectGesture(normalizedRect: normalizedRect))
     }
 }

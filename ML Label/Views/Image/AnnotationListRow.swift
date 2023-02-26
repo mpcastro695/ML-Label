@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct AnnotationListRowView: View {
+struct AnnotationListRow: View {
     
-    @EnvironmentObject var mlSet: MLSetDocument
+    @EnvironmentObject var mlSet: MLSet
     
     @ObservedObject var mlImage: MLImage
     var annotation: MLBoundingBox

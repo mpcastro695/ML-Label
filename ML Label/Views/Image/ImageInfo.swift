@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct ImageDetailView: View {
+struct ImageInfo: View {
     
-    @EnvironmentObject var mlSet: MLSetDocument
+    @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections
     
     var body: some View {
@@ -34,7 +34,7 @@ struct ImageDetailView: View {
                     }// END HSTACK
                     .padding(.bottom)
                     
-                    AnnotationListView(mlImage: mlImage)
+                    AnnotationList(mlImage: mlImage)
                     
                 }//END VSTACK
                 .padding()
