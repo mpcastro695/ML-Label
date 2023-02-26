@@ -7,14 +7,19 @@
 
 import SwiftUI
 
+
 @main
 
 struct ML_LabelApp: App {
     
     var body: some Scene {
         
-        DocumentGroup(newDocument: MLSetDocument()) { file in
-            DocumentView(mlSetDocument: file.$document)
+        DocumentGroup(newDocument: MLSet()) { file in
+            if #available(macOS 13.0, *) {
+                ContentView(mlSetDocument: file.$document, fileName: file.fileURL?.lastPathComponent ?? "Untitled")
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
 }

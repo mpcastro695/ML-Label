@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+/// An overlay that reports the view's current CGSize
+///
+/// Use the `size` binding to recieve updates on the current size of the attached view.
+///
+
 struct SizeReader: ViewModifier {
     
     @Binding var size: CGSize

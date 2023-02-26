@@ -11,6 +11,7 @@ class UserSelections: ObservableObject {
     @Published var mlImage: MLImage? 
     @Published var mlClass: MLClass?
     @Published var mlBox: MLBoundingBox?
+    @Published var imageSource: MLImageSource?
     
     @Published var mode: Mode = .rectEnabled
     

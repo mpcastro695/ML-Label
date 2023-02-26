@@ -8,9 +8,19 @@
 import SwiftUI
 import Vision
 
-struct BoundingBoxView: View {
+enum NodePosition {
+    case top
+    case bottom
+    case left
+    case right
+}
+
+/// A view for vizualizing and editing a bounding box annotation
+///
+/// If the editing mode is set to `rectEnabled` you can recieve updates to gestures detected on the editing nodes
+struct BoundingBox: View {
     
-    @EnvironmentObject var mlSet: MLSetDocument
+    @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections
     
     @ObservedObject var annotation: MLBoundingBox
@@ -30,7 +40,7 @@ struct BoundingBoxView: View {
         if isEditing {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: editingRect)
-                .stroke(color, style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5,10]))
+                .stroke(color, style: StrokeStyle(lineWidth: 1, lineCap: .round, dash: [5,10]))
         }
         
         ZStack{
@@ -44,25 +54,24 @@ struct BoundingBoxView: View {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .stroke(color,
-                        style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                        style: StrokeStyle(lineWidth: 2, lineCap: .round))
                 .opacity(userSelections.mlBox?.id == annotation.id ? 1.0 : 0.9)
                 .allowsHitTesting(false)
             
-//MARK: - Box Editing Nodes
-            
             if userSelections.mlBox?.id == annotation.id {
-                
                 //Highlight Stroke
                 RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                     .path(in: cgRect)
                     .stroke(.white,
                             style: StrokeStyle(lineWidth: 1, lineCap: .round))
                     .allowsHitTesting(false)
+                
+                //MARK: - Box Editing Nodes
 
                 let nodeHandle = Circle()
                     .foregroundColor(color)
-                    .frame(width: 10, height: 10)
-                    .overlay(Circle().foregroundColor(.white).frame(width: 6, height: 6))
+                    .frame(width: 8, height: 8)
+                    .overlay(Circle().foregroundColor(.white).frame(width: 7, height: 7))
                 
                 nodeHandle.position(x: cgRect.origin.x + cgRect.width/2, y: cgRect.origin.y) //TOP
                     .gesture(
@@ -159,10 +168,55 @@ struct BoundingBoxView: View {
     }
 }
 
-//MARK: - NodePosition enum
-enum NodePosition {
-    case top
-    case bottom
-    case left
-    case right
+//MARK: - BoundingBoxTagView
+struct BoundingBoxTagView: View {
+    
+    @EnvironmentObject var mlSet: MLSet
+    @EnvironmentObject var userSelections: UserSelections
+    
+    @ObservedObject var annotation: MLBoundingBox
+    @ObservedObject var mlImage: MLImage
+    
+    var color: Color{
+        mlSet.classes.first(where: {$0.label == annotation.label})?.color.toColor() ?? .gray
+    }
+    
+    @State var opacity: CGFloat = 1
+    
+    var body: some View {
+        
+            HStack{
+                Text("\(annotation.label)")
+                    .font(.caption)
+                    .foregroundColor(.white)
+                if userSelections.mode == .removeEnabled {
+                    Image(systemName: "xmark")
+                }
+    
+            
+        }//END VSTACK
+        .padding(3)
+        .frame(minWidth: 40)
+        .background(color)
+        .clipShape(RoundedRectangle(cornerRadius: 5))
+        .onHover { isHovering in
+            if isHovering {
+                opacity = 0.4
+            }else{
+                opacity = 1
+            }
+        }
+        .onTapGesture {
+            if userSelections.mode == .removeEnabled {
+                mlImage.annotations.removeAll(where: {$0.id == annotation.id})
+                //Also remove instance from MLClass
+                if let mlClass = mlSet.classes.first(where: {$0.label == annotation.label}){
+                    mlClass.removeInstance(mlImage: mlImage, boundingBox: annotation) // FIX THIS
+                }
+            }
+            userSelections.mlBox = annotation
+        }
+        .opacity(opacity)
+        
+    }
 }

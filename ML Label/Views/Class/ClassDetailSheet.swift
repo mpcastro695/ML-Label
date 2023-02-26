@@ -42,7 +42,11 @@ struct ClassDetailSheet: View {
                     Text("\(mlClass.tagCount()) instances over \(mlClass.instances.count) images")
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    ImageGalleryView()
+                    if #available(macOS 13.0, *) {
+//                        ImageGalleryView()
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
             }
             

@@ -5,6 +5,10 @@
 //  Created by Martin Castro on 10/11/22.
 //
 
+/// Embedds a SwiftUI View within an NSScrollView
+///
+/// Allows for magnifcation and panning of your view
+
 import AppKit
 import SwiftUI
 
