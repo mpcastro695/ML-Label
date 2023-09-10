@@ -10,7 +10,7 @@ import Foundation
 struct JSONObject: Encodable {
     
     // Final JSON object for annotation export
-    let image: String
-    let annotations: [MLBoundingBox]
+    let imagefilename: String
+    let annotation: [MLBoundingBox]
 
 }

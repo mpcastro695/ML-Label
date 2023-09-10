@@ -27,6 +27,7 @@ class UserSelections: ObservableObject {
 
 enum Mode {
     case rectEnabled
+    case editEnabled
     case autoEnabled
     case removeEnabled
 }
