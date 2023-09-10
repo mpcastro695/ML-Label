@@ -132,12 +132,28 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
     
     // MARK: - Export Functions
     
-    func exportCoreMLAnnotations(images: [MLImage]) throws -> Data {
+    public func saveAnnotationsToDisk() {
+        
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.data]
+        savePanel.isExtensionHidden = false
+        savePanel.allowsOtherFileTypes = true
+        savePanel.title = "Export Your Annotations"
+        
+        let response = savePanel.runModal()
+        guard response == .OK, let saveURL = savePanel.url else { return }
+        try? CoreMLAnnotations().write(to: saveURL)
+    }
+    
+    private func CoreMLAnnotations() throws -> Data {
         var jsonObjects = [JSONObject]()
         let encoder = JSONEncoder()
-        for image in images {
-            let jsonObject = JSONObject(image: image.name, annotations: image.annotations)
-            jsonObjects.append(jsonObject)
+        encoder.outputFormatting = .prettyPrinted
+        for image in self.images {
+            if !image.annotations.isEmpty{
+                let jsonObject = JSONObject(imagefilename: image.name, annotation: image.annotations)
+                jsonObjects.append(jsonObject)
+            }
         }
         return try encoder.encode(jsonObjects)
     }

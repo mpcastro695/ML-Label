@@ -73,7 +73,7 @@ struct SetDash: View {
         }//END VSTACK
         .toolbar {
             Button {
-                print("Export JSON file")
+                mlSet.saveAnnotationsToDisk()
             } label: {
                 Text("\(Image(systemName: "square.and.arrow.up"))")
             }
