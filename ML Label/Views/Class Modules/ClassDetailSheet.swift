@@ -50,6 +50,8 @@ struct ClassDetailSheet: View {
                 }
             }
             
+            Spacer()
+            
             //Buttons
             HStack{
                 Spacer()

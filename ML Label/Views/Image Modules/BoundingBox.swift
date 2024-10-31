@@ -58,7 +58,7 @@ struct BoundingBox: View {
                 .opacity(userSelections.mlBox?.id == annotation.id ? 1.0 : 0.9)
                 .allowsHitTesting(false)
             
-            if userSelections.mlBox?.id == annotation.id {
+            if userSelections.mlBox?.id == annotation.id && userSelections.mode == .editEnabled {
                 //Highlight Stroke
                 RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                     .path(in: cgRect)

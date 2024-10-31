@@ -102,10 +102,10 @@ struct Annotator: View {
         .toolbar {
             ToolbarItemGroup{
                 Picker("", selection: $userSelections.mlClass) {
-                    ForEach(mlSetDocument.classes, id: \.id) { label in
-                        Text("\(label.label)")
+                    ForEach(mlSetDocument.classes, id: \.self) { mlClass in
+                        Text("\(mlClass.label)")
                             .foregroundColor(.primary)
-                            .tag(label as MLClass?)
+                            .tag(mlClass as MLClass?)
                     }
                 }
                 .font(.callout)
@@ -120,6 +120,13 @@ struct Annotator: View {
                 }
                 .foregroundColor(userSelections.mode == .rectEnabled ? .primary : .secondary)
                 .font(userSelections.mode == .rectEnabled ? .headline.weight(.black) : .none)
+                
+                //Edit Enable Button
+                Button("\(Image(systemName: "crop"))"){
+                    userSelections.mode = .editEnabled
+                }
+                .foregroundColor(userSelections.mode == .editEnabled ? .primary : .secondary)
+                .font(userSelections.mode == .editEnabled ? .headline.weight(.black) : .none)
                 
                 // Auto Enable Button
                 Button("\(Image(systemName: "wand.and.stars"))"){

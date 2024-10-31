@@ -56,6 +56,7 @@ struct ClassDash: View {
             }
     
 //            ImageGalleryView()
+            Spacer()
         }
         .padding()
     }

@@ -31,9 +31,9 @@ struct ContentView: View {
                     .navigationDestination(for: MLImageSource.self) { imageSource in
                         SourceDash(imageSource: imageSource)
                     }
-                    .navigationDestination(for: MLClass.self) { mlClass in
-                        ClassDash(mlClass: mlClass)
-                    }
+//                    .navigationDestination(for: MLClass.self) { mlClass in
+//                        ClassDash(mlClass: mlClass)
+//                    }
             }
         })
             .environmentObject(mlSetDocument)

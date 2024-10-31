@@ -38,18 +38,23 @@ struct Sidebar: View {
             Section(content: {
                 if !mlSet.imageSources.isEmpty{
                     ForEach(mlSet.imageSources) { imageSource in
-                        NavigationLink {
-                            SourceDash(imageSource: imageSource)
-                        } label: {
-                            HStack(spacing: 5){
-                                Image(systemName: "folder")
-                                    .foregroundColor(.secondary)
-                                Text("\(imageSource.folderName)")
-                            }
-                            .padding(.leading, 5)
+//                        NavigationLink {
+//                            SourceDash(imageSource: imageSource)
+//                        } label: {
+//                            HStack(spacing: 5){
+//                                Image(systemName: "folder")
+//                                    .foregroundColor(.secondary)
+//                                Text("\(imageSource.folderName)")
+//                            }
+//                            .padding(.leading, 5)
+//                        }
+//                        .buttonStyle(.plain)
+                        HStack(spacing: 5){
+                            Image(systemName: "folder")
+                                .foregroundColor(.secondary)
+                            Text("\(imageSource.folderName)")
                         }
-                        .buttonStyle(.plain)
-
+                        .padding(.leading, 5)
                     }
                 }else{
                     Text("No Image Sources")
@@ -70,18 +75,24 @@ struct Sidebar: View {
             Section {
                 if !mlSet.classes.isEmpty {
                     ForEach(mlSet.classes) { mlClass in
-                        NavigationLink {
-                            ClassDash(mlClass: mlClass)
-                        } label: {
-                            HStack(spacing: 5){
-                                Image(systemName: "circlebadge.fill")
-                                    .foregroundColor(mlClass.color.toColor())
-                                Text("\(mlClass.label)")
-                            }
-                            .padding(.leading, 5)
+//                        NavigationLink {
+//                            ClassDash(mlClass: mlClass)
+//                        } label: {
+//                            HStack(spacing: 5){
+//                                Image(systemName: "circlebadge.fill")
+//                                    .foregroundColor(mlClass.color.toColor())
+//                                Text("\(mlClass.label)")
+//                            }
+//                            .padding(.leading, 5)
+//                        }
+//                        .buttonStyle(.plain)
+                       
+                        HStack(spacing: 5){
+                            Image(systemName: "circlebadge.fill")
+                                .foregroundColor(mlClass.color.toColor())
+                            Text("\(mlClass.label)")
                         }
-                        .buttonStyle(.plain)
-                        
+                        .padding(.leading, 5)
                     }
                 }else{
                     Text("No Class Labels")
