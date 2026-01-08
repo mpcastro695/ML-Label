@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(macOS 13.0, *)
-struct SetDash: View {
+struct SetDashView: View {
     
     @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections
@@ -42,7 +42,7 @@ struct SetDash: View {
                 .padding()
                 Spacer()
                 StatTable(rowData: [
-                    ("Images", "\(mlSet.images.count)"),
+                    ("Images", "\(mlSet.allImages().count)"),
                     ("Sources", "\(mlSet.imageSources.count)"),
                     ("Classes", "\(mlSet.classes.count)"),
                     ("% Annotated", "\(Int.zero)")
@@ -58,14 +58,14 @@ struct SetDash: View {
                         .font(.headline)
                         .padding()
                         .foregroundColor(.secondary)
-                    Gallery(imageSources: mlSet.imageSources)
+                    GalleryView(imageSources: mlSet.imageSources)
                 }
                 VStack(alignment: .leading, spacing: -15){
                     Text("Classes")
                         .font(.headline)
                         .padding()
                         .foregroundColor(.secondary)
-                    ClassList()
+                    ClassListView()
                         .frame(width: 300)
                 }
             }

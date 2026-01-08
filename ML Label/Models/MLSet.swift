@@ -18,7 +18,6 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
     static var readableContentTypes: [UTType] = [.mlSetDocument]
 
     @Published var imageSources: [MLImageSource]
-    @Published var images: [MLImage]
     @Published var classes: [MLClass]
     
     let id: UUID
@@ -26,7 +25,6 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
     init() {
         self.id = UUID()
         self.imageSources = []
-        self.images = []
         self.classes = []
     }
     
@@ -36,7 +34,6 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
         let decodedJSONData = try PropertyListDecoder().decode(MLSet.self, from: data)
         self.id = decodedJSONData.id
         self.imageSources = decodedJSONData.imageSources
-        self.images = decodedJSONData.images
         self.classes = decodedJSONData.classes
     }
     
@@ -45,7 +42,6 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(UUID.self, forKey: .id)
         self.imageSources = try container.decode([MLImageSource].self, forKey: .imageSources)
-        self.images = try container.decode([MLImage].self, forKey: .images)
         self.classes = try container.decode([MLClass].self, forKey: .classes)
     }
     
@@ -83,24 +79,45 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
     @available(macOS 13.0, *)
     func addImageFromURL(url: URL) {
         if NSImage(contentsOf: url) != nil{
+            
             let mlImage = MLImage(fileURL: url)
             let folderPath = url.deletingLastPathComponent().path(percentEncoded: false)
+            
+            // Do not append images with same file name
+            if allImages().contains(where: {$0.name == mlImage.name}){return}
             
             if imageSources.contains(where: {$0.folderPath == folderPath}){
                 //Add to an existing MLImageSource
                 let imageSource = imageSources.first(where: {$0.folderPath == folderPath})!
-                imageSource.images.append(mlImage) //FIX THIS WITH HELPER FUNC
+                imageSource.images.append(mlImage)
+                
             }else{
                 //Create new MLImageSource and add image
                 let newSource = MLImageSource(folderURL: url.deletingLastPathComponent())
                 newSource.images.append(mlImage)
                 imageSources.append(newSource)
             }
+        }
+    }
     
-            //Images not appending becuase their names are the same
-            if !self.images.contains(where: {$0.id == mlImage.id}){
-                self.images.append(mlImage)
-            }
+    func allImages() -> [MLImage] {
+        return imageSources.flatMap({ $0.images})
+    }
+    
+    func deleteImage(_ image: MLImage) {
+        
+        for source in imageSources {
+            source.images.removeAll(where: {$0.id == image.id})
+        }
+        
+        // Remove from Sources
+        for source in imageSources {
+            source.removeImage(id: image.id)
+        }
+        
+        // Remove from classes
+        for mlClass in classes {
+            mlClass.instances.removeValue(forKey: image)
         }
     }
     
@@ -112,21 +129,15 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
         classes.append(newClassLabel)
     }
     
-    func removeClass(label: String) {
+    func deleteClass(label: String) {
         classes.removeAll(where: {$0.label == label})
-    }
-    
-    //Consider replacing with Dictionary lookup
-    func removeImage(name: String) {
-        images.removeAll(where: {$0.name == name})
-    }
-    
-    func allImages() -> [MLImage] {
-        var allImages: [MLImage] = []
-        for imageSource in imageSources {
-            allImages += imageSource.images
+        
+        // Remove class instances from all images
+        for source in imageSources {
+            for image in source.images {
+                image.annotations.removeAll(where: {$0.label == label})
+            }
         }
-        return allImages
     }
     
     
@@ -149,8 +160,9 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
         var jsonObjects = [JSONObject]()
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
-        for image in self.images {
+        for image in allImages() {
             if !image.annotations.isEmpty{
+                print("There's at least one annotation")
                 let jsonObject = JSONObject(imagefilename: image.name, annotation: image.annotations)
                 jsonObjects.append(jsonObject)
             }
@@ -174,7 +186,6 @@ extension MLSet {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(id, forKey: .id)
             try container.encode(imageSources, forKey: .imageSources)
-            try container.encode(images, forKey: .images)
             try container.encode(classes, forKey: .classes)
         }
 }

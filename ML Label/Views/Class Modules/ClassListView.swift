@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(macOS 13.0, *)
-struct ClassList: View {
+struct ClassListView: View {
     
     @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections

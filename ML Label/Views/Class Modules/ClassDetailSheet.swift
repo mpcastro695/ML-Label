@@ -10,6 +10,7 @@ import SwiftUI
 struct ClassDetailSheet: View {
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var mlSet: MLSet
     
     @ObservedObject var mlClass: MLClass
     
@@ -43,7 +44,7 @@ struct ClassDetailSheet: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                     if #available(macOS 13.0, *) {
-//                        ImageGalleryView()
+//                        GalleryView()
                     } else {
                         // Fallback on earlier versions
                     }
@@ -61,7 +62,11 @@ struct ClassDetailSheet: View {
                     Text("Cancel")
                 }
                 Button(role: .destructive) {
-                    print("class deleted")
+                    let labelToDelete = mlClass.label
+                    
+                    // Remove the class from the MLSet
+                    mlSet.deleteClass(label: labelToDelete)
+                    dismiss()
                 } label: {
                     Text("Delete Class")
                 }
@@ -70,12 +75,7 @@ struct ClassDetailSheet: View {
             
         }
         .padding()
-        
         .frame(width: 400, height: 480)
-        
-    }
-    
-    private func instanceImage(mlImage: MLImage, boundingBox: MLBoundingBox) {
         
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(macOS 13.0, *)
-struct Sidebar: View {
+struct SideBarView: View {
     
     @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections
@@ -75,24 +75,17 @@ struct Sidebar: View {
             Section {
                 if !mlSet.classes.isEmpty {
                     ForEach(mlSet.classes) { mlClass in
-//                        NavigationLink {
-//                            ClassDash(mlClass: mlClass)
-//                        } label: {
-//                            HStack(spacing: 5){
-//                                Image(systemName: "circlebadge.fill")
-//                                    .foregroundColor(mlClass.color.toColor())
-//                                Text("\(mlClass.label)")
-//                            }
-//                            .padding(.leading, 5)
-//                        }
-//                        .buttonStyle(.plain)
-                       
-                        HStack(spacing: 5){
-                            Image(systemName: "circlebadge.fill")
-                                .foregroundColor(mlClass.color.toColor())
-                            Text("\(mlClass.label)")
+                        NavigationLink {
+                            ClassDashView(mlClass: mlClass)
+                        } label: {
+                            HStack(spacing: 5){
+                                Image(systemName: "circlebadge.fill")
+                                    .foregroundColor(mlClass.color.toColor())
+                                Text("\(mlClass.label)")
+                            }
+                            .padding(.leading, 5)
                         }
-                        .padding(.leading, 5)
+                        .buttonStyle(.plain)
                     }
                 }else{
                     Text("No Class Labels")

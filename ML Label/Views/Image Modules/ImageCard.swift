@@ -31,9 +31,9 @@ struct ImageCard: View {
                 Spacer()
                 if mlImage.annotations.count != 0 {
                     Text("\(mlImage.annotations.count)")
-                        .fontWeight(.heavy)
+                        .font(.caption)
                         .padding(5)
-                        .background(.gray)
+                        .background(.gray.opacity(0.5))
                         .clipShape(Circle())
                         .padding(8)
                 }

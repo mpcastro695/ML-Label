@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A view for displaying, sorting, and adding images from sources
 @available(macOS 13.0, *)
-struct Gallery: View {
+struct GalleryView: View {
     
     @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections
@@ -32,7 +32,7 @@ struct Gallery: View {
                             .buttonStyle(.plain)
                     }
                 }else if userSelections.imageSource == nil { // No selection, show ALL Images
-                    ForEach(mlSet.images) { mlImage in
+                    ForEach(mlSet.allImages()) { mlImage in
                         NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage)}
                             .buttonStyle(.plain)
                     }
@@ -66,15 +66,16 @@ struct Gallery: View {
                 }
                 .pickerStyle(.menu)
                 .buttonStyle(LineBorderStyle())
-                .frame(width: 160)
-                .disabled(imageSources.isEmpty || mlSet.images.isEmpty)
+                .disabled(imageSources.isEmpty || mlSet.allImages().isEmpty)
+                
+                Spacer()
                 
                 TextField(text: $searchText, prompt: Text("Search...")) { //Search bar
                     Text("Search")
                 }
                 .textFieldStyle(.roundedBorder)
                 .frame(maxWidth: 240)
-                .disabled(imageSources.isEmpty || mlSet.images.isEmpty)
+                .disabled(imageSources.isEmpty || mlSet.allImages().isEmpty)
                 
                 Spacer()
                 Button { //Filter button
@@ -84,7 +85,7 @@ struct Gallery: View {
                     
                 }
                 .buttonStyle(.plain)
-                .disabled(imageSources.isEmpty || mlSet.images.isEmpty)
+                .disabled(imageSources.isEmpty || mlSet.allImages().isEmpty)
                 
                 Button { //Add Source Button
                     if let fileURLs = showImageSelectPanel() {
@@ -104,7 +105,7 @@ struct Gallery: View {
         .padding()
         .onDrop(of: [.fileURL], delegate: mlSet)
         .overlay(alignment: .center){
-            if imageSources.isEmpty || mlSet.images.isEmpty {
+            if imageSources.isEmpty || mlSet.allImages().isEmpty {
                 MissingImages()
             }
         }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(macOS 13.0, *)
-struct SourceDash: View {
+struct SourceDashView: View {
     
     var imageSource: MLImageSource
     
@@ -33,6 +33,7 @@ struct SourceDash: View {
                         .font(.subheadline)
                 }
                 Spacer()
+                
                 //Image and Annotation Count
                 VStack{
                     Text("\(Image(systemName: "photo")) \(imageSource.images.count)")
@@ -45,7 +46,7 @@ struct SourceDash: View {
             .padding()
             .padding(.bottom)
             
-            Gallery(imageSources: [imageSource])
+            GalleryView(imageSources: [imageSource])
         }
         
     }

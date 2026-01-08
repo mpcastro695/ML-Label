@@ -38,42 +38,60 @@ class MLBoundingBox: Identifiable, Codable, ObservableObject {
         
         let newPixelPoint = VNImagePointForNormalizedPoint(normalizedEndPoint, image.width, image.height)
         
-        if node == .top {
-            let oldPixelY = self.coordinates.y - self.coordinates.height/2
-            let pixelDelta = Int(newPixelPoint.y) - oldPixelY // Up, negative. Down, positive
-            let newCoordinates = MLCoordinates(x: self.coordinates.x,
-                                               y: self.coordinates.y + pixelDelta/2,
-                                               width: self.coordinates.width,
-                                               height: self.coordinates.height - pixelDelta)
-            self.coordinates = newCoordinates
-            
-        }else if node == .bottom {
-            let oldPixelY = self.coordinates.y + self.coordinates.height/2
-            let pixelDelta = Int(newPixelPoint.y) - oldPixelY // Up negative. Down, positive
-            let newCoordinates = MLCoordinates(x: self.coordinates.x,
-                                               y: self.coordinates.y + pixelDelta/2 ,
-                                               width: self.coordinates.width,
-                                               height: self.coordinates.height + pixelDelta)
-            self.coordinates = newCoordinates
-            
-        }else if node == .left {
-            let oldPixelX = self.coordinates.x - self.coordinates.width/2
-            let pixelDelta = Int(newPixelPoint.x) - oldPixelX // Left, negative. Right, Positive
-            let newCoordinates = MLCoordinates(x: self.coordinates.x + pixelDelta/2,
-                                               y: self.coordinates.y,
-                                               width: self.coordinates.width - pixelDelta,
-                                               height: self.coordinates.height)
-            self.coordinates = newCoordinates
-            
-        }else if node == .right {
-            let oldPixelX = self.coordinates.x + self.coordinates.width/2
-            let pixelDelta = Int(newPixelPoint.x) - oldPixelX //Left, negative. Right, positive
-            let newCoordinates = MLCoordinates(x: self.coordinates.x + pixelDelta/2,
-                                               y: self.coordinates.y,
-                                               width: self.coordinates.width + pixelDelta,
-                                               height: self.coordinates.height)
-            self.coordinates = newCoordinates
+        // Current box boundaries in pixel space
+        let currentX = self.coordinates.x
+        let currentY = self.coordinates.y
+        let currentW = self.coordinates.width
+        let currentH = self.coordinates.height
+        
+        // Determine edges: Right = Left + Width and Bottom = Top + Height
+        let topEdge = currentY - currentH / 2
+        let bottomEdge = topEdge + currentH
+        let leftEdge = currentX - currentW / 2
+        let rightEdge = leftEdge + currentW
+        
+        var newTop = topEdge
+        var newBottom = bottomEdge
+        var newLeft = leftEdge
+        var newRight = rightEdge
+        
+        // Update boundaries based on node being dragged
+        switch node {
+        case .top:
+            newTop = Int(newPixelPoint.y)
+        case .bottom:
+            newBottom = Int(newPixelPoint.y)
+        case .left:
+            newLeft = Int(newPixelPoint.x)
+        case .right:
+            newRight = Int(newPixelPoint.x)
+        case .topLeft:
+            newTop = Int(newPixelPoint.y)
+            newLeft = Int(newPixelPoint.x)
+        case .topRight:
+            newTop = Int(newPixelPoint.y)
+            newRight = Int(newPixelPoint.x)
+        case .bottomLeft:
+            newBottom = Int(newPixelPoint.y)
+            newLeft = Int(newPixelPoint.x)
+        case .bottomRight:
+            newBottom = Int(newPixelPoint.y)
+            newRight = Int(newPixelPoint.x)
         }
+        
+        // Re-calculate Center, Width, Height
+        // Use min/max/abs to handle flipping (e.g. dragging left edge past right edge)
+        let finalLeft = min(newLeft, newRight)
+        let finalRight = max(newLeft, newRight)
+        let finalTop = min(newTop, newBottom)
+        let finalBottom = max(newTop, newBottom)
+        
+        let newWidth = finalRight - finalLeft
+        let newHeight = finalBottom - finalTop
+        let newCenterX = finalLeft + newWidth / 2
+        let newCenterY = finalTop + newHeight / 2
+        
+        self.coordinates = MLCoordinates(x: newCenterX, y: newCenterY, width: newWidth, height: newHeight)
     }
     
 }

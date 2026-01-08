@@ -29,7 +29,7 @@ struct ImageInfo: View {
                         }// END VSTACK
                         Spacer()
                         // Image Number
-                        Text("\(mlSet.images.firstIndex(of: mlImage)! + 1) / \(mlSet.images.count)")
+                        Text("\(mlSet.allImages().firstIndex(of: mlImage)! + 1) / \(mlSet.allImages().count)")
                             .foregroundColor(.secondary)
                     }// END HSTACK
                     .padding(.bottom)
