@@ -62,10 +62,17 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
     //MARK: - Class Functions
     func addAnnotation(normalizedRect: CGRect, label: String) {
         let pixelRect = VNImageRectForNormalizedRect(normalizedRect, width, height)
-        let mlCoordinates = MLCoordinates(x: Int(pixelRect.midX),
-                                          y: Int(pixelRect.midY),
-                                         width: Int(pixelRect.width),
-                                         height: Int(pixelRect.height))
+        
+        let imageBounds = CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height))
+        
+        // Intersect the pixel rect with the image bounds to clamp it
+        let clampedRect = pixelRect.intersection(imageBounds)
+        guard !clampedRect.isNull, !clampedRect.isEmpty else { return }
+        
+        let mlCoordinates = MLCoordinates(x: Int(clampedRect.midX),
+                                          y: Int(clampedRect.midY),
+                                         width: Int(clampedRect.width),
+                                         height: Int(clampedRect.height))
         let mlBox = MLBoundingBox(label: label,
                                   coordinates: mlCoordinates)
         annotations.append(mlBox)

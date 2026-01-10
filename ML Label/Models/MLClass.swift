@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 /// Information about a class label
 class MLClass: Identifiable, Codable, ObservableObject, Hashable {
@@ -63,6 +64,34 @@ class MLClass: Identifiable, Codable, ObservableObject, Hashable {
             tagCount += image.value.count
         }
         return tagCount
+    }
+    
+    func getInstanceSnapshots() -> [(MLImage, CGImage)] {
+        var snapshots: [(mlImage: MLImage, cgImage: CGImage)] = []
+        
+        for (mlImage, boxes) in instances {
+            // Load the image from the file URL
+            if let nsImage = NSImage(contentsOf: mlImage.fileURL),
+               let cgImage = nsImage.cgImage(forProposedRect: nil, context: nil, hints: nil) {
+                
+                for box in boxes {
+                    // MLBoundingBox coordinates are stored as center (x, y) with width and height.
+                    // Origin (0,0) is top-left.
+                    let width = CGFloat(box.coordinates.width)
+                    let height = CGFloat(box.coordinates.height)
+                    let x = CGFloat(box.coordinates.x) - (width / 2.0)
+                    let y = CGFloat(box.coordinates.y) - (height / 2.0)
+                    
+                    let cropRect = CGRect(x: x, y: y, width: width, height: height)
+                    
+                    // Crop the image
+                    if let cropped = cgImage.cropping(to: cropRect) {
+                        snapshots.append((mlImage: mlImage, cgImage: cropped))
+                    }
+                }
+            }
+        }
+        return snapshots
     }
     
 }

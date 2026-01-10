@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(macOS 13.0, *)
+@available(macOS 14.0, *)
 struct ContentView: View {
     
     @ObservedObject var mlSetDocument: MLSet
@@ -16,13 +16,13 @@ struct ContentView: View {
     var fileName: String
     
     @State private var path = NavigationPath()
-    @State private var sidebarSelection: UUID? = nil
+//    @State private var sidebarSelection: UUID? = nil
     
     var body: some View {
-        NavigationSplitView(sidebar: {
-            SideBarView(fileName: fileName, selection: $sidebarSelection)
-                .navigationSplitViewColumnWidth(min: 100, ideal: 200, max: 200)
-        }, detail: {
+//        NavigationSplitView(sidebar: {
+//            SideBarView(fileName: fileName, selection: $sidebarSelection)
+//                .navigationSplitViewColumnWidth(min: 100, ideal: 200, max: 300)
+//        }, detail: {
             NavigationStack(path: $path) {
                 SetDashView(fileName: fileName)
                     .navigationDestination(for: MLImage.self) { mlImage in
@@ -35,12 +35,12 @@ struct ContentView: View {
 //                        ClassDash(mlClass: mlClass)
 //                    }
             }
-        })
+//        })
             .environmentObject(mlSetDocument)
             .environmentObject(userSelections)
             .frame(minWidth: 1000, minHeight: 600)
-            .onAppear{
-                sidebarSelection = mlSetDocument.id
-            }
+//            .onAppear{
+//                sidebarSelection = mlSetDocument.id
+//            }
     }
 }

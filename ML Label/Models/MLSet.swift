@@ -105,20 +105,27 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
     }
     
     func deleteImage(_ image: MLImage) {
-        
         for source in imageSources {
             source.images.removeAll(where: {$0.id == image.id})
         }
-        
         // Remove from Sources
         for source in imageSources {
             source.removeImage(id: image.id)
         }
-        
         // Remove from classes
         for mlClass in classes {
             mlClass.instances.removeValue(forKey: image)
         }
+    }
+    
+    func percentAnnotated() -> Float {
+        var annotatedCount: Int = 0
+        for image in allImages() {
+            if !image.annotations.isEmpty {
+                annotatedCount += 1
+            }
+        }
+        return Float(annotatedCount) / Float(allImages().count) * 100
     }
     
     
@@ -162,7 +169,6 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
         encoder.outputFormatting = .prettyPrinted
         for image in allImages() {
             if !image.annotations.isEmpty{
-                print("There's at least one annotation")
                 let jsonObject = JSONObject(imagefilename: image.name, annotation: image.annotations)
                 jsonObjects.append(jsonObject)
             }
@@ -198,7 +204,7 @@ extension MLSet {
         var data: Data
         do{
             data = try PropertyListEncoder().encode(self)
-            print("encoder worked?")
+            print("encoder worked!")
         }catch{
             print("encoder failed")
             data = Data() // Blank

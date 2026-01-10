@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A view for displaying, sorting, and adding images from sources
-@available(macOS 13.0, *)
+@available(macOS 14.0, *)
 struct GalleryView: View {
     
     @EnvironmentObject var mlSet: MLSet
@@ -20,6 +20,7 @@ struct GalleryView: View {
     let thumbPadding: CGFloat = 15
     
     @State private var searchText = ""
+    @State private var hideAnnotated: Bool = false
     
     var body: some View {
         
@@ -28,18 +29,42 @@ struct GalleryView: View {
                 
                 if imageSources.count == 1 { //Show Images from a single source
                     ForEach(imageSources.first!.images) { mlImage in
-                        NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage)}
-                            .buttonStyle(.plain)
+                        if searchText != "" {
+                            if mlImage.name.lowercased().contains(searchText.lowercased()) {
+                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                    .buttonStyle(.plain)
+                            }
+                        }
+                        else{
+                            NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
+                                .buttonStyle(.plain)
+                        }
                     }
                 }else if userSelections.imageSource == nil { // No selection, show ALL Images
                     ForEach(mlSet.allImages()) { mlImage in
-                        NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage)}
-                            .buttonStyle(.plain)
+                        if searchText != "" {
+                            if mlImage.name.lowercased().contains(searchText.lowercased()) {
+                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
+                                    .buttonStyle(.plain)
+                            }
+                        }
+                        else{
+                            NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
+                                .buttonStyle(.plain)
+                        }
                     }
                 }else if userSelections.imageSource != nil{ // Show selected source's images
                     ForEach(userSelections.imageSource!.images) { mlImage in
-                        NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage)}
-                            .buttonStyle(.plain)
+                        if searchText != "" {
+                            if mlImage.name.lowercased().contains(searchText.lowercased()) {
+                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
+                                    .buttonStyle(.plain)
+                            }
+                        }
+                        else{
+                            NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
+                                .buttonStyle(.plain)
+                        }
                     }
                 }
             }
@@ -78,10 +103,10 @@ struct GalleryView: View {
                 .disabled(imageSources.isEmpty || mlSet.allImages().isEmpty)
                 
                 Spacer()
-                Button { //Filter button
-                    print("filter the results!")
+                Button { // Filter out annotated images
+                    hideAnnotated.toggle()
                 } label: {
-                    Text("\(Image(systemName: "line.3.horizontal.decrease"))")
+                    Text("\(Image(systemName: "circle.dashed"))")
                     
                 }
                 .buttonStyle(.plain)

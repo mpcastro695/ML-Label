@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(macOS 14.0, *)
 struct ClassListRow: View {
     
     @EnvironmentObject var mlSet: MLSet

@@ -26,16 +26,13 @@ struct AnnotatorView: View {
     @State private var cursorIsInside: Bool = false
     @State private var cursorPosition: CGPoint = CGPoint()
     
-    // Track initial state for Undo during drag operations
-    @State private var initialEditCoordinates: MLCoordinates?
-    
-    // Compute the selected bounding box rect for MagnificationView
+    // Compute the selected bounding box rect for DrawingView
     var selectedBoxRect: CGRect? {
         guard let selectedBox = userSelections.mlBox,
               mlImage.annotations.contains(where: { $0.id == selectedBox.id }) else {
             return nil
         }
-        return CGRectForMLBoundingBox(boundingBox: selectedBox)
+        return getCGRectForMLBoundingBox(boundingBox: selectedBox)
     }
     
     var body: some View {
@@ -46,8 +43,7 @@ struct AnnotatorView: View {
                           contentSize: cgSize,
                           imageSize: CGSize(width: mlImage.width, height: mlImage.height),
                           annotations: mlImage.annotations,
-                          onDraw: { normalizedRect, isEditing in
-            
+          onDraw: { normalizedRect, isEditing in
             // Handle draw events
             if isEditing {
                 // Show preview box
@@ -62,6 +58,7 @@ struct AnnotatorView: View {
                     if let newAnnotation = mlImage.annotations.last {
                         userSelections.mlClass!.addInstance(mlImage: mlImage,
                                                             boundingBox: newAnnotation)
+                        print(newAnnotation.coordinates)
                     }
                 }
             }
@@ -110,7 +107,7 @@ struct AnnotatorView: View {
                         if userSelections.showBoundingBoxes{
                             ZStack{ // Bounding boxes
                                 ForEach(mlImage.annotations, id: \.id) { annotation in
-                                    let cgRect = CGRectForMLBoundingBox(boundingBox: annotation)
+                                    let cgRect = getCGRectForMLBoundingBox(boundingBox: annotation)
                                     BoundingBox(annotation: annotation,
                                                     cgRect: cgRect,
                                                     mlImage: mlImage,
@@ -120,7 +117,7 @@ struct AnnotatorView: View {
                             }
                             ZStack{ //Bounding box tags
                                 ForEach(mlImage.annotations, id: \.id) { annotation in
-                                    let cgRect = CGRectForMLBoundingBox(boundingBox: annotation)
+                                    let cgRect = getCGRectForMLBoundingBox(boundingBox: annotation)
                                     BoundingBoxTagView(annotation: annotation, mlImage: mlImage)
                                         .position(x: cgRect.midX - cgRect.width/2 + 25, y: cgRect.minY + 15)
                                         .zIndex(2)
@@ -130,11 +127,15 @@ struct AnnotatorView: View {
                     }
                 )//END BOUNDING BOXES OVERLAY
         }//END DRAWINGVIEW
+        .navigationTitle(mlImage.name)
         
         .toolbarRole(.editor)
         .toolbar {
-            ToolbarItemGroup{
+            ToolbarItemGroup {
                 Picker("", selection: $userSelections.mlClass) {
+                    Text("")
+                        .tag(nil as MLClass?)
+                    Divider()
                     ForEach(mlSetDocument.classes, id: \.self) { mlClass in
                         Text("\(mlClass.label)")
                             .foregroundColor(.primary)
@@ -145,7 +146,6 @@ struct AnnotatorView: View {
                 .frame(minWidth: 300)
                 .disabled(mlSetDocument.classes.count == 0)
                 .disabled(userSelections.mode != .rectEnabled)
-                .padding(.trailing, 20)
                 
                 //Rect Enable Button
                 Button("\(Image(systemName: "plus.rectangle"))"){
@@ -165,12 +165,12 @@ struct AnnotatorView: View {
                 .font(userSelections.mode == .editEnabled ? .headline.weight(.black) : .none)
                 
                 // Auto Enable Button
-                Button("\(Image(systemName: "wand.and.stars"))"){
-                    userSelections.mode = .autoEnabled
-                }
-                .buttonStyle(.plain)
-                .foregroundColor(userSelections.mode == .autoEnabled ? .primary : .secondary)
-                .font(userSelections.mode == .autoEnabled ? .headline.weight(.black) : .none)
+//                Button("\(Image(systemName: "wand.and.stars"))"){
+//                    userSelections.mode = .autoEnabled
+//                }
+//                .buttonStyle(.plain)
+//                .foregroundColor(userSelections.mode == .autoEnabled ? .primary : .secondary)
+//                .font(userSelections.mode == .autoEnabled ? .headline.weight(.black) : .none)
                 
                 //Remove Enable Button
                 Button("\(Image(systemName: "scissors"))"){
@@ -211,7 +211,7 @@ struct AnnotatorView: View {
         }//END TOOLBAR
     }
     
-    private func CGRectForMLBoundingBox(boundingBox: MLBoundingBox) -> CGRect {
+    private func getCGRectForMLBoundingBox(boundingBox: MLBoundingBox) -> CGRect {
         let origin = CGPoint(x: boundingBox.coordinates.x - boundingBox.coordinates.width/2,
                              y: boundingBox.coordinates.y - boundingBox.coordinates.height/2)
         let size = CGSize(width: boundingBox.coordinates.width, height: boundingBox.coordinates.height)

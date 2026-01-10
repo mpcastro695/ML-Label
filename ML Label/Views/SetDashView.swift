@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(macOS 13.0, *)
+@available(macOS 14.0, *)
 struct SetDashView: View {
     
     @EnvironmentObject var mlSet: MLSet
@@ -35,17 +35,18 @@ struct SetDashView: View {
                         .bold()
                         .foregroundColor(.secondary)
                         .padding(.bottom, 5)
-                    Text("Last Edited on 2/25/23 11:21PM") //FIX
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
+//                    Text("Last Edited on 2/25/23 11:21PM") //FIX
+//                        .font(.footnote)
+//                        .foregroundColor(.secondary)
                 }
                 .padding()
                 Spacer()
+                
                 StatTable(rowData: [
                     ("Images", "\(mlSet.allImages().count)"),
                     ("Sources", "\(mlSet.imageSources.count)"),
                     ("Classes", "\(mlSet.classes.count)"),
-                    ("% Annotated", "\(Int.zero)")
+                    ("Annotated", "\(String(format: "%.2f", mlSet.percentAnnotated()))%")
                 ])
                 .padding()
                 .frame(maxWidth: 400)
@@ -53,17 +54,17 @@ struct SetDashView: View {
             .padding(.bottom)
             
             HStack(spacing: -15){
-                VStack(alignment: .leading, spacing: -15){
+                VStack(alignment: .leading, spacing: -10){
                     Text("Images")
                         .font(.headline)
-                        .padding()
+                        .padding(.horizontal)
                         .foregroundColor(.secondary)
                     GalleryView(imageSources: mlSet.imageSources)
                 }
-                VStack(alignment: .leading, spacing: -15){
+                VStack(alignment: .leading, spacing: -10){
                     Text("Classes")
                         .font(.headline)
-                        .padding()
+                        .padding(.horizontal)
                         .foregroundColor(.secondary)
                     ClassListView()
                         .frame(width: 300)

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(macOS 13.0, *)
+@available(macOS 14.0, *)
 struct SourceDashView: View {
     
     var imageSource: MLImageSource

@@ -7,12 +7,16 @@
 
 import SwiftUI
 
+@available(macOS 14.0, *)
 struct ClassDetailSheet: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var mlSet: MLSet
     
     @ObservedObject var mlClass: MLClass
+    
+    let thumbnailSize: CGFloat = 70
+    let thumbPadding: CGFloat = 10
     
     var body: some View {
         VStack(alignment: .leading){
@@ -43,10 +47,16 @@ struct ClassDetailSheet: View {
                     Text("\(mlClass.tagCount()) instances over \(mlClass.instances.count) images")
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    if #available(macOS 13.0, *) {
-//                        GalleryView()
-                    } else {
-                        // Fallback on earlier versions
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: thumbnailSize), spacing: thumbPadding)], spacing: thumbPadding) {
+                            ForEach(mlClass.getInstanceSnapshots(), id: \.self.1) { instance in
+//                                NavigationLink(value: instance.0) {
+//                                    InstanceCard(mlImage: instance.0, cgImageCrop: instance.1)
+//                                }
+//                                .buttonStyle(.plain)
+                                InstanceCard(mlImage: instance.0, cgImageCrop: instance.1, thumbnailSize: thumbnailSize)
+                            }
+                        }
                     }
                 }
             }

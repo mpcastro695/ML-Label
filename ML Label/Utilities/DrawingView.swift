@@ -5,8 +5,7 @@
 //  Created by Martin Castro on 10/11/22.
 //
 
-/// Embedds a SwiftUI View within a custom NSScrollView that handles drawing events. Reports relevant updates back up to AnnotatorView.swift via callbacks.
-///
+/// Embedds a SwiftUI View within a custom NSScrollView that handles drawing events. Reports relevant updates back up to AnnotatorView via callbacks.
 
 import AppKit
 import SwiftUI

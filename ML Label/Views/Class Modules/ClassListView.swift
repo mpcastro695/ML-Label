@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(macOS 13.0, *)
+@available(macOS 14.0, *)
 struct ClassListView: View {
     
     @EnvironmentObject var mlSet: MLSet
@@ -18,12 +18,28 @@ struct ClassListView: View {
     
     var body: some View {
         
-        List(selection: $userSelections.mlClass){
-            ForEach(mlSet.classes) { mlClass in
-                NavigationLink(value: mlClass) {
-                    ClassListRow(mlClass: mlClass)
+        // Prevents the "Publishing changes from within view updates" warning.
+        let selectionBinding = Binding<MLClass?>(
+            get: { userSelections.mlClass },
+            set: { newValue in
+                DispatchQueue.main.async {
+                    userSelections.mlClass = newValue
                 }
-                .buttonStyle(.plain)
+            }
+        )
+        
+        List(selection: selectionBinding){
+            ForEach(mlSet.classes) { mlClass in
+                if searchText != "" {
+                    if mlClass.label.lowercased().contains(searchText.lowercased()){
+                        ClassListRow(mlClass: mlClass)
+                            .tag(mlClass)
+                    }
+                }
+                else{
+                    ClassListRow(mlClass: mlClass)
+                        .tag(mlClass)
+                }
             }
         }//END LIST
         .scrollContentBackground(.hidden)
@@ -46,6 +62,7 @@ struct ClassListView: View {
             .padding(.vertical, 8)
             .padding(.horizontal)
             .background(.ultraThinMaterial)
+            
         }//END SAFEAREA INSET
         .sheet(isPresented: $newClassSheetVisible, content: {NewClassSheet(classSelection: $userSelections.mlClass)})
         .background(Rectangle().foregroundColor(.secondary).opacity(0.2))

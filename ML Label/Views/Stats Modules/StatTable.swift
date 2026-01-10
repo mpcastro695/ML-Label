@@ -20,6 +20,7 @@ struct StatTable: View {
                     Text("\(row.1)")
                         .foregroundColor(.secondary)
                 }
+                .font(.caption)
                 .padding(.horizontal)
                 .padding(.vertical, 2)
                 if row.0 != rowData.last!.0 {

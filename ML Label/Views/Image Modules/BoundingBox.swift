@@ -52,7 +52,7 @@ struct BoundingBox: View {
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))
                 .path(in: cgRect)
                 .fill(color)
-                .opacity(userSelections.mlBox?.id == annotation.id ? 0.25 : 0.10)
+                .opacity(userSelections.mlBox?.id == annotation.id ? 0.5 : 0.3)
                 .allowsHitTesting(false)
             //Stroke
             RoundedRectangle(cornerSize: CGSize(width: 3, height: 3))

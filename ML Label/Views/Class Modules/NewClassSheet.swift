@@ -136,12 +136,6 @@ struct NewClassSheet: View {
     }
 }
 
-//struct AddClassSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddClassSheet()
-//    }
-//}
-
 //MARK: - Color Palette
 
 class ColorPalette {

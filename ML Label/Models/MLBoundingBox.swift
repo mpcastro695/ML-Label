@@ -8,9 +8,9 @@
 import Foundation
 import Vision
 
-/// A bounding box style annotation
-///
-/// Coordinates are in CreateML format with the origin in the center, measured from top left corner, and a width and height
+/// Coordinates are in CreateML format with a center (x, y), width and height.
+/// Origin (0,0) is top-left.
+
 class MLBoundingBox: Identifiable, Codable, ObservableObject {
     
     let id: UUID
