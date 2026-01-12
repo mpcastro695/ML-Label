@@ -153,7 +153,7 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
     public func saveAnnotationsToDisk() {
         
         let savePanel = NSSavePanel()
-        savePanel.allowedContentTypes = [.data]
+        savePanel.allowedContentTypes = [.json]
         savePanel.isExtensionHidden = false
         savePanel.allowsOtherFileTypes = true
         savePanel.title = "Export Your Annotations"

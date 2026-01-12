@@ -31,39 +31,87 @@ struct GalleryView: View {
                     ForEach(imageSources.first!.images) { mlImage in
                         if searchText != "" {
                             if mlImage.name.lowercased().contains(searchText.lowercased()) {
-                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
-                                    .buttonStyle(.plain)
+                                if hideAnnotated {
+                                    if mlImage.annotations.isEmpty {
+                                        NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                            .buttonStyle(.plain)
+                                    }
+                                }
+                                else if hideAnnotated == false {
+                                    NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                        .buttonStyle(.plain)
+                                }
                             }
                         }
                         else{
-                            NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
-                                .buttonStyle(.plain)
+                            if hideAnnotated {
+                                if mlImage.annotations.isEmpty {
+                                    NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                        .buttonStyle(.plain)
+                                }
+                            }
+                            else if hideAnnotated == false {
+                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                    .buttonStyle(.plain)
+                            }
                         }
                     }
                 }else if userSelections.imageSource == nil { // No selection, show ALL Images
                     ForEach(mlSet.allImages()) { mlImage in
                         if searchText != "" {
                             if mlImage.name.lowercased().contains(searchText.lowercased()) {
-                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
-                                    .buttonStyle(.plain)
+                                if hideAnnotated {
+                                    if mlImage.annotations.isEmpty {
+                                        NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                            .buttonStyle(.plain)
+                                    }
+                                }
+                                else if hideAnnotated == false {
+                                    NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                        .buttonStyle(.plain)
+                                }
                             }
                         }
                         else{
-                            NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
-                                .buttonStyle(.plain)
+                            if hideAnnotated {
+                                if mlImage.annotations.isEmpty {
+                                    NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                        .buttonStyle(.plain)
+                                }
+                            }
+                            else if hideAnnotated == false {
+                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                    .buttonStyle(.plain)
+                            }
                         }
                     }
                 }else if userSelections.imageSource != nil{ // Show selected source's images
                     ForEach(userSelections.imageSource!.images) { mlImage in
                         if searchText != "" {
                             if mlImage.name.lowercased().contains(searchText.lowercased()) {
-                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
-                                    .buttonStyle(.plain)
+                                if hideAnnotated {
+                                    if mlImage.annotations.isEmpty {
+                                        NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                            .buttonStyle(.plain)
+                                    }
+                                }
+                                else if hideAnnotated == false {
+                                    NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                        .buttonStyle(.plain)
+                                }
                             }
                         }
                         else{
-                            NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: 100)}
-                                .buttonStyle(.plain)
+                            if hideAnnotated {
+                                if mlImage.annotations.isEmpty {
+                                    NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                        .buttonStyle(.plain)
+                                }
+                            }
+                            else if hideAnnotated == false {
+                                NavigationLink(value: mlImage) {ImageCard(mlImage: mlImage, thumbnailSize: thumbnailSize)}
+                                    .buttonStyle(.plain)
+                            }
                         }
                     }
                 }
@@ -111,6 +159,7 @@ struct GalleryView: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(imageSources.isEmpty || mlSet.allImages().isEmpty)
+                .font(hideAnnotated ? .headline.weight(.black) : .none)
                 
                 Button { //Add Source Button
                     if let fileURLs = showImageSelectPanel() {
