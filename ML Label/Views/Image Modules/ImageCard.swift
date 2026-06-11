@@ -107,7 +107,7 @@ public func createThumbnail(from image: NSImage, minDimension: CGFloat) async ->
     // Access CGImage on the calling thread to ensure safety
     guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return nil }
     
-    return await Task.detached(priority: .userInitiated) {
+    return await Task.detached(priority: .background) {
         let width = CGFloat(cgImage.width)
         let height = CGFloat(cgImage.height)
         
@@ -150,3 +150,4 @@ public func createThumbnail(from image: NSImage, minDimension: CGFloat) async ->
         return nil
     }.value
 }
+

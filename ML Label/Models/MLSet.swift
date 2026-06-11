@@ -1,5 +1,5 @@
 //
-//  ImageHandler.swift
+//  MLSet.swift
 //  ML Label
 //
 //  Created by Martin Castro on 10/15/21.
@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 extension UTType {
-    static let mlSetDocument = UTType(exportedAs: "com.example.MLLabel.mlset")
+    static let mlSetDocument = UTType(exportedAs: "com.martincastro.ML-Label.mlset")
 }
 
 /// A file document that contains data on images, classes, and annotations
@@ -119,6 +119,8 @@ class MLSet: FileDocument, Codable, Hashable, ObservableObject, DropDelegate {
     }
     
     func percentAnnotated() -> Float {
+        let imageCount: Int = allImages().count
+        if imageCount == 0 { return 0 }
         var annotatedCount: Int = 0
         for image in allImages() {
             if !image.annotations.isEmpty {

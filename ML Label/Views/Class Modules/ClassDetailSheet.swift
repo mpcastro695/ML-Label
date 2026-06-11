@@ -39,7 +39,7 @@ struct ClassDetailSheet: View {
             
             //Gallery
             if mlClass.instances.isEmpty{
-                Text("No annotations yet!")
+                Text("No instances yet!")
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }else{

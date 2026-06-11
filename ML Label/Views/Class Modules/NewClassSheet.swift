@@ -26,6 +26,9 @@ struct NewClassSheet: View {
         GridItem(.fixed(30))
     ]
     
+    @State private var showEmptyLabelAlert: Bool = false
+    @State private var showDuplicateLabelAlert: Bool = false
+    
     
     var body: some View {
         VStack(alignment: .leading){
@@ -113,7 +116,13 @@ struct NewClassSheet: View {
                 }.keyboardShortcut(.cancelAction)
                 
                 Button {
-                    if className != "" {
+                    if className == "" {
+                        showEmptyLabelAlert = true
+                    }
+                    else if mlSet.classes.contains(where: {$0.label == className}) {
+                        showDuplicateLabelAlert = true
+                    }
+                    else{
                         mlSet.addClass(label: className,
                                        color: selectedColor,
                                        description: description,
@@ -133,6 +142,13 @@ struct NewClassSheet: View {
         }//END VSTACK
         .padding()
         .frame(width: 400)
+        .alert("Empty Label", isPresented: $showEmptyLabelAlert) {
+            Text("Class needs a label!")
+        }
+        .alert("Duplicate Label", isPresented: $showDuplicateLabelAlert) {
+            Text("Class label is already taken!")
+        }
+        
     }
 }
 
