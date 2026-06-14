@@ -13,6 +13,7 @@ struct GalleryView: View {
     
     @EnvironmentObject var mlSet: MLSet
     @EnvironmentObject var userSelections: UserSelections
+    @Environment(\.undoManager) var undoManager
     
     var imageSources: [MLImageSource]
     
@@ -163,7 +164,8 @@ struct GalleryView: View {
                 
                 Button { //Add Source Button
                     if let fileURLs = showImageSelectPanel() {
-                        for url in fileURLs {mlSet.addImageFromURL(url: url)}
+                        // Pass the environment's undoManager when adding images
+                        for url in fileURLs { mlSet.addImageFromURL(url: url, undoManager: undoManager) }
                     }
                 } label: {
                     Text("\(Image(systemName: "plus.rectangle.on.rectangle"))")

@@ -10,6 +10,7 @@ import SwiftUI
 struct AnnotationListRow: View {
     
     @EnvironmentObject var mlSet: MLSet
+    @Environment(\.undoManager) var undoManager
     
     @ObservedObject var mlImage: MLImage
     var annotation: MLBoundingBox
@@ -28,10 +29,8 @@ struct AnnotationListRow: View {
             Spacer()
 
             Button {
-                mlImage.removeAnnotation(id: annotation.id)
-                if let mlClass = mlSet.classes.first(where: {$0.label == annotation.label}){
-                    mlClass.removeInstance(mlImage: mlImage, boundingBox: annotation)
-                }
+                // Safely remove the annotation with full undo & class de-registration support
+                mlSet.removeAnnotation(annotation, from: mlImage, undoManager: undoManager)
             } label: {
                 Image(systemName: "xmark")
                     .font(.caption)

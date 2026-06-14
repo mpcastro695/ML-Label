@@ -8,6 +8,8 @@
 import SwiftUI
 
 class UserSelections: ObservableObject {
+    @Published var navigationPath = NavigationPath()
+    
     @Published var mlImage: MLImage? 
     @Published var mlClass: MLClass?
     @Published var mlBox: MLBoundingBox?

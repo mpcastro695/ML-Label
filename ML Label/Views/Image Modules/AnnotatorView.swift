@@ -50,37 +50,23 @@ struct AnnotatorView: View {
                 dragGestureActive = true
                 previewRect = VNImageRectForNormalizedRect(normalizedRect, Int(cgSize.width), Int(cgSize.height))
             } else {
-                // Add annotation to current MLImage and MLClass
+                // Add annotation to current MLImage and MLClass with Undo Support
                 dragGestureActive = false
-                if userSelections.mlClass != nil && userSelections.mode == .rectEnabled{
-                    mlImage.addAnnotation(normalizedRect: normalizedRect,
-                                          label: userSelections.mlClass!.label)
-                    if let newAnnotation = mlImage.annotations.last {
-                        userSelections.mlClass!.addInstance(mlImage: mlImage,
-                                                            boundingBox: newAnnotation)
-                        print(newAnnotation.coordinates)
-                    }
+                if let selectedClass = userSelections.mlClass, userSelections.mode == .rectEnabled {
+                    mlSetDocument.addAnnotationFromNormalizedRect(normalizedRect, to: mlImage, label: selectedClass.label, undoManager: undoManager)
                 }
             }
         }, onEdit: { normalizedEndPoint, node, isEditing in
             // Handle editing
             if let selectedBox = userSelections.mlBox {
-                // Update bounding box dimensions
-                selectedBox.changeBoxDimensions(normalizedEndPoint: normalizedEndPoint, node: node, image: mlImage)
-                mlImage.update() // Force update to refresh MagnificationView with new rect
+                // Update bounding box dimensions and support Undo
+                mlSetDocument.changeBoxDimensions(for: selectedBox, normalizedEndPoint: normalizedEndPoint, node: node, image: mlImage, isEditing: isEditing, undoManager: undoManager)
             }
             
         }, onTagClick: { annotation in
             if userSelections.mode == .removeEnabled {
-
-                // Delete annotation
-                mlImage.annotations.removeAll(where: {$0.id == annotation.id})
-                // Remove instance from MLClass
-                if let mlClass = mlSetDocument.classes.first(where: {$0.label == annotation.label}){
-                    mlClass.removeInstance(mlImage: mlImage, boundingBox: annotation)
-                }
-                mlImage.update()
-                
+                // Delete annotation with Undo Support
+                mlSetDocument.removeAnnotation(annotation, from: mlImage, undoManager: undoManager)
             }else{
                 userSelections.mlBox = annotation
             }
@@ -200,7 +186,7 @@ struct AnnotatorView: View {
                 Spacer()
                 
                 Button("\(Image(systemName: "trash"))") {
-                    mlSetDocument.deleteImage(mlImage)
+                    mlSetDocument.deleteImage(mlImage, undoManager: undoManager)
                     dismiss()
                 }
                 .buttonStyle(.plain)

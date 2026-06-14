@@ -10,6 +10,7 @@ import SwiftUI
 @available(macOS 14.0, *)
 struct ClassListRow: View {
     
+    @Environment(\.undoManager) private var parentUndoManager
     @EnvironmentObject var mlSet: MLSet
     @ObservedObject var mlClass: MLClass
     
@@ -39,7 +40,7 @@ struct ClassListRow: View {
             }.buttonStyle(.plain)
         }//END HSTACK
         .sheet(isPresented: $classDetailSheetVisible, content: {
-            ClassDetailSheet(mlClass: mlClass)
+            ClassDetailSheet(mlClass: mlClass, externalUndoManager: parentUndoManager)
         })
         .contentShape(Rectangle())
         .frame(height: 30)
@@ -51,8 +52,3 @@ struct ClassListRow: View {
     }
 }
 
-//struct ClassListRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ClassListRow()
-//    }
-//}

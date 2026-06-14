@@ -177,8 +177,16 @@ struct DrawingView<Content : View>: NSViewRepresentable {
             
             overlayView.needsDisplay = true
             
-            // Invalidate cursor rects for the overlay view specifically
+            // Invalidate cursor rects for both the scroll view and overlay view specifically
+            self.window?.invalidateCursorRects(for: self)
             self.window?.invalidateCursorRects(for: overlayView)
+        }
+        
+        override func resetCursorRects() {
+            super.resetCursorRects()
+            if drawEnabled {
+                addCursorRect(bounds, cursor: .crosshair)
+            }
         }
         
         class OverlayView: NSView {
@@ -245,6 +253,14 @@ struct DrawingView<Content : View>: NSViewRepresentable {
             
             @objc func refreshDisplay() {
                 self.needsDisplay = true
+            }
+            
+            override func resetCursorRects() {
+                super.resetCursorRects()
+                guard let sv = scrollView else { return }
+                if sv.drawEnabled {
+                    addCursorRect(bounds, cursor: .crosshair)
+                }
             }
             
             // Computes the padding offset of the content within the document view

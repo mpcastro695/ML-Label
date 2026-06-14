@@ -12,8 +12,10 @@ struct ClassDetailSheet: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var mlSet: MLSet
+    @EnvironmentObject var userSelections: UserSelections
     
     @ObservedObject var mlClass: MLClass
+    let externalUndoManager: UndoManager?
     
     let thumbnailSize: CGFloat = 70
     let thumbPadding: CGFloat = 10
@@ -50,11 +52,18 @@ struct ClassDetailSheet: View {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: thumbnailSize), spacing: thumbPadding)], spacing: thumbPadding) {
                             ForEach(mlClass.getInstanceSnapshots(), id: \.self.1) { instance in
-//                                NavigationLink(value: instance.0) {
-//                                    InstanceCard(mlImage: instance.0, cgImageCrop: instance.1)
-//                                }
-//                                .buttonStyle(.plain)
-                                InstanceCard(mlImage: instance.0, cgImageCrop: instance.1, thumbnailSize: thumbnailSize)
+                                Button {
+                                    dismiss()
+                                    
+                                    // Delay the navigation push slightly to prevent "flashing"
+                                    Task { @MainActor in
+                                        try? await Task.sleep(for: .seconds(0.15))
+                                        userSelections.navigationPath.append(instance.0)
+                                    }
+                                } label: {
+                                    InstanceCard(mlImage: instance.0, cgImageCrop: instance.1, thumbnailSize: thumbnailSize)
+                                }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
@@ -74,8 +83,8 @@ struct ClassDetailSheet: View {
                 Button(role: .destructive) {
                     let labelToDelete = mlClass.label
                     
-                    // Remove the class from the MLSet
-                    mlSet.deleteClass(label: labelToDelete)
+                    // Remove the class from the MLSet and register undo/redo
+                    mlSet.deleteClass(label: labelToDelete, undoManager: externalUndoManager)
                     dismiss()
                 } label: {
                     Text("Delete Class")

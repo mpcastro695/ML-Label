@@ -14,7 +14,7 @@ struct ML_LabelApp: App {
     
     var body: some Scene {
         
-        DocumentGroup(newDocument: MLSet()) { file in
+        DocumentGroup(newDocument: { MLSet() }) { file in
             if #available(macOS 14.0, *) {
                 ContentView(mlSetDocument: file.document, fileName: file.fileURL?.lastPathComponent ?? "Untitled")
             } else {

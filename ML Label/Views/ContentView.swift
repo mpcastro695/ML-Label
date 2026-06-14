@@ -15,7 +15,6 @@ struct ContentView: View {
     
     var fileName: String
     
-    @State private var path = NavigationPath()
 //    @State private var sidebarSelection: UUID? = nil
     
     var body: some View {
@@ -23,7 +22,7 @@ struct ContentView: View {
 //            SideBarView(fileName: fileName, selection: $sidebarSelection)
 //                .navigationSplitViewColumnWidth(min: 100, ideal: 200, max: 300)
 //        }, detail: {
-            NavigationStack(path: $path) {
+            NavigationStack(path: $userSelections.navigationPath) {
                 SetDashView(fileName: fileName)
                     .navigationDestination(for: MLImage.self) { mlImage in
                         AnnotatorView(mlImage: mlImage)

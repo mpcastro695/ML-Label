@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Vision
 
 /// A  reference to an image on disk and its annotation data
 class MLImage: Identifiable, Codable, ObservableObject, Hashable {
@@ -57,30 +56,6 @@ class MLImage: Identifiable, Codable, ObservableObject, Hashable {
         self.annotations = try container.decode([MLBoundingBox].self, forKey: .annotations)
         self.width = try container.decode(Int.self, forKey: .width)
         self.height = try container.decode(Int.self, forKey: .height)
-    }
-    
-    //MARK: - Class Functions
-    func addAnnotation(normalizedRect: CGRect, label: String) {
-        let pixelRect = VNImageRectForNormalizedRect(normalizedRect, width, height)
-        
-        let imageBounds = CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height))
-        
-        // Intersect the pixel rect with the image bounds to clamp it
-        let clampedRect = pixelRect.intersection(imageBounds)
-        guard !clampedRect.isNull, !clampedRect.isEmpty else { return }
-        
-        let mlCoordinates = MLCoordinates(x: Int(clampedRect.midX),
-                                          y: Int(clampedRect.midY),
-                                         width: Int(clampedRect.width),
-                                         height: Int(clampedRect.height))
-        let mlBox = MLBoundingBox(label: label,
-                                  coordinates: mlCoordinates)
-        annotations.append(mlBox)
-        update()
-    }
-    
-    func removeAnnotation(id: UUID) {
-        annotations.removeAll(where: {$0.id == id})
     }
     
     func update(){
