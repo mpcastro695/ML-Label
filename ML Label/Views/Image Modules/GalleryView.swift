@@ -139,7 +139,6 @@ struct GalleryView: View {
                         .font(.caption)
                 }
                 .pickerStyle(.menu)
-                .buttonStyle(LineBorderStyle())
                 .disabled(imageSources.isEmpty || mlSet.allImages().isEmpty)
                 
                 Spacer()
@@ -155,12 +154,15 @@ struct GalleryView: View {
                 Button { // Filter out annotated images
                     hideAnnotated.toggle()
                 } label: {
-                    Text("\(Image(systemName: "circle.dashed"))")
+                    if hideAnnotated {
+                        Text("\(Image(systemName: "eye.slash"))")
+                    } else {
+                        Text("\(Image(systemName: "eye"))")
+                    }
                     
                 }
                 .buttonStyle(.plain)
                 .disabled(imageSources.isEmpty || mlSet.allImages().isEmpty)
-                .font(hideAnnotated ? .headline.weight(.black) : .none)
                 
                 Button { //Add Source Button
                     if let fileURLs = showImageSelectPanel() {

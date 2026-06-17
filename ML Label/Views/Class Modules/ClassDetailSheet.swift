@@ -51,6 +51,7 @@ struct ClassDetailSheet: View {
                         .foregroundColor(.secondary)
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: thumbnailSize), spacing: thumbPadding)], spacing: thumbPadding) {
+                            
                             ForEach(mlClass.getInstanceSnapshots(), id: \.self.1) { instance in
                                 Button {
                                     dismiss()
@@ -58,7 +59,13 @@ struct ClassDetailSheet: View {
                                     // Delay the navigation push slightly to prevent "flashing"
                                     Task { @MainActor in
                                         try? await Task.sleep(for: .seconds(0.15))
-                                        userSelections.navigationPath.append(instance.0)
+                                        
+                                        // Get the canon image from MLSet
+                                        if let setImage = mlSet.allImages().first(where: { $0.name == instance.0.name }) {
+                                            userSelections.navigationPath.append(setImage)
+                                        } else {
+                                            userSelections.navigationPath.append(instance.0)
+                                        }
                                     }
                                 } label: {
                                     InstanceCard(mlImage: instance.0, cgImageCrop: instance.1, thumbnailSize: thumbnailSize)

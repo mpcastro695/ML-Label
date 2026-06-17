@@ -35,9 +35,6 @@ struct SetDashView: View {
                         .bold()
                         .foregroundColor(.secondary)
                         .padding(.bottom, 5)
-//                    Text("Last Edited on 2/25/23 11:21PM") //FIX
-//                        .font(.footnote)
-//                        .foregroundColor(.secondary)
                 }
                 .padding()
                 Spacer()

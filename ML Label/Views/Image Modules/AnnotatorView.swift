@@ -150,14 +150,6 @@ struct AnnotatorView: View {
                 .foregroundColor(userSelections.mode == .editEnabled ? .primary : .secondary)
                 .font(userSelections.mode == .editEnabled ? .headline.weight(.black) : .none)
                 
-                // Auto Enable Button
-//                Button("\(Image(systemName: "wand.and.stars"))"){
-//                    userSelections.mode = .autoEnabled
-//                }
-//                .buttonStyle(.plain)
-//                .foregroundColor(userSelections.mode == .autoEnabled ? .primary : .secondary)
-//                .font(userSelections.mode == .autoEnabled ? .headline.weight(.black) : .none)
-                
                 //Remove Enable Button
                 Button("\(Image(systemName: "scissors"))"){
                     userSelections.mode = .removeEnabled
